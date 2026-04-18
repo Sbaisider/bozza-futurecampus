@@ -2,6 +2,10 @@ import Image from "next/image";
 
 import type { HeroColumnDirection } from "./hero-column-config";
 
+import {
+  HERO_COLUMN_IMAGE_QUALITY,
+  HERO_COLUMN_IMAGE_SIZES,
+} from "./hero-column-image";
 import { HERO_COLUMN_SEGMENT_COUNT } from "./hero-column-segments";
 
 type HeroColumnStripProps = {
@@ -43,11 +47,12 @@ function MarqueeHalf({ segmentSrcs, blurPx }: MarqueeHalfProps) {
             src={src}
             alt=""
             fill
-            sizes="(max-width: 768px) 20vw, 10vw"
+            sizes={HERO_COLUMN_IMAGE_SIZES}
+            quality={HERO_COLUMN_IMAGE_QUALITY}
             className="object-cover"
             draggable={false}
-            unoptimized
-            loading="eager"
+            loading="lazy"
+            fetchPriority="low"
             style={{
               filter: blur,
               transform: "scale(1.02)",
