@@ -1,26 +1,65 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f3f5f7;
+  --foreground: #070808;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-fc-primary: #244c90;
+  --color-fc-accent: #13acea;
+  --color-fc-secondary: #77819a;
+  --color-fc-soft: #b6c4d1;
+  --color-fc-dark: #070808;
+  --color-fc-light: #f3f5f7;
+  --color-fc-white: #ffffff;
+  --font-sans: var(--font-manrope);
+  --font-display: var(--font-montserrat);
+  --font-accent: var(--font-graduate);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@keyframes fc-hero-scroll-up {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(0, -50%, 0);
+  }
+}
+
+@keyframes fc-hero-scroll-down {
+  from {
+    transform: translate3d(0, -50%, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.fc-hero-marquee-up {
+  animation-name: fc-hero-scroll-up;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+.fc-hero-marquee-down {
+  animation-name: fc-hero-scroll-down;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fc-hero-marquee-up,
+  .fc-hero-marquee-down {
+    animation: none;
+    transform: translate3d(0, -18%, 0);
   }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-manrope), system-ui, sans-serif;
 }
