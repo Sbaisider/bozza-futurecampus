@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { forwardRef, useCallback, useEffect, useId, useState } from "react";
 
 const links = [
@@ -49,12 +50,14 @@ export const SiteNavbar = forwardRef<HTMLElement, SiteNavbarProps>(
         className={`border-b border-fc-soft/80 bg-fc-white/92 shadow-[0_1px_0_rgba(7,8,8,0.04)] backdrop-blur-xl md:bg-fc-white/95 ${className}`}
       >
         <div className="mx-auto flex h-[3.25rem] max-w-6xl items-center justify-between px-4 md:h-16 md:px-8">
-          <a
-            href="/"
-            className="py-1 text-[1.05rem] font-black tracking-tight text-fc-primary md:text-lg"
-            style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}
-          >
-            FCF
+          <a href="/" className="flex shrink-0 items-center py-1">
+            <Image
+              src="/brand/fcf-logo.png"
+              alt="Future Campus Fabriano"
+              width={40}
+              height={40}
+              className="h-8 w-8 object-contain md:h-9 md:w-9"
+            />
           </a>
 
           {/* Desktop: invariato */}

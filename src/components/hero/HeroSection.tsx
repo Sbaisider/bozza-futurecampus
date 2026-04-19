@@ -43,12 +43,16 @@ export function HeroSection({
         aria-hidden
       />
 
-      <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center px-6">
-        <div
-          ref={titleScaleRef}
-          className="inline-flex flex-col items-center text-center will-change-transform [transform-origin:center_center]"
-        >
-          <HeroBrandCenter />
+      {/* Titolo: stesso ref/classi di prima per lo zoom GSAP; velatura #244C90 a tutta area sotto al blocco titolo. */}
+      <div className="pointer-events-none absolute inset-0 z-10">
+        <div className="absolute inset-0 bg-[#244C90]/30" aria-hidden />
+        <div className="relative flex h-full w-full items-center justify-center px-6">
+          <div
+            ref={titleScaleRef}
+            className="inline-flex flex-col items-center text-center will-change-transform [transform-origin:center_center]"
+          >
+            <HeroBrandCenter />
+          </div>
         </div>
       </div>
     </section>
