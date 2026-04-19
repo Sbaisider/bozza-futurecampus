@@ -4,8 +4,6 @@ import { forwardRef } from "react";
 
 import Image from "next/image";
 
-import { SiteNavbar } from "@/components/home/SiteNavbar";
-
 const MICRO_LABEL = "Future Campus Fabriano";
 
 const TITLE =
@@ -55,8 +53,8 @@ type IntroManifestoSectionProps = {
 };
 
 /**
- * Seconda schermata nel flusso del documento (relative, z sopra la hero).
- * Ingresso in fase pin: translateY gestito da GSAP su questa section.
+ * Seconda schermata nel documento (relative, z sotto la navbar globale fixed).
+ * La navbar non è inclusa: resta layer separato in HomeExperience.
  */
 export const IntroManifestoSection = forwardRef<
   HTMLElement,
@@ -68,8 +66,8 @@ export const IntroManifestoSection = forwardRef<
       id="intro"
       className="relative z-10 -mt-[100svh] min-h-[100svh] rounded-t-2xl border-t border-fc-soft/60 bg-fc-light/98 shadow-[0_-12px_48px_rgba(7,8,8,0.08)] backdrop-blur-sm"
     >
-      <SiteNavbar className="relative z-20 w-full" />
-      <div className="px-5 pb-12 pt-6 md:px-10 md:pb-16 md:pt-8 lg:px-12">
+      {/* Spazio superiore per la navbar fixed (non è dentro questa section) */}
+      <div className="px-5 pb-12 pt-20 md:px-10 md:pb-16 md:pt-24 lg:px-12">
         <header className="max-w-3xl">
           <p
             className="text-[10px] font-extralight uppercase tracking-[0.38em] text-fc-accent sm:text-[11px]"

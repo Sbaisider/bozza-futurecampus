@@ -9,7 +9,7 @@ import { HERO_PIN_END, HERO_TITLE_SCALE_MAX } from "./home-hero-scroll-config";
 
 gsap.registerPlugin(ScrollTrigger);
 
-/** Metà timeline = zoom titolo (+ velatura); metà = ingresso section intro (translateY). Pin termina a fine timeline. */
+/** Metà timeline = zoom titolo (+ velatura); metà = navbar (fixed) dall’alto + section intro dal basso. */
 const PHASE_1_DURATION = 5;
 const PHASE_2_DURATION = 5;
 
@@ -17,14 +17,15 @@ const PHASE_2_DURATION = 5;
 const BLUE_FADE_MAX = 0.2;
 
 /**
- * Pin solo sulla hero per `HERO_PIN_END`. Fase 1: titolo + velatura. Fase 2: section intro nel DOM sale con `y`.
- * A pin rilasciato: scroll normale; intro (z-10) copre la hero sticky (z-0).
+ * Pin sulla hero. Fase 1: titolo + velatura. Fase 2: navbar fixed (y, autoAlpha) + intro section (y), in parallelo.
+ * Scrub inverso: navbar torna su, intro verso il basso. Dopo il pin: navbar resta fixed, intro in scroll normale.
  */
 export function useHomeHeroScroll(
   heroSectionRef: RefObject<HTMLElement | null>,
   photoStackRef: RefObject<HTMLDivElement | null>,
   blueOverlayRef: RefObject<HTMLDivElement | null>,
   titleScaleRef: RefObject<HTMLDivElement | null>,
+  navbarRef: RefObject<HTMLElement | null>,
   introSectionRef: RefObject<HTMLElement | null>,
 ) {
   useLayoutEffect(() => {
@@ -32,9 +33,10 @@ export function useHomeHeroScroll(
     const photos = photoStackRef.current;
     const blue = blueOverlayRef.current;
     const title = titleScaleRef.current;
+    const nav = navbarRef.current;
     const intro = introSectionRef.current;
 
-    if (!hero || !photos || !blue || !title || !intro) return;
+    if (!hero || !photos || !blue || !title || !nav || !intro) return;
 
     const reduced =
       typeof window !== "undefined" &&
@@ -42,15 +44,20 @@ export function useHomeHeroScroll(
 
     if (reduced) {
       gsap.set(title, { scale: 1, transformOrigin: "50% 50%" });
-      gsap.set(intro, { y: 0, autoAlpha: 1, pointerEvents: "auto" });
+      gsap.set(nav, { y: 0, autoAlpha: 1, pointerEvents: "auto" });
+      gsap.set(intro, { y: 0, pointerEvents: "auto" });
       gsap.set(blue, { opacity: BLUE_FADE_MAX });
       return;
     }
 
     gsap.set(title, { scale: 1, transformOrigin: "50% 50%", force3D: true });
+    gsap.set(nav, {
+      y: "-100%",
+      autoAlpha: 0,
+      pointerEvents: "none",
+    });
     gsap.set(intro, {
       y: "100vh",
-      autoAlpha: 1,
       pointerEvents: "none",
     });
     gsap.set(blue, { opacity: 0 });
@@ -90,6 +97,18 @@ export function useHomeHeroScroll(
           0,
         )
         .fromTo(
+          nav,
+          { y: "-100%", autoAlpha: 0, pointerEvents: "none" },
+          {
+            y: 0,
+            autoAlpha: 1,
+            duration: PHASE_2_DURATION,
+            ease: "power2.out",
+            pointerEvents: "auto",
+          },
+          PHASE_1_DURATION,
+        )
+        .fromTo(
           intro,
           { y: "100vh", pointerEvents: "none" },
           {
@@ -119,6 +138,7 @@ export function useHomeHeroScroll(
     photoStackRef,
     blueOverlayRef,
     titleScaleRef,
+    navbarRef,
     introSectionRef,
   ]);
 }

@@ -13,14 +13,14 @@ export type SiteNavbarProps = {
 };
 
 /**
- * Barra navigazione: usata in cima alla section intro (flow documento).
+ * Barra navigazione globale: in homepage montata come `fixed top-0` (layer sopra hero/intro), animata da GSAP.
  */
 export const SiteNavbar = forwardRef<HTMLElement, SiteNavbarProps>(
   function SiteNavbar({ className = "" }, ref) {
     return (
       <header
         ref={ref}
-        className={`border-b border-fc-soft/70 bg-fc-white/92 backdrop-blur-md ${className}`}
+        className={`border-b border-fc-soft/80 bg-fc-white/95 shadow-[0_1px_0_rgba(7,8,8,0.04)] backdrop-blur-md ${className}`}
       >
         <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-5 md:h-16 md:px-8">
           <a
