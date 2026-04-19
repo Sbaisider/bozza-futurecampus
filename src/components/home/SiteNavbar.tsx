@@ -8,15 +8,20 @@ const links = [
   { href: "#", label: "Contatti" },
 ];
 
+export type SiteNavbarProps = {
+  className?: string;
+};
+
 /**
- * Navbar fissa: nascosta all’inizio, rivelata da GSAP verso fine transizione hero.
+ * Barra navigazione: in hero va in `absolute` (overlay); opzionale className per posizionamento.
  */
-export const SiteNavbar = forwardRef<HTMLElement>(function SiteNavbar(_props, ref) {
-  return (
-    <header
-      ref={ref}
-      className="pointer-events-none fixed inset-x-0 top-0 z-[60] border-b border-fc-soft/70 bg-fc-white/92 opacity-0 backdrop-blur-md"
-    >
+export const SiteNavbar = forwardRef<HTMLElement, SiteNavbarProps>(
+  function SiteNavbar({ className = "" }, ref) {
+    return (
+      <header
+        ref={ref}
+        className={`pointer-events-none border-b border-fc-soft/70 bg-fc-white/92 opacity-0 backdrop-blur-md ${className}`}
+      >
         <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-5 md:h-16 md:px-8">
           <a
             href="/"
@@ -41,6 +46,7 @@ export const SiteNavbar = forwardRef<HTMLElement>(function SiteNavbar(_props, re
             </ul>
           </nav>
         </div>
-    </header>
-  );
-});
+      </header>
+    );
+  },
+);

@@ -9,26 +9,35 @@ import { HERO_PIN_END, HERO_TITLE_SCALE_MAX } from "./home-hero-scroll-config";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const TITLE_DURATION = 10;
-const NAV_START = 5.45;
-const NAV_DURATION = 2.05;
+/** Durata timeline: fase 1 minima (5% pin) → nav/pannello dopo meno scroll. */
+const PHASE_1_DURATION = 0.5;
+const PHASE_2_DURATION = 9.5;
+
+/** Velatura blu leggera sulle foto (fase 1) */
+const BLUE_FADE_MAX = 0.2;
 
 /**
- * Pin della hero + zoom titolo da centro testo + fade navbar sincronizzati allo scroll.
+ * Un solo ScrollTrigger: pin sulla hero per tutta la durata `HERO_PIN_END`.
+ * Fase 1 (scrub): scala titolo + dissolvenza blu; sfondo collage non si muove col documento.
+ * Fase 2 (scrub): navbar + second screen con opacity/transform; pin si rilascia solo a fine timeline.
  */
 export function useHomeHeroScroll(
   heroSectionRef: RefObject<HTMLElement | null>,
-  heroBackgroundRef: RefObject<HTMLDivElement | null>,
+  photoStackRef: RefObject<HTMLDivElement | null>,
+  blueOverlayRef: RefObject<HTMLDivElement | null>,
   titleScaleRef: RefObject<HTMLDivElement | null>,
   navbarRef: RefObject<HTMLElement | null>,
+  introPanelRef: RefObject<HTMLDivElement | null>,
 ) {
   useLayoutEffect(() => {
     const hero = heroSectionRef.current;
-    const bg = heroBackgroundRef.current;
+    const photos = photoStackRef.current;
+    const blue = blueOverlayRef.current;
     const title = titleScaleRef.current;
     const nav = navbarRef.current;
+    const intro = introPanelRef.current;
 
-    if (!hero || !bg || !title || !nav) return;
+    if (!hero || !photos || !blue || !title || !nav || !intro) return;
 
     const reduced =
       typeof window !== "undefined" &&
@@ -37,52 +46,73 @@ export function useHomeHeroScroll(
     if (reduced) {
       gsap.set(title, { scale: 1, transformOrigin: "50% 50%" });
       gsap.set(nav, { autoAlpha: 1, y: 0, pointerEvents: "auto" });
+      gsap.set(intro, { autoAlpha: 1, y: 0, pointerEvents: "auto" });
+      gsap.set(blue, { opacity: BLUE_FADE_MAX });
       return;
     }
 
     gsap.set(title, { scale: 1, transformOrigin: "50% 50%", force3D: true });
-    gsap.set(nav, { autoAlpha: 0, y: -20, pointerEvents: "none" });
+    gsap.set(nav, { autoAlpha: 0, y: -36, pointerEvents: "none" });
+    gsap.set(intro, { y: "100%", autoAlpha: 0, pointerEvents: "none" });
+    gsap.set(blue, { opacity: 0 });
 
     const ctx = gsap.context(() => {
-      gsap.timeline({
-        scrollTrigger: {
-          trigger: hero,
-          start: "top top",
-          end: HERO_PIN_END,
-          pin: true,
-          scrub: 0.28,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-        },
-      })
+      gsap
+        .timeline({
+          scrollTrigger: {
+            trigger: hero,
+            start: "top top",
+            end: HERO_PIN_END,
+            pin: true,
+            scrub: true,
+            anticipatePin: 1,
+            invalidateOnRefresh: true,
+          },
+        })
         .fromTo(
           title,
           { scale: 1 },
           {
             scale: HERO_TITLE_SCALE_MAX,
-            duration: TITLE_DURATION,
+            duration: PHASE_1_DURATION,
             ease: "none",
             force3D: true,
           },
           0,
         )
         .fromTo(
-          bg,
-          { opacity: 1 },
-          { opacity: 0.78, duration: TITLE_DURATION, ease: "none" },
+          blue,
+          { opacity: 0 },
+          {
+            opacity: BLUE_FADE_MAX,
+            duration: PHASE_1_DURATION,
+            ease: "none",
+          },
           0,
         )
         .fromTo(
           nav,
-          { autoAlpha: 0, y: -18, pointerEvents: "none" },
+          { autoAlpha: 0, y: -36, pointerEvents: "none" },
           {
             autoAlpha: 1,
             y: 0,
-            pointerEvents: "auto",
-            duration: NAV_DURATION,
+            duration: PHASE_2_DURATION,
             ease: "power2.out",
+            pointerEvents: "auto",
           },
-          NAV_START,
+          PHASE_1_DURATION,
+        )
+        .fromTo(
+          intro,
+          { y: "100%", autoAlpha: 0, pointerEvents: "none" },
+          {
+            y: 0,
+            autoAlpha: 1,
+            duration: PHASE_2_DURATION,
+            ease: "power3.out",
+            pointerEvents: "auto",
+          },
+          PHASE_1_DURATION,
         );
     }, hero);
 
@@ -98,5 +128,12 @@ export function useHomeHeroScroll(
       window.removeEventListener("resize", refresh);
       ctx.revert();
     };
-  }, [heroSectionRef, heroBackgroundRef, titleScaleRef, navbarRef]);
+  }, [
+    heroSectionRef,
+    photoStackRef,
+    blueOverlayRef,
+    titleScaleRef,
+    navbarRef,
+    introPanelRef,
+  ]);
 }
