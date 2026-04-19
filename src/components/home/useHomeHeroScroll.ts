@@ -9,9 +9,9 @@ import { HERO_PIN_END, HERO_TITLE_SCALE_MAX } from "./home-hero-scroll-config";
 
 gsap.registerPlugin(ScrollTrigger);
 
-/** Durata timeline: fase 1 minima (5% pin) → nav/pannello dopo meno scroll. */
-const PHASE_1_DURATION = 0.5;
-const PHASE_2_DURATION = 9.5;
+/** Metà timeline = zoom titolo (+ velatura); metà = navbar + second screen (allineato al “primo/secondo” tratto di scroll nel pin). */
+const PHASE_1_DURATION = 5;
+const PHASE_2_DURATION = 5;
 
 /** Velatura blu leggera sulle foto (fase 1) */
 const BLUE_FADE_MAX = 0.2;
@@ -19,7 +19,7 @@ const BLUE_FADE_MAX = 0.2;
 /**
  * Un solo ScrollTrigger: pin sulla hero per tutta la durata `HERO_PIN_END`.
  * Fase 1 (scrub): scala titolo + dissolvenza blu; sfondo collage non si muove col documento.
- * Fase 2 (scrub): navbar + second screen con opacity/transform; pin si rilascia solo a fine timeline.
+ * Fase 2 (scrub): navbar + second screen con opacity/transform (dopo che lo zoom è completo); pin a fine timeline.
  */
 export function useHomeHeroScroll(
   heroSectionRef: RefObject<HTMLElement | null>,
