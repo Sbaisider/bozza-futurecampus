@@ -1,10 +1,11 @@
 import fs from "node:fs";
 import path from "node:path";
 
-const VIDEO_EXT = /\.(mp4|webm|mov|mts|m2t)$/i;
+/** Solo MP4: usati nella sezione Esperienza (altri formati ignorati). */
+const VIDEO_EXT = /\.mp4$/i;
 
 /**
- * Percorsi pubblici dei file in `public/video`, ordinati per nome.
+ * Percorsi pubblici dei file `.mp4` in `public/video`, ordinati per nome.
  */
 export function getPublicVideoPaths(): string[] {
   const dir = path.join(process.cwd(), "public", "video");

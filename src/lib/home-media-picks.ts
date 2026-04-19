@@ -2,7 +2,7 @@
  * Seleziona foto/video per le sezioni homepage (ordine stabile da cartelle).
  */
 export type HomeMediaPicks = {
-  /** Video per carosello orizzontale sezione Esperienza (MP4 preferiti). */
+  /** Video per sfondo Esperienza: solo `.mp4` in `public/video`. */
   esperienzaVideos: string[];
   /** Foto per marquee (fallback se non ci sono video). */
   esperienzaPhotos: string[];
@@ -19,9 +19,7 @@ export function pickHomeMedia(
   videoPaths: string[],
 ): HomeMediaPicks {
   const vids = [...videoPaths];
-  const mp4s = vids.filter((v) => /\.mp4$/i.test(v)).sort();
-  const esperienzaVideos =
-    mp4s.length > 0 ? mp4s : vids.sort();
+  const esperienzaVideos = vids.filter((v) => /\.mp4$/i.test(v)).sort();
 
   const fotos = [...fotoPaths];
 

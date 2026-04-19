@@ -1,6 +1,6 @@
 "use client";
 
-import { forwardRef, useMemo } from "react";
+import { forwardRef, useEffect, useMemo, useRef } from "react";
 
 import Image from "next/image";
 
@@ -8,6 +8,51 @@ import type { HomeMediaPicks } from "@/lib/home-media-picks";
 
 /** Clip in rotazione; ogni slide = tutta larghezza schermo × altezza sezione. */
 const MAX_BG_CLIPS = 3;
+
+/**
+ * Autoplay nel browser spesso richiede play() dopo mount + muted/playsInline.
+ * File rinominati .mp4 senza ricodifica restano non decodificabili → onError in dev.
+ */
+function EsperienzaMarqueeVideo({ src }: { src: string }) {
+  const ref = useRef<HTMLVideoElement | null>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    el.defaultMuted = true;
+    el.muted = true;
+    const tryPlay = () => {
+      void el.play().catch(() => {});
+    };
+    tryPlay();
+    el.addEventListener("loadeddata", tryPlay);
+    return () => el.removeEventListener("loadeddata", tryPlay);
+  }, [src]);
+
+  return (
+    <video
+      ref={ref}
+      className="absolute inset-0 h-full w-full object-cover"
+      muted
+      loop
+      playsInline
+      preload="auto"
+      src={src}
+      width={1920}
+      height={1080}
+      onError={
+        process.env.NODE_ENV === "development"
+          ? () => {
+              console.error(
+                "[Esperienza] Video non caricato o formato non supportato dal browser:",
+                src,
+              );
+            }
+          : undefined
+      }
+    />
+  );
+}
 
 type HomeEsperienzaSectionProps = {
   media: HomeMediaPicks;
@@ -92,17 +137,7 @@ export const HomeEsperienzaSection = forwardRef<
                   className="relative h-full min-h-full w-screen shrink-0"
                 >
                   {marquee.kind === "video" ? (
-                    <video
-                      className="absolute inset-0 h-full w-full object-cover"
-                      autoPlay
-                      muted
-                      loop
-                      playsInline
-                      preload="metadata"
-                      src={src}
-                      width={1920}
-                      height={1080}
-                    />
+                    <EsperienzaMarqueeVideo src={src} />
                   ) : (
                     <Image
                       src={src}

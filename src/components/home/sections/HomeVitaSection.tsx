@@ -81,7 +81,7 @@ export function HomeVitaSection({ media }: Props) {
               className="mt-3 text-pretty text-2xl font-black tracking-tight text-white md:text-3xl"
               style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}
             >
-              Attività concrete, zero slogan.
+              Attività concrete.
             </h2>
           </div>
           
