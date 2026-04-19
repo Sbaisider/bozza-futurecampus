@@ -22,18 +22,23 @@ export function HomeCrescitaSection({ media }: Props) {
       className="relative z-10 scroll-mt-24 border-t border-fc-soft/40 bg-fc-white"
     >
       {bg ? (
-        <div className="pointer-events-none absolute inset-0 opacity-[0.14]">
-          <Image
-            src={bg}
-            alt=""
-            fill
-            className="object-cover"
-            sizes="100vw"
-            priority={false}
-          />
+        <div
+          className="pointer-events-none absolute inset-0 overflow-hidden opacity-[0.14]"
+          aria-hidden
+        >
+          <div className="fc-crescita-bg-zoom absolute inset-0 h-full w-full origin-center">
+            <Image
+              src={bg}
+              alt=""
+              fill
+              className="object-cover"
+              sizes="100vw"
+              priority={false}
+            />
+          </div>
         </div>
       ) : null}
-      <div className="relative mx-auto max-w-[1400px] px-5 py-20 md:px-8 md:py-28 lg:px-12">
+      <div className="relative z-10 mx-auto max-w-[1400px] px-5 py-20 md:px-8 md:py-28 lg:px-12">
         <p
           className="text-[10px] font-extralight uppercase tracking-[0.42em] text-fc-accent"
           style={{ fontFamily: "var(--font-manrope), system-ui, sans-serif" }}

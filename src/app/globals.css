@@ -68,7 +68,36 @@
   will-change: transform;
 }
 
+@keyframes fc-crescita-bg-zoom {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.06);
+  }
+}
+
+.fc-crescita-bg-zoom {
+  animation: fc-crescita-bg-zoom 18s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+/* Come si vive — sfondo brand + griglia punti leggera */
+.fc-vita-dot-grid {
+  background-color: #244c90;
+  background-image: radial-gradient(
+    circle at 1px 1px,
+    rgba(255, 255, 255, 0.11) 1px,
+    transparent 0
+  );
+  background-size: 22px 22px;
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .fc-crescita-bg-zoom {
+    animation: none;
+  }
+
   .fc-hero-marquee-up,
   .fc-hero-marquee-down {
     animation: none;

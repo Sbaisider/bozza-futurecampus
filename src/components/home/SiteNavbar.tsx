@@ -3,8 +3,9 @@
 import { forwardRef } from "react";
 
 const links = [
-  { href: "#esperienza", label: "Progetto" },
+  { href: "#esperienza", label: "Esperienza" },
   { href: "#crescita", label: "Percorso" },
+  { href: "#vita", label: "Come si vive" },
   { href: "#chiusura", label: "Territorio" },
 ];
 
