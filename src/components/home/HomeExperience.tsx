@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 
 import { HeroSection } from "@/components/hero/HeroSection";
 import { HomeCrescitaSection } from "@/components/home/sections/HomeCrescitaSection";
@@ -37,6 +37,27 @@ export function HomeExperience({ heroImages, media }: HomeExperienceProps) {
     esperienzaSectionRef,
   );
 
+  /** Il browser non calcola bene #esperienza: la section ha transform GSAP. */
+  const scrollToEsperienza = useCallback(() => {
+    const el = esperienzaSectionRef.current;
+    const nav = navbarRef.current;
+    if (!el) return;
+    const pad = nav?.offsetHeight ?? 72;
+    const y = el.getBoundingClientRect().top + window.scrollY - pad;
+    const smooth = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    window.scrollTo({ top: Math.max(0, y), behavior: smooth ? "smooth" : "auto" });
+    window.history.replaceState(null, "", "#esperienza");
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (window.location.hash !== "#esperienza") return;
+    const t = window.setTimeout(() => {
+      scrollToEsperienza();
+    }, 200);
+    return () => window.clearTimeout(t);
+  }, [scrollToEsperienza]);
+
   return (
     <div className="relative">
       <HeroSection
@@ -53,6 +74,7 @@ export function HomeExperience({ heroImages, media }: HomeExperienceProps) {
       <SiteNavbar
         ref={navbarRef}
         className="fixed top-0 left-0 right-0 z-[60] will-change-transform"
+        onEsperienzaClick={scrollToEsperienza}
       />
     </div>
   );

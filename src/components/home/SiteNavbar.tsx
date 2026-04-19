@@ -11,13 +11,15 @@ const links = [
 
 export type SiteNavbarProps = {
   className?: string;
+  /** Scroll imperativo: la sezione Esperienza usa transform GSAP, #hash non è affidabile. */
+  onEsperienzaClick?: () => void;
 };
 
 /**
  * Barra navigazione globale: in homepage montata come `fixed top-0` (layer sopra hero/intro), animata da GSAP.
  */
 export const SiteNavbar = forwardRef<HTMLElement, SiteNavbarProps>(
-  function SiteNavbar({ className = "" }, ref) {
+  function SiteNavbar({ className = "", onEsperienzaClick }, ref) {
     return (
       <header
         ref={ref}
@@ -39,6 +41,14 @@ export const SiteNavbar = forwardRef<HTMLElement, SiteNavbarProps>(
                     href={l.href}
                     className="text-[13px] font-extralight tracking-[0.18em] text-fc-secondary uppercase transition-colors hover:text-fc-primary"
                     style={{ fontFamily: "var(--font-manrope), system-ui, sans-serif" }}
+                    onClick={
+                      l.href === "#esperienza" && onEsperienzaClick
+                        ? (e) => {
+                            e.preventDefault();
+                            onEsperienzaClick();
+                          }
+                        : undefined
+                    }
                   >
                     {l.label}
                   </a>

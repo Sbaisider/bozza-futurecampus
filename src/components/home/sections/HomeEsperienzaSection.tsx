@@ -68,18 +68,10 @@ export const HomeEsperienzaSection = forwardRef<
   return (
     <section
       ref={ref}
+      id="esperienza"
       aria-labelledby="esperienza-heading"
       className="relative z-10 -mt-[100svh] overflow-hidden rounded-t-3xl border-t border-fc-soft/40 bg-fc-white shadow-[0_-16px_48px_rgba(36,76,144,0.07)]"
     >
-      {/*
-        Anchor scroll: il `<section>` inizia in overlap con la hero (-mt 100svh), quindi
-        l'id sul section portava a scroll≈0. Punto di ancoraggio al bordo visivo sotto la hero.
-      */}
-      <div
-        id="esperienza"
-        className="pointer-events-none absolute left-0 top-[100svh] z-[5] h-px w-px"
-        aria-hidden
-      />
       <div className="pointer-events-none absolute inset-0 bg-fc-white" aria-hidden />
 
       {hasMedia ? (
