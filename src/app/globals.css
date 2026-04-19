@@ -50,11 +50,43 @@
   animation-iteration-count: infinite;
 }
 
+@keyframes fc-esperienza-scroll-x {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.fc-esperienza-marquee-track {
+  display: flex;
+  width: max-content;
+  animation-name: fc-esperienza-scroll-x;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  will-change: transform;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .fc-hero-marquee-up,
   .fc-hero-marquee-down {
     animation: none;
     transform: translate3d(0, -18%, 0);
+  }
+
+  .fc-esperienza-marquee-track {
+    animation: none;
+    flex-wrap: wrap;
+    width: 100%;
+    max-width: 56rem;
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: center;
+    row-gap: 0.75rem;
+    column-gap: 0.75rem;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
   }
 }
 

@@ -17,8 +17,8 @@ const PHASE_2_DURATION = 5;
 const BLUE_FADE_MAX = 0.2;
 
 /**
- * Pin sulla hero. Fase 1: titolo + velatura. Fase 2: navbar fixed (y, autoAlpha) + intro section (y), in parallelo.
- * Scrub inverso: navbar torna su, intro verso il basso. Dopo il pin: navbar resta fixed, intro in scroll normale.
+ * Pin sulla hero. Fase 1: titolo + velatura. Fase 2: navbar fixed (y, autoAlpha) + sezione Esperienza (y), in parallelo.
+ * Scrub inverso: navbar torna su, sezione verso il basso. Dopo il pin: navbar fixed, scroll normale sotto.
  */
 export function useHomeHeroScroll(
   heroSectionRef: RefObject<HTMLElement | null>,

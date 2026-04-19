@@ -3,9 +3,9 @@
 import { forwardRef } from "react";
 
 const links = [
-  { href: "#intro", label: "Progetto" },
-  { href: "#", label: "Campus" },
-  { href: "#", label: "Contatti" },
+  { href: "#esperienza", label: "Progetto" },
+  { href: "#crescita", label: "Percorso" },
+  { href: "#chiusura", label: "Territorio" },
 ];
 
 export type SiteNavbarProps = {
