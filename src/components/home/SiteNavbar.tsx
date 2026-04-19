@@ -13,14 +13,14 @@ export type SiteNavbarProps = {
 };
 
 /**
- * Barra navigazione: in hero va in `absolute` (overlay); opzionale className per posizionamento.
+ * Barra navigazione: usata in cima alla section intro (flow documento).
  */
 export const SiteNavbar = forwardRef<HTMLElement, SiteNavbarProps>(
   function SiteNavbar({ className = "" }, ref) {
     return (
       <header
         ref={ref}
-        className={`pointer-events-none border-b border-fc-soft/70 bg-fc-white/92 opacity-0 backdrop-blur-md ${className}`}
+        className={`border-b border-fc-soft/70 bg-fc-white/92 backdrop-blur-md ${className}`}
       >
         <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-5 md:h-16 md:px-8">
           <a

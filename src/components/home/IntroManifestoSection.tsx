@@ -1,4 +1,10 @@
+"use client";
+
+import { forwardRef } from "react";
+
 import Image from "next/image";
+
+import { SiteNavbar } from "@/components/home/SiteNavbar";
 
 const MICRO_LABEL = "Future Campus Fabriano";
 
@@ -23,21 +29,16 @@ const PILLARS = [
   },
 ] as const;
 
-type IntroManifestoSectionProps = {
-  /** Prima immagine da `/foto` (opzionale): area visual premium a destra. */
-  visualSrc?: string;
-};
-
 function ManifestoVisual({ src }: { src?: string }) {
   return (
-    <div className="relative min-h-[min(52vh,420px)] w-full overflow-hidden rounded-sm border border-fc-soft/70 bg-fc-white lg:min-h-[min(72vh,640px)]">
+    <div className="relative min-h-[180px] w-full overflow-hidden rounded-sm border border-fc-soft/70 bg-fc-white sm:min-h-[220px] lg:min-h-[min(32vh,360px)]">
       {src ? (
         <Image
           src={src}
           alt=""
           fill
           className="object-cover"
-          sizes="(max-width: 1024px) 100vw, 50vw"
+          sizes="(max-width: 1024px) 100vw, 45vw"
         />
       ) : (
         <div
@@ -49,16 +50,26 @@ function ManifestoVisual({ src }: { src?: string }) {
   );
 }
 
+type IntroManifestoSectionProps = {
+  visualSrc?: string;
+};
+
 /**
- * Sezione manifesto dopo la hero: ritmo più chiaro, layout arioso, pillar + visual.
+ * Seconda schermata nel flusso del documento (relative, z sopra la hero).
+ * Ingresso in fase pin: translateY gestito da GSAP su questa section.
  */
-export function IntroManifestoSection({ visualSrc }: IntroManifestoSectionProps) {
+export const IntroManifestoSection = forwardRef<
+  HTMLElement,
+  IntroManifestoSectionProps
+>(function IntroManifestoSection({ visualSrc }, ref) {
   return (
     <section
+      ref={ref}
       id="intro"
-      className="scroll-mt-20 border-t border-fc-soft/60 bg-fc-light text-fc-dark md:scroll-mt-24"
+      className="relative z-10 -mt-[100svh] min-h-[100svh] rounded-t-2xl border-t border-fc-soft/60 bg-fc-light/98 shadow-[0_-12px_48px_rgba(7,8,8,0.08)] backdrop-blur-sm"
     >
-      <div className="mx-auto max-w-6xl px-6 py-20 md:px-10 md:py-24 lg:max-w-7xl lg:px-14 lg:py-28 xl:py-32">
+      <SiteNavbar className="relative z-20 w-full" />
+      <div className="px-5 pb-12 pt-6 md:px-10 md:pb-16 md:pt-8 lg:px-12">
         <header className="max-w-3xl">
           <p
             className="text-[10px] font-extralight uppercase tracking-[0.38em] text-fc-accent sm:text-[11px]"
@@ -67,47 +78,48 @@ export function IntroManifestoSection({ visualSrc }: IntroManifestoSectionProps)
             {MICRO_LABEL.toUpperCase()}
           </p>
           <h2
-            className="mt-6 text-balance text-3xl font-black leading-[1.12] tracking-tight text-fc-dark sm:text-4xl md:mt-8 md:text-[2.35rem] md:leading-[1.1] lg:text-[2.65rem] lg:leading-[1.08]"
+            className="mt-4 text-balance text-2xl font-black leading-[1.12] tracking-tight text-fc-dark sm:mt-5 sm:text-3xl md:text-[1.85rem] lg:text-[2.1rem]"
             style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}
           >
             {TITLE}
           </h2>
           <p
-            className="mt-8 max-w-2xl text-base font-extralight leading-relaxed text-fc-secondary md:mt-10 md:text-lg md:leading-relaxed"
+            className="mt-5 max-w-2xl text-sm font-extralight leading-relaxed text-fc-secondary md:text-base"
             style={{ fontFamily: "var(--font-manrope), system-ui, sans-serif" }}
           >
             {LEAD}
           </p>
         </header>
 
-        <div className="mt-16 border-t border-fc-soft/50 pt-16 md:mt-20 md:pt-20 lg:mt-24 lg:pt-24">
-          <div className="grid gap-14 lg:grid-cols-2 lg:items-start lg:gap-16 xl:gap-20">
-            <div className="flex flex-col gap-12 lg:gap-14">
+        <div className="mt-8 border-t border-fc-soft/50 pt-8 md:mt-10 md:pt-10">
+          <div className="grid gap-10 lg:grid-cols-2 lg:gap-12">
+            <div className="flex flex-col gap-8 lg:gap-10">
               {PILLARS.map((pillar, i) => (
                 <article
                   key={pillar.title}
                   className={
-                    i > 0
-                      ? "border-t border-fc-soft/60 pt-12 lg:pt-14"
-                      : undefined
+                    i > 0 ? "border-t border-fc-soft/60 pt-8 lg:pt-10" : undefined
                   }
                 >
                   <h3
-                    className="text-lg font-black tracking-tight text-fc-dark md:text-xl"
-                    style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}
+                    className="text-base font-black tracking-tight text-fc-dark md:text-lg"
+                    style={{
+                      fontFamily: "var(--font-montserrat), system-ui, sans-serif",
+                    }}
                   >
                     {pillar.title}
                   </h3>
                   <p
-                    className="mt-3 max-w-md text-[15px] font-extralight leading-relaxed text-fc-secondary md:text-base"
-                    style={{ fontFamily: "var(--font-manrope), system-ui, sans-serif" }}
+                    className="mt-2 max-w-md text-[14px] font-extralight leading-relaxed text-fc-secondary md:text-[15px]"
+                    style={{
+                      fontFamily: "var(--font-manrope), system-ui, sans-serif",
+                    }}
                   >
                     {pillar.body}
                   </p>
                 </article>
               ))}
             </div>
-
             <div>
               <ManifestoVisual src={visualSrc} />
             </div>
@@ -116,4 +128,4 @@ export function IntroManifestoSection({ visualSrc }: IntroManifestoSectionProps)
       </div>
     </section>
   );
-}
+});

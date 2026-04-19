@@ -3,6 +3,7 @@
 import { useRef } from "react";
 
 import { HeroSection } from "@/components/hero/HeroSection";
+import { IntroManifestoSection } from "@/components/home/IntroManifestoSection";
 
 import { useHomeHeroScroll } from "./useHomeHeroScroll";
 
@@ -11,43 +12,36 @@ type HomeExperienceProps = {
 };
 
 /**
- * Homepage: tutta l’esperienza hero (foto, titolo, nav, second screen) in un’unica sezione pinata.
- * Lo scroll del documento riprende solo dopo la fine del pin (nessun contenuto sotto la hero durante il pin).
+ * Hero pinata per zoom + ingresso translateY della section intro; poi scroll normale (intro copre la hero sticky).
  */
 export function HomeExperience({ heroImages }: HomeExperienceProps) {
   const heroSectionRef = useRef<HTMLElement>(null);
   const photoStackRef = useRef<HTMLDivElement>(null);
   const blueOverlayRef = useRef<HTMLDivElement>(null);
   const titleScaleRef = useRef<HTMLDivElement>(null);
-  const navbarRef = useRef<HTMLElement>(null);
-  const introPanelRef = useRef<HTMLDivElement>(null);
+  const introSectionRef = useRef<HTMLElement>(null);
 
   useHomeHeroScroll(
     heroSectionRef,
     photoStackRef,
     blueOverlayRef,
     titleScaleRef,
-    navbarRef,
-    introPanelRef,
+    introSectionRef,
   );
 
   return (
-    <>
+    <div className="relative">
       <HeroSection
         images={heroImages}
         sectionRef={heroSectionRef}
         photoStackRef={photoStackRef}
         blueOverlayRef={blueOverlayRef}
         titleScaleRef={titleScaleRef}
-        navbarRef={navbarRef}
-        introPanelRef={introPanelRef}
       />
-      {/* Contenuto sotto la hero: inizia solo dopo il rilascio del pin */}
-      <div
-        className="min-h-[40vh] bg-fc-light"
-        id="dopo-hero"
-        aria-hidden
+      <IntroManifestoSection
+        ref={introSectionRef}
+        visualSrc={heroImages[0]}
       />
-    </>
+    </div>
   );
 }
