@@ -1,2 +1,4 @@
+# Foto e video in public/ — Git LFS (GitHub blocca blob >100MB senza LFS).
+# Dopo aver installato Git LFS: `git lfs install`, poi migra la cronologia se i file erano già committati senza LFS (vedi commento in fondo).
 public/foto/** filter=lfs diff=lfs merge=lfs -text
 public/video/** filter=lfs diff=lfs merge=lfs -text
