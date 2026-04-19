@@ -7,6 +7,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 
 import {
+  HERO_ONE_GESTURE_MIN_SEC,
   HERO_ONE_GESTURE_SCROLL_SEC,
   HERO_PIN_END,
   HERO_TITLE_SCALE_MAX,
@@ -77,7 +78,8 @@ export function useHomeHeroScroll(
             start: "top top",
             end: HERO_PIN_END,
             pin: true,
-            scrub: true,
+            /** Leggero smorzamento rispetto allo scroll (più fluido del legame 1:1). */
+            scrub: 1.15,
             anticipatePin: 1,
             invalidateOnRefresh: true,
           },
@@ -130,6 +132,77 @@ export function useHomeHeroScroll(
       const st = tl.scrollTrigger;
       if (!st) return;
 
+      /** Solo mobile: gate sullo scrub inverso (ritorno hero) dopo stop in cima al contenuto. */
+      const mobileMq = window.matchMedia("(max-width: 767px)");
+      let canReverseHeroFromContent = false;
+      let lastScrollY = window.scrollY;
+      let clampingScroll = false;
+      let settleTimer: number | null = null;
+
+      const syncReverseGateFromScrollPosition = (y: number) => {
+        const end = st.end;
+        if (y > end + 2) {
+          canReverseHeroFromContent = false;
+        }
+      };
+
+      const settleReverseGateAtContentTop = () => {
+        if (!mobileMq.matches) return;
+        const y = window.scrollY;
+        const end = st.end;
+        if (Math.abs(y - end) < 6) {
+          canReverseHeroFromContent = true;
+        }
+      };
+
+      const onScrollSettle = () => {
+        if (settleTimer != null) window.clearTimeout(settleTimer);
+        settleTimer = window.setTimeout(() => {
+          settleTimer = null;
+          settleReverseGateAtContentTop();
+        }, 140);
+      };
+
+      const clampPrematureHeroReverse = () => {
+        if (!mobileMq.matches || clampingScroll) return;
+        const y = window.scrollY;
+        const start = st.start;
+        const end = st.end;
+        const lastY = lastScrollY;
+
+        const nearEnd = (v: number) => Math.abs(v - end) < 4;
+
+        const shouldBlock =
+          !canReverseHeroFromContent &&
+          y < end &&
+          y > start &&
+          (lastY > end || (nearEnd(lastY) && y < end));
+
+        if (!shouldBlock) {
+          lastScrollY = y;
+          syncReverseGateFromScrollPosition(y);
+          return;
+        }
+
+        clampingScroll = true;
+        window.scrollTo({ top: end, behavior: "auto" });
+        requestAnimationFrame(() => {
+          clampingScroll = false;
+          lastScrollY = window.scrollY;
+        });
+        syncReverseGateFromScrollPosition(window.scrollY);
+      };
+
+      window.addEventListener("scroll", clampPrematureHeroReverse, {
+        passive: true,
+      });
+      window.addEventListener("scroll", onScrollSettle, { passive: true });
+      if ("onscrollend" in window) {
+        window.addEventListener("scrollend", settleReverseGateAtContentTop, {
+          passive: true,
+        });
+      }
+
       const smoothScrollThroughHeroPin = () => {
         ScrollTrigger.refresh();
         const end = st.end;
@@ -142,7 +215,7 @@ export function useHomeHeroScroll(
         const t = Math.min(
           HERO_ONE_GESTURE_SCROLL_SEC,
           Math.max(
-            0.75,
+            HERO_ONE_GESTURE_MIN_SEC,
             (distance / total) * HERO_ONE_GESTURE_SCROLL_SEC,
           ),
         );
@@ -150,7 +223,7 @@ export function useHomeHeroScroll(
         scrollToTween = gsap.to(window, {
           scrollTo: { y: end, autoKill: true },
           duration: t,
-          ease: "power2.inOut",
+          ease: "sine.inOut",
           overwrite: true,
           onComplete: () => {
             scrollToTween = null;
@@ -191,6 +264,12 @@ export function useHomeHeroScroll(
         window.removeEventListener("wheel", onWheel);
         hero.removeEventListener("touchstart", onTouchStart);
         hero.removeEventListener("touchend", onTouchEnd);
+        window.removeEventListener("scroll", clampPrematureHeroReverse);
+        window.removeEventListener("scroll", onScrollSettle);
+        if ("onscrollend" in window) {
+          window.removeEventListener("scrollend", settleReverseGateAtContentTop);
+        }
+        if (settleTimer != null) window.clearTimeout(settleTimer);
         scrollToTween?.kill();
         scrollToTween = null;
       });

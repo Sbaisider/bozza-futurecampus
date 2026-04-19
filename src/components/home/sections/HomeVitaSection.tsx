@@ -87,10 +87,10 @@ export function HomeVitaSection({ media }: Props) {
           
         </div>
 
-        <div className="mt-12 md:mt-14">
+        <div className="mt-10 max-md:mt-11 md:mt-14">
           {slides.length === 0 ? (
             <div
-              className="flex aspect-[16/10] max-h-[min(70vh,520px)] w-full items-center justify-center rounded-2xl border border-white/15 bg-white/[0.04] text-sm font-extralight text-white/60"
+              className="flex aspect-[16/10] max-md:aspect-[4/5] max-md:max-h-[min(78vh,520px)] max-h-[min(70vh,520px)] w-full items-center justify-center rounded-2xl border border-white/15 bg-white/[0.04] text-sm font-extralight text-white/60"
               style={{ fontFamily: "var(--font-manrope), system-ui, sans-serif" }}
             >
               Aggiungi foto in <span className="px-1 text-fc-accent">/public/foto</span>
@@ -142,7 +142,7 @@ export function HomeVitaSection({ media }: Props) {
                 ))}
               </div>
 
-              <div className="mt-6 flex flex-col items-center gap-5 sm:flex-row sm:justify-between">
+              <div className="mt-5 flex flex-col items-center gap-4 max-md:mt-6 sm:flex-row sm:justify-between sm:gap-5">
                 <div
                   className="flex items-center gap-2"
                   role="tablist"

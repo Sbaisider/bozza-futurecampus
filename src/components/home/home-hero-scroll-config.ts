@@ -3,8 +3,11 @@
  */
 export const HERO_PIN_END = "+=100vh";
 
-/** Durata dell’animazione di scroll quando l’utente fa un solo gesto (wheel / swipe) per uscire dalla hero. */
-export const HERO_ONE_GESTURE_SCROLL_SEC = 1.35;
+/** Durata del passaggio hero → Esperienza con un solo gesto (wheel / swipe): più alto = più lento e fluido. */
+export const HERO_ONE_GESTURE_SCROLL_SEC = 5
+
+/** Durata minima (secondi) se si completa solo una parte del pin. */
+export const HERO_ONE_GESTURE_MIN_SEC = 3
 
 /** Scala finale del titolo (valori altissimi “finiscono” lo zoom subito e lasciano scroll vuoto) */
 export const HERO_TITLE_SCALE_MAX = 100;

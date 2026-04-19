@@ -33,6 +33,13 @@ export function HeroColumnsStack({ images }: { images: string[] }) {
 
   return (
     <div className="pointer-events-none absolute inset-0 overflow-hidden">
+      {/* Solo sotto md: extra layer deep/rear (sopra md i layer originali coprono lg/md) */}
+      <div className="md:hidden">
+        <HeroColumnsLayer layer="deep" columns={deep} />
+      </div>
+      <div className="md:hidden">
+        <HeroColumnsLayer layer="rear" columns={rear} />
+      </div>
       <div className="max-lg:hidden">
         <HeroColumnsLayer layer="deep" columns={deep} />
       </div>

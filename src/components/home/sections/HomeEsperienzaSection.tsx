@@ -235,10 +235,30 @@ export const HomeEsperienzaSection = forwardRef<
                   </li>
                 ))}
               </ul>
+
+              {spotlight ? (
+                <figure
+                  className="relative mt-8 overflow-hidden rounded-xl border border-fc-soft/40 md:hidden"
+                  aria-hidden
+                >
+                  <div className="relative aspect-[16/11] w-full">
+                    <Image
+                      src={spotlight}
+                      alt=""
+                      fill
+                      className="scale-[1.06] object-cover object-center blur-[2.5px] brightness-[0.97]"
+                      sizes="100vw"
+                      priority={false}
+                    />
+                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/88 via-white/35 to-white/15" />
+                    <div className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-[#244C90]/10" />
+                  </div>
+                </figure>
+              ) : null}
             </div>
           </div>
 
-          <div className="flex flex-col gap-3 sm:gap-4 lg:col-span-6 xl:col-span-7">
+          <div className="hidden flex-col gap-3 sm:gap-4 md:flex lg:col-span-6 xl:col-span-7">
             {spotlight ? (
               <>
                 <figure className="relative overflow-hidden rounded-2xl bg-fc-soft/25 shadow-[0_16px_44px_rgba(36,76,144,0.1)] ring-1 ring-[#244C90]/[0.12]">

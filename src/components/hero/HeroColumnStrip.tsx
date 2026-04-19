@@ -34,14 +34,12 @@ function MarqueeHalf({ segmentSrcs, blurPx }: MarqueeHalfProps) {
 
   return (
     <div
-      className="flex w-full shrink-0 flex-col"
-      style={{ gap: `${GAP_PX}px` }}
+      className="flex w-full shrink-0 flex-col gap-[15px] md:gap-[11px]"
     >
       {segmentSrcs.map((src, i) => (
         <div
           key={`${src}-${i}`}
-          className="relative w-full shrink-0 overflow-hidden rounded-[2px]"
-          style={{ height: `${SEGMENT_HEIGHT_PX}px` }}
+          className="relative h-[198px] w-full shrink-0 overflow-hidden rounded-[3px] md:h-[150px] md:rounded-[2px]"
         >
           <Image
             src={src}
@@ -49,7 +47,7 @@ function MarqueeHalf({ segmentSrcs, blurPx }: MarqueeHalfProps) {
             fill
             sizes={HERO_COLUMN_IMAGE_SIZES}
             quality={HERO_COLUMN_IMAGE_QUALITY}
-            className="object-cover"
+            className="object-cover max-md:scale-[1.05] md:scale-100"
             draggable={false}
             loading="lazy"
             fetchPriority="low"

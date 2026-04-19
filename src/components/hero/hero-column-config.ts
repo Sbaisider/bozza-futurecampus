@@ -77,8 +77,19 @@ const rotateClassMap: Record<HeroRotateDeg, string> = {
   "8": "md:rotate-[8deg]",
 };
 
+/** Solo < md: composizione più viva (rotazioni/scale/offset), desktop invariato da `md:`. */
+const mobileRotateClassMap: Record<HeroRotateDeg, string> = {
+  "-8":
+    "max-md:-rotate-[10deg] max-md:scale-[1.14] max-md:-translate-y-3 max-md:translate-x-1",
+  "-4":
+    "max-md:rotate-[8deg] max-md:scale-[1.1] max-md:translate-y-2 max-md:-translate-x-1.5",
+  "0": "max-md:-rotate-[6deg] max-md:scale-[1.09] max-md:translate-y-1 max-md:-translate-x-1",
+  "4": "max-md:rotate-[9deg] max-md:scale-[1.11] max-md:-translate-y-2 max-md:translate-x-2",
+  "8": "max-md:-rotate-[8deg] max-md:scale-[1.13] max-md:translate-y-2 max-md:translate-x-1",
+};
+
 export function columnRotateClass(deg: HeroRotateDeg): string {
-  return `max-md:rotate-0 ${rotateClassMap[deg]}`;
+  return `${mobileRotateClassMap[deg]} max-md:origin-center ${rotateClassMap[deg]}`;
 }
 
 export function columnVisibilityClass(hideBelow?: "lg" | "md"): string {
