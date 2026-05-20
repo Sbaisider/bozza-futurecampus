@@ -137,6 +137,13 @@ html {
   }
 }
 
+/* Mobile: niente zoom continui di sfondo (drenano CPU e batteria su dispositivi piccoli) */
+@media (max-width: 767px) {
+  .fc-crescita-bg-zoom {
+    animation: none;
+  }
+}
+
 body {
   background: var(--background);
   color: var(--foreground);

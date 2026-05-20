@@ -1,37 +1,70 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Future Campus Fabriano — Sito web
 
-## Getting Started
+Sito ufficiale del Future Campus Fabriano, marchio di Confindustria Ancona — Comitato Territoriale Fabriano. Progetto Next.js 16 + React 19 + Tailwind 4.
 
-First, run the development server:
+## Struttura
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```
+/                       Home (media-first, con scroll GSAP)
+/edizioni               Archivio annuale
+/edizioni/[anno]        Dettaglio singola edizione
+/blog                   Indice articoli
+/blog/[slug]            Articolo
+/unisciti               Iscrizione al Campus + form
+/sponsor                Partner e sostenitori
+/contatti               Email + form contatto
+/faq                    Domande frequenti
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Avvio locale
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm install
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Apri http://localhost:3000.
 
-## Learn More
+## Contenuti
 
-To learn more about Next.js, take a look at the following resources:
+I contenuti del sito vivono in `src/content/`:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `info.ts` — istituzionale, padri fondatori, perché esiste
+- `edizioni.ts` — archivio annuale con gallery e partner
+- `articoli.ts` — articoli del blog
+- `sponsor.ts` — partner divisi per categoria
+- `faq.ts` — domande frequenti per argomento
+- `contatti.ts` — email pubblica e configurazione destinazione
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Per pubblicare una nuova edizione o un articolo basta aggiungere un oggetto all'array corrispondente.
 
-## Deploy on Vercel
+Le foto vanno caricate in `/public/foto/` e referenziate per path (es. `"/foto/8505.JPG"`).
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Email — configurazione Resend
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-"# bozza-futurecampus" 
+I form di iscrizione e contatto inviano le email tramite [Resend](https://resend.com).
+
+1. Crea un account su https://resend.com
+2. Verifica il dominio `futurecampusfabriano.it` (sezione Domains)
+3. Genera una API key (sezione API Keys)
+4. Copia `.env.example` in `.env.local` e compila:
+
+```
+RESEND_API_KEY=re_xxxxx
+EMAIL_FROM=Future Campus <no-reply@futurecampusfabriano.it>
+EMAIL_TO_ISCRIZIONI=iscrizioni@futurecampusfabriano.it
+EMAIL_TO_CONTATTI=info@futurecampusfabriano.it
+```
+
+Finché le variabili non sono impostate, i form funzionano graficamente ma stampano il payload in console (modalità sviluppo, nessun invio reale).
+
+## Brand system
+
+I colori, font e direzione stilistica sono documentati in `docs/future-campus-brand-system.md`.
+
+## Build di produzione
+
+```bash
+npm run build
+npm start
+```

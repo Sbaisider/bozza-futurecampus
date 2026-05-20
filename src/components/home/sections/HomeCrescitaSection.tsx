@@ -33,6 +33,7 @@ export function HomeCrescitaSection({ media }: Props) {
               fill
               className="object-cover"
               sizes="100vw"
+              quality={55}
               priority={false}
             />
           </div>

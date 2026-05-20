@@ -3,11 +3,16 @@
 import { useCallback, useEffect, useRef } from "react";
 
 import { HeroSection } from "@/components/hero/HeroSection";
+import { HomeAnteprimaEdizioniSection } from "@/components/home/sections/HomeAnteprimaEdizioniSection";
+import { HomeChiSiamoSection } from "@/components/home/sections/HomeChiSiamoSection";
 import { HomeCrescitaSection } from "@/components/home/sections/HomeCrescitaSection";
 import { HomeEsperienzaSection } from "@/components/home/sections/HomeEsperienzaSection";
 import { HomePartnerSection } from "@/components/home/sections/HomePartnerSection";
+import { HomeQuandoSection } from "@/components/home/sections/HomeQuandoSection";
+import { HomeSponsorMiniSection } from "@/components/home/sections/HomeSponsorMiniSection";
 import { HomeVitaSection } from "@/components/home/sections/HomeVitaSection";
 import { SiteNavbar } from "@/components/home/SiteNavbar";
+import { SiteFooter } from "@/components/site/SiteFooter";
 import type { HomeMediaPicks } from "@/lib/home-media-picks";
 
 import { useHomeHeroScroll } from "./useHomeHeroScroll";
@@ -68,9 +73,14 @@ export function HomeExperience({ heroImages, media }: HomeExperienceProps) {
         titleScaleRef={titleScaleRef}
       />
       <HomeEsperienzaSection ref={esperienzaSectionRef} media={media} />
+      <HomeChiSiamoSection />
       <HomeCrescitaSection media={media} />
+      <HomeQuandoSection />
       <HomeVitaSection media={media} />
+      <HomeAnteprimaEdizioniSection />
       <HomePartnerSection />
+      <HomeSponsorMiniSection />
+      <SiteFooter />
       <SiteNavbar
         ref={navbarRef}
         className="fixed top-0 left-0 right-0 z-[60] will-change-transform"

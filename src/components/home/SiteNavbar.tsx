@@ -1,27 +1,32 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { forwardRef, useCallback, useEffect, useId, useState } from "react";
 
 const links = [
-  { href: "#esperienza", label: "Esperienza" },
-  { href: "#crescita", label: "Percorso" },
-  { href: "#vita", label: "Come si vive" },
-  { href: "#chiusura", label: "Territorio" },
+  { href: "/edizioni", label: "Edizioni" },
+  { href: "/blog", label: "Blog" },
+  { href: "/unisciti", label: "Unisciti a noi" },
+  { href: "/sponsor", label: "Sponsor" },
+  { href: "/contatti", label: "Contatti" },
+  { href: "/faq", label: "FAQ" },
 ];
 
 export type SiteNavbarProps = {
   className?: string;
-  /** Scroll imperativo: la sezione Esperienza usa transform GSAP, #hash non è affidabile. */
+  /** Scroll imperativo opzionale: serve solo alla Home per l'ancora #esperienza. */
   onEsperienzaClick?: () => void;
 };
 
 /**
- * Barra navigazione globale: in homepage montata come `fixed top-0` (layer sopra hero/intro), animata da GSAP.
- * Desktop: link in riga. Mobile (&lt; md): menu hamburger + pannello full-height.
+ * Barra di navigazione globale del sito.
+ * - Home: montata da `HomeExperience` come `fixed top-0` con animazione GSAP.
+ * - Pagine interne: usata via `PageShell`, statica in cima.
+ * Desktop: link in riga. Mobile (< md): menu hamburger + pannello full-height.
  */
 export const SiteNavbar = forwardRef<HTMLElement, SiteNavbarProps>(
-  function SiteNavbar({ className = "", onEsperienzaClick }, ref) {
+  function SiteNavbar({ className = "" }, ref) {
     const [open, setOpen] = useState(false);
     const panelId = useId();
 
@@ -50,36 +55,29 @@ export const SiteNavbar = forwardRef<HTMLElement, SiteNavbarProps>(
         className={`border-b border-fc-soft/80 bg-fc-white/92 shadow-[0_1px_0_rgba(7,8,8,0.04)] backdrop-blur-xl md:bg-fc-white/95 ${className}`}
       >
         <div className="mx-auto flex h-[3.25rem] max-w-6xl items-center justify-between px-4 md:h-16 md:px-8">
-          <a href="/" className="flex shrink-0 items-center py-1">
+          <Link href="/" className="flex shrink-0 items-center py-1" aria-label="Future Campus Fabriano — Home">
             <Image
-              src="/brand/fcf-logo.png"
+              src="/brand/fcf-logo.svg"
               alt="Future Campus Fabriano"
-              width={40}
+              width={152}
               height={40}
-              className="h-8 w-8 object-contain md:h-9 md:w-9"
+              className="h-7 w-auto md:h-8"
+              priority
             />
-          </a>
+          </Link>
 
-          {/* Desktop: invariato */}
+          {/* Desktop */}
           <nav aria-label="Principale" className="hidden md:block">
-            <ul className="flex items-center gap-10">
+            <ul className="flex items-center gap-7 lg:gap-9">
               {links.map((l) => (
                 <li key={l.label}>
-                  <a
+                  <Link
                     href={l.href}
-                    className="text-[13px] font-extralight tracking-[0.18em] text-fc-secondary uppercase transition-colors hover:text-fc-primary"
+                    className="text-[12px] font-extralight tracking-[0.18em] text-fc-secondary uppercase transition-colors hover:text-fc-primary"
                     style={{ fontFamily: "var(--font-manrope), system-ui, sans-serif" }}
-                    onClick={
-                      l.href === "#esperienza" && onEsperienzaClick
-                        ? (e) => {
-                            e.preventDefault();
-                            onEsperienzaClick();
-                          }
-                        : undefined
-                    }
                   >
                     {l.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -142,7 +140,7 @@ export const SiteNavbar = forwardRef<HTMLElement, SiteNavbarProps>(
             <ul className="flex flex-1 flex-col gap-1 pr-4">
               {links.map((l, i) => (
                 <li key={l.label} style={{ transitionDelay: open ? `${i * 35}ms` : "0ms" }}>
-                  <a
+                  <Link
                     href={l.href}
                     className={`block border-b border-fc-soft/40 py-3.5 text-[13px] font-extralight tracking-[0.22em] text-fc-secondary uppercase transition-colors hover:text-fc-primary ${
                       open ? "opacity-100" : "opacity-0"
@@ -151,19 +149,23 @@ export const SiteNavbar = forwardRef<HTMLElement, SiteNavbarProps>(
                       fontFamily: "var(--font-manrope), system-ui, sans-serif",
                       transition: "opacity 0.35s ease, color 0.2s",
                     }}
-                    onClick={(e) => {
-                      if (l.href === "#esperienza" && onEsperienzaClick) {
-                        e.preventDefault();
-                        onEsperienzaClick();
-                      }
-                      close();
-                    }}
+                    onClick={close}
                   >
                     {l.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
+            <div className="mt-6 pr-4">
+              <Link
+                href="/unisciti"
+                onClick={close}
+                className="block w-full rounded-full bg-fc-primary px-5 py-3 text-center text-[12px] font-black tracking-[0.16em] text-white uppercase shadow-sm transition hover:bg-fc-accent"
+                style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}
+              >
+                Iscriviti
+              </Link>
+            </div>
           </nav>
         </div>
       </header>

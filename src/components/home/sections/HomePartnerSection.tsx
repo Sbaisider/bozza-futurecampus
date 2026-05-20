@@ -31,6 +31,7 @@ export function HomePartnerSection({ partners = DEFAULT_PARTNERS }: Props) {
                 fill
                 className="object-cover"
                 sizes="100vw"
+                quality={60}
                 priority={false}
               />
             </div>

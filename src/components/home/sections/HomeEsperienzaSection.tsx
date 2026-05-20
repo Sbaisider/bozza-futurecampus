@@ -1,19 +1,44 @@
 "use client";
 
-import { forwardRef, useEffect, useMemo, useRef } from "react";
+import { forwardRef, useEffect, useMemo, useRef, useState } from "react";
 
 import Image from "next/image";
 
 import type { HomeMediaPicks } from "@/lib/home-media-picks";
 
-/** Clip in rotazione; ogni slide = tutta larghezza schermo × altezza sezione. */
-const MAX_BG_CLIPS = 3;
+/**
+ * Solo 1 clip di sfondo per non saturare CPU/banda.
+ * Tre video MP4 in marquee in autoplay sono il killer assoluto in dev.
+ */
+const MAX_BG_CLIPS = 1;
 
 /**
- * Autoplay nel browser spesso richiede play() dopo mount + muted/playsInline.
- * File rinominati .mp4 senza ricodifica restano non decodificabili → onError in dev.
+ * Hook: vero se viewport mobile (< 768px) o se l'utente preferisce ridotto-movimento.
+ * In quei casi sostituiamo il video con uno still image (foto poster).
  */
-function EsperienzaMarqueeVideo({ src }: { src: string }) {
+function useShouldSkipHeavyMedia() {
+  const [skip, setSkip] = useState(true); // default: skip (verrà rivalutato dopo mount)
+  useEffect(() => {
+    const mqMobile = window.matchMedia("(max-width: 767px)");
+    const mqMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const compute = () => setSkip(mqMobile.matches || mqMotion.matches);
+    compute();
+    mqMobile.addEventListener("change", compute);
+    mqMotion.addEventListener("change", compute);
+    return () => {
+      mqMobile.removeEventListener("change", compute);
+      mqMotion.removeEventListener("change", compute);
+    };
+  }, []);
+  return skip;
+}
+
+/**
+ * Video di sfondo "soft": parte con `preload="metadata"` (no full download),
+ * poster mostrato finché i metadata non sono pronti, autoplay+muted+loop.
+ * Cessa di esistere se siamo in mobile o reduced-motion.
+ */
+function EsperienzaMarqueeVideo({ src, poster }: { src: string; poster?: string }) {
   const ref = useRef<HTMLVideoElement | null>(null);
 
   useEffect(() => {
@@ -24,8 +49,8 @@ function EsperienzaMarqueeVideo({ src }: { src: string }) {
     const tryPlay = () => {
       void el.play().catch(() => {});
     };
-    tryPlay();
-    el.addEventListener("loadeddata", tryPlay);
+    // play una sola volta quando il video ha abbastanza dati
+    el.addEventListener("loadeddata", tryPlay, { once: true });
     return () => el.removeEventListener("loadeddata", tryPlay);
   }, [src]);
 
@@ -36,20 +61,11 @@ function EsperienzaMarqueeVideo({ src }: { src: string }) {
       muted
       loop
       playsInline
-      preload="auto"
+      preload="metadata"
+      poster={poster}
       src={src}
       width={1920}
       height={1080}
-      onError={
-        process.env.NODE_ENV === "development"
-          ? () => {
-              console.error(
-                "[Esperienza] Video non caricato o formato non supportato dal browser:",
-                src,
-              );
-            }
-          : undefined
-      }
     />
   );
 }
@@ -88,14 +104,25 @@ export const HomeEsperienzaSection = forwardRef<
   HTMLElement,
   HomeEsperienzaSectionProps
 >(function HomeEsperienzaSection({ media }, ref) {
-  const marquee = useMemo(
-    () =>
-      buildMarqueeItems(media.esperienzaVideos, media.esperienzaPhotos),
-    [media.esperienzaVideos, media.esperienzaPhotos],
-  );
+  // Skip video pesanti su mobile / reduced-motion → fallback su still image
+  const skipHeavy = useShouldSkipHeavyMedia();
+
+  const marquee = useMemo(() => {
+    // Se skipHeavy → forziamo a non-usare video, sostituiamo con foto blur
+    if (skipHeavy) {
+      const photos = media.esperienzaPhotos.slice(0, MAX_BG_CLIPS);
+      if (photos.length === 0) {
+        return { kind: "empty" as const, items: [] as string[] };
+      }
+      return { kind: "image" as const, items: photos };
+    }
+    return buildMarqueeItems(media.esperienzaVideos, media.esperienzaPhotos);
+  }, [media.esperienzaVideos, media.esperienzaPhotos, skipHeavy]);
 
   const loop = useMemo(() => {
     if (marquee.items.length === 0) return [];
+    // Se 1 solo item, niente loop (statico). Altrimenti duplichiamo per marquee continuo.
+    if (marquee.items.length === 1) return marquee.items;
     return [...marquee.items, ...marquee.items];
   }, [marquee.items]);
 
@@ -103,6 +130,8 @@ export const HomeEsperienzaSection = forwardRef<
     110,
     Math.max(48, marquee.items.length * 32),
   );
+
+  const isStatic = loop.length === 1;
 
   const hasMedia = loop.length > 0;
   const spotlight = media.esperienzaSpotlightPhoto;
@@ -126,18 +155,23 @@ export const HomeEsperienzaSection = forwardRef<
         >
           <div className="absolute inset-0 min-h-[720px] overflow-hidden lg:min-h-[820px]">
             <div
-              className="fc-esperienza-marquee-track flex h-full min-h-[inherit] items-stretch [filter:blur(6px)] [transform:translateZ(0)]"
-              style={{
-                animationDuration: `${durationSec}s`,
-              }}
+              className={`flex h-full min-h-[inherit] items-stretch [filter:blur(6px)] [transform:translateZ(0)] ${
+                isStatic ? "w-full" : "fc-esperienza-marquee-track"
+              }`}
+              style={isStatic ? undefined : { animationDuration: `${durationSec}s` }}
             >
               {loop.map((src, i) => (
                 <div
                   key={`bg-${src}-${i}`}
-                  className="relative h-full min-h-full w-screen shrink-0"
+                  className={`relative h-full min-h-full shrink-0 ${
+                    isStatic ? "w-full" : "w-screen"
+                  }`}
                 >
                   {marquee.kind === "video" ? (
-                    <EsperienzaMarqueeVideo src={src} />
+                    <EsperienzaMarqueeVideo
+                      src={src}
+                      poster={media.esperienzaSpotlightPhoto ?? undefined}
+                    />
                   ) : (
                     <Image
                       src={src}
@@ -145,6 +179,7 @@ export const HomeEsperienzaSection = forwardRef<
                       fill
                       className="object-cover"
                       sizes="100vw"
+                      quality={60}
                       priority={false}
                     />
                   )}
