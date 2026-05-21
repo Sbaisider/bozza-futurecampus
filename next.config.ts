@@ -21,8 +21,8 @@ const nextConfig: NextConfig = {
     // Dimensioni che il sito userà davvero (vs le 8 di default).
     deviceSizes: [360, 640, 828, 1080, 1280, 1920],
     imageSizes: [16, 32, 64, 96, 160, 256, 384],
-    // Qualità abilitate: 60 per sfondi blurred, 75 per gallery, 85 per hero.
-    qualities: [55, 60, 70, 75, 85],
+    // Qualità abilitate: 52 per hero column strip, 60 per sfondi blurred, 75 per gallery, 85 per hero.
+    qualities: [52, 55, 60, 70, 75, 85],
     // Cache lato CDN/Next: 30 giorni. In dev è ininfluente, in prod aiuta.
     minimumCacheTTL: 60 * 60 * 24 * 30,
   },
