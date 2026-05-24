@@ -3,8 +3,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { ArticoloBody } from "@/components/blog/ArticoloBody";
 import { PageShell } from "@/components/site/PageShell";
-import { articoli, getArticoloBySlug } from "@/content/articoli";
+import { fetchArticolo, fetchArticoli, fetchArticoliSlugs } from "@/sanity/lib/fetch";
+import { urlFor } from "@/sanity/lib/image";
+
+const FONT_BODY = { fontFamily: "var(--font-manrope), system-ui, sans-serif" };
+const FONT_DISPLAY = { fontFamily: "var(--font-montserrat), system-ui, sans-serif" };
 
 type PageProps = { params: Promise<{ slug: string }> };
 
@@ -15,120 +20,131 @@ const dateFormatter = new Intl.DateTimeFormat("it-IT", {
 });
 
 export async function generateStaticParams() {
-  return articoli.map((a) => ({ slug: a.slug }));
+  const slugs = await fetchArticoliSlugs();
+  return slugs.map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const a = getArticoloBySlug(slug);
+  const a = await fetchArticolo(slug);
   if (!a) return { title: "Articolo non trovato" };
   return { title: a.titolo, description: a.sommario };
 }
 
 export default async function BlogArticoloPage({ params }: PageProps) {
   const { slug } = await params;
-  const a = getArticoloBySlug(slug);
+  const a = await fetchArticolo(slug);
   if (!a) notFound();
 
-  const altri = articoli.filter((x) => x.slug !== a.slug).slice(0, 3);
+  const tutti = await fetchArticoli();
+  const altri = tutti.filter((x) => x.slug !== a.slug).slice(0, 3);
 
   return (
     <PageShell>
       <article>
-        {/* Hero articolo */}
-        <header className="relative min-h-[50vh] overflow-hidden text-white md:min-h-[60vh]">
-          <Image
-            src={a.copertina}
-            alt=""
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-br from-fc-primary/88 via-fc-primary/55 to-[#0a1628]/92" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-black/20" />
-          <div className="relative z-10 mx-auto flex min-h-[50vh] max-w-3xl flex-col justify-end px-5 pb-12 pt-28 md:min-h-[60vh] md:px-8 md:pb-16">
+        {/* Header testuale (sopra la foto) */}
+        <header className="bg-fc-white">
+          <div className="mx-auto max-w-3xl px-5 pt-28 pb-10 md:px-8 md:pt-36 md:pb-14">
+            <Link
+              href="/blog"
+              className="text-[10px] font-extralight uppercase tracking-[0.32em] text-fc-secondary transition-colors hover:text-fc-primary"
+              style={FONT_BODY}
+            >
+              ← Tutti gli articoli
+            </Link>
             <p
-              className="text-[10px] font-extralight uppercase tracking-[0.42em] text-fc-accent"
-              style={{ fontFamily: "var(--font-manrope), system-ui, sans-serif" }}
+              className="mt-10 text-[10px] font-extralight uppercase tracking-[0.42em] text-fc-accent"
+              style={FONT_BODY}
             >
               {a.categoria} · {dateFormatter.format(new Date(a.data))}
             </p>
             <h1
-              className="mt-4 text-pretty text-3xl font-black leading-[1.1] tracking-tight md:text-5xl"
-              style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}
+              className="mt-5 text-balance text-[2rem] font-black leading-[1.08] tracking-tight text-fc-dark sm:text-[2.5rem] md:text-[3rem]"
+              style={FONT_DISPLAY}
             >
               {a.titolo}
             </h1>
             <p
-              className="mt-5 max-w-2xl text-[15px] font-extralight leading-relaxed text-white/90 md:text-[16px]"
-              style={{ fontFamily: "var(--font-manrope), system-ui, sans-serif" }}
+              className="mt-6 max-w-2xl text-[16px] font-extralight leading-[1.7] text-fc-secondary md:text-[18px]"
+              style={FONT_BODY}
             >
               {a.sommario}
             </p>
+            {a.autore ? (
+              <p
+                className="mt-6 text-[11px] font-extralight tracking-[0.24em] text-fc-secondary uppercase"
+                style={FONT_BODY}
+              >
+                di {a.autore}
+              </p>
+            ) : null}
           </div>
         </header>
 
-        {/* Corpo */}
-        <div className="bg-fc-light">
-          <div
-            className="mx-auto max-w-3xl space-y-5 px-5 py-16 text-[16px] font-extralight leading-relaxed text-fc-dark md:px-8 md:py-20"
-            style={{ fontFamily: "var(--font-manrope), system-ui, sans-serif" }}
-          >
-            {a.paragrafi.map((p, i) => (
-              <p key={i}>{p}</p>
-            ))}
+        {/* Foto copertina full-width */}
+        <div className="relative aspect-[16/9] w-full overflow-hidden bg-fc-dark md:aspect-[21/9]">
+          <Image
+            src={urlFor(a.copertina).width(2200).fit("crop").url()}
+            alt={a.copertina.alt ?? ""}
+            fill
+            priority
+            sizes="100vw"
+            quality={75}
+            className="object-cover"
+          />
+        </div>
+
+        {/* Corpo articolo (Portable Text) */}
+        <div className="bg-fc-white">
+          <div className="mx-auto max-w-2xl px-5 py-20 md:px-8 md:py-28">
+            <ArticoloBody value={a.corpo} />
           </div>
         </div>
       </article>
 
       {/* Altri articoli */}
-      {altri.length > 0 && (
-        <section className="bg-white">
-          <div className="mx-auto max-w-6xl px-5 py-14 md:px-8 md:py-20">
-            <p
-              className="text-[10px] font-extralight uppercase tracking-[0.32em] text-fc-primary"
-              style={{ fontFamily: "var(--font-manrope), system-ui, sans-serif" }}
+      {altri.length > 0 ? (
+        <section className="bg-fc-light">
+          <div className="mx-auto max-w-6xl px-5 py-20 md:px-8 md:py-24">
+            <h2
+              className="text-balance text-[1.5rem] font-black leading-tight tracking-tight text-fc-dark md:text-[1.85rem]"
+              style={FONT_DISPLAY}
             >
               Continua a leggere
-            </p>
-            <ul className="mt-8 grid gap-7 md:grid-cols-3">
+            </h2>
+            <ul className="mt-12 grid gap-x-8 gap-y-12 md:grid-cols-3">
               {altri.map((x) => (
-                <li key={x.slug}>
-                  <Link
-                    href={`/blog/${x.slug}`}
-                    className="group block overflow-hidden rounded-2xl border border-fc-soft/60 bg-fc-light transition hover:border-fc-primary/25 focus:outline-none focus:ring-2 focus:ring-fc-primary/30"
-                  >
-                    <div className="relative aspect-[16/10] overflow-hidden bg-fc-soft/40">
+                <li key={x._id}>
+                  <Link href={`/blog/${x.slug}`} className="group block">
+                    <div className="relative aspect-[4/3] overflow-hidden bg-fc-dark">
                       <Image
-                        src={x.copertina}
-                        alt=""
+                        src={urlFor(x.copertina).width(800).fit("crop").url()}
+                        alt={x.copertina.alt ?? ""}
                         fill
                         sizes="(min-width: 768px) 33vw, 100vw"
-                        className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+                        quality={70}
+                        className="object-cover transition-transform duration-[1500ms] ease-out group-hover:scale-[1.05]"
                       />
                     </div>
-                    <div className="p-5">
-                      <p
-                        className="text-[10px] font-extralight uppercase tracking-[0.32em] text-fc-accent"
-                        style={{ fontFamily: "var(--font-manrope), system-ui, sans-serif" }}
-                      >
-                        {dateFormatter.format(new Date(x.data))}
-                      </p>
-                      <h3
-                        className="mt-2 text-[15px] font-black leading-snug tracking-tight text-fc-dark"
-                        style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}
-                      >
-                        {x.titolo}
-                      </h3>
-                    </div>
+                    <p
+                      className="mt-5 text-[10px] font-extralight uppercase tracking-[0.32em] text-fc-accent"
+                      style={FONT_BODY}
+                    >
+                      {dateFormatter.format(new Date(x.data))}
+                    </p>
+                    <h3
+                      className="mt-2 text-[17px] font-black leading-snug tracking-tight text-fc-dark"
+                      style={FONT_DISPLAY}
+                    >
+                      {x.titolo}
+                    </h3>
                   </Link>
                 </li>
               ))}
             </ul>
           </div>
         </section>
-      )}
+      ) : null}
     </PageShell>
   );
 }

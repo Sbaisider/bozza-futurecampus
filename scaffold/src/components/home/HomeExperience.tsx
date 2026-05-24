@@ -7,6 +7,7 @@ import { HomeCtaFinaleSection } from "@/components/home/sections/HomeCtaFinaleSe
 import { HomeEdizioniPassateSection } from "@/components/home/sections/HomeEdizioniPassateSection";
 import { HomeEsperienzaSection } from "@/components/home/sections/HomeEsperienzaSection";
 import { HomeManifestoSection } from "@/components/home/sections/HomeManifestoSection";
+import { HomePadriFondatoriSection } from "@/components/home/sections/HomePadriFondatoriSection";
 import { SiteNavbar } from "@/components/home/SiteNavbar";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import type { HomeMediaPicks } from "@/lib/home-media-picks";
@@ -40,8 +41,9 @@ export function HomeExperience({ heroImages, media: _media }: HomeExperienceProp
     let ticking = false;
     const update = () => {
       ticking = false;
-      const threshold = hero.offsetHeight * 0.9;
-      setNavbarVisible(window.scrollY >= threshold);
+      // 48px ≈ altezza navbar: appena la pagina scrolla anche solo di pochi pixel
+      // dentro la hero, la navbar entra dall'alto.
+      setNavbarVisible(window.scrollY > 48);
     };
     const onScroll = () => {
       if (ticking) return;
@@ -80,6 +82,7 @@ export function HomeExperience({ heroImages, media: _media }: HomeExperienceProp
       <HeroSection images={heroImages} sectionRef={heroSectionRef} />
       <HomeManifestoSection />
       <HomeEsperienzaSection ref={esperienzaSectionRef} />
+      <HomePadriFondatoriSection />
       <HomeEdizioniPassateSection />
       <HomeCtaFinaleSection />
       <SiteFooter />

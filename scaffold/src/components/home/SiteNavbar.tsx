@@ -7,9 +7,7 @@ import { forwardRef, useCallback, useEffect, useId, useState } from "react";
 const links = [
   { href: "/edizioni", label: "Edizioni" },
   { href: "/blog", label: "Blog" },
-  { href: "/unisciti", label: "Unisciti a noi" },
   { href: "/contatti", label: "Contatti" },
-  { href: "/faq", label: "FAQ" },
 ];
 
 export type SiteNavbarProps = {
@@ -169,12 +167,12 @@ export const SiteNavbar = forwardRef<HTMLElement, SiteNavbarProps>(
             </ul>
             <div className="mt-6 pr-4">
               <Link
-                href="/unisciti"
+                href="/contatti"
                 onClick={close}
                 className="block w-full rounded-full bg-fc-primary px-5 py-3 text-center text-[12px] font-black tracking-[0.16em] text-white uppercase shadow-sm transition hover:bg-fc-accent"
                 style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}
               >
-                Iscriviti
+                Contattaci
               </Link>
             </div>
           </nav>

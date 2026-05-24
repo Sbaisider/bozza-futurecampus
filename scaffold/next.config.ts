@@ -25,6 +25,14 @@ const nextConfig: NextConfig = {
     qualities: [52, 55, 60, 70, 75, 85],
     // Cache lato CDN/Next: 30 giorni. In dev è ininfluente, in prod aiuta.
     minimumCacheTTL: 60 * 60 * 24 * 30,
+    // Sanity CDN per le immagini caricate da Studio.
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "cdn.sanity.io",
+        pathname: "/images/**",
+      },
+    ],
   },
 };
 

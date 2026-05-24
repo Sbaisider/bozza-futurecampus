@@ -59,12 +59,6 @@ export const HomeEsperienzaSection = forwardRef<HTMLElement, Props>(
           >
             Non è il solito campus.
           </h2>
-          <p
-            className="mt-8 max-w-2xl text-[15px] font-extralight leading-[1.7] text-fc-white/85 md:text-[17px]"
-            style={FONT_BODY}
-          >
-            Laboratori reali, persone vere, sguardo al futuro. Un percorso che si vive — non si frequenta.
-          </p>
 
           {/* Timeline ORIZZONTALE */}
           <ol className="relative mt-20 md:mt-28">
@@ -75,7 +69,7 @@ export const HomeEsperienzaSection = forwardRef<HTMLElement, Props>(
             />
 
             <div className="grid gap-x-6 gap-y-14 sm:grid-cols-2 lg:grid-cols-4 lg:gap-x-10">
-              {cosaEFutureCampus.paroleChiave.map((p, i) => (
+              {cosaEFutureCampus.paroleChiave.map((p) => (
                 <li key={p.titolo} className="relative pt-10 md:pt-14">
                   {/* nodo */}
                   <span
@@ -86,18 +80,9 @@ export const HomeEsperienzaSection = forwardRef<HTMLElement, Props>(
                     <span className="relative h-[7px] w-[7px] rounded-full bg-fc-accent md:h-2.5 md:w-2.5" />
                   </span>
 
-                  {/* numero */}
-                  <p
-                    className="text-[10px] font-extralight tabular-nums tracking-[0.32em] text-fc-accent"
-                    style={FONT_BODY}
-                    aria-hidden
-                  >
-                    {String(i + 1).padStart(2, "0")}
-                  </p>
-
                   {/* titolo + descrizione */}
                   <h3
-                    className="mt-3 text-[18px] font-black tracking-tight text-fc-white md:text-[22px] lg:text-[24px]"
+                    className="text-[18px] font-black tracking-tight text-fc-white md:text-[22px] lg:text-[24px]"
                     style={FONT_DISPLAY}
                   >
                     {p.titolo}

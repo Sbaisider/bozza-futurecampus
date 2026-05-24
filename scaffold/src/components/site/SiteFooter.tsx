@@ -8,9 +8,7 @@ const FONT_BODY = { fontFamily: "var(--font-manrope), system-ui, sans-serif" };
 const footerLinks = [
   { href: "/edizioni", label: "Edizioni" },
   { href: "/blog", label: "Blog" },
-  { href: "/unisciti", label: "Unisciti a noi" },
   { href: "/contatti", label: "Contatti" },
-  { href: "/faq", label: "FAQ" },
 ];
 
 /**

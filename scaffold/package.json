@@ -11,10 +11,16 @@
     "optimize:videos": "node scripts/optimize-videos.mjs"
   },
   "dependencies": {
+    "@portabletext/react": "^6.2.0",
+    "@sanity/image-url": "^2.1.1",
+    "@sanity/vision": "^5.26.0",
     "gsap": "^3.15.0",
     "next": "16.2.4",
+    "next-sanity": "^13.0.3",
     "react": "19.2.4",
-    "react-dom": "19.2.4"
+    "react-dom": "19.2.4",
+    "sanity": "^5.26.0",
+    "styled-components": "^6.4.2"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

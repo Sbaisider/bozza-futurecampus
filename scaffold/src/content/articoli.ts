@@ -1,6 +1,21 @@
 /**
  * Articoli del blog Future Campus Fabriano.
- * Aggiungere oggetti nell'array per pubblicare nuovi pezzi.
+ *
+ * COME AGGIUNGERE UN ARTICOLO
+ * ---------------------------
+ * 1. Carica la foto di copertina in `public/foto/` (es. `8505.JPG`).
+ * 2. Aggiungi un oggetto in fondo all'array `articoli` qui sotto con:
+ *      - slug:       parola unica in kebab-case, finisce nell'URL `/blog/<slug>`
+ *      - titolo:     una riga, max ~80 caratteri
+ *      - sommario:   1-2 frasi che appaiono nel listing e nella hero
+ *      - data:       formato ISO `"YYYY-MM-DD"` (gli articoli si ordinano da nuovo a vecchio)
+ *      - categoria:  una di: "Aggiornamenti" | "Storie" | "Territorio" | "Formazione"
+ *      - copertina:  path della foto in `/public/foto/` (es. `"/foto/8505.JPG"`)
+ *      - paragrafi:  array di stringhe, ogni stringa diventa un paragrafo nel corpo
+ *      - autore:     opzionale, nome dell'autore
+ * 3. Salva. Next.js rigenera in automatico le pagine `/blog` e `/blog/<slug>`.
+ *
+ * Non servono build manuali né accesso al server: basta committare e pushare.
  */
 
 export type Articolo = {
@@ -26,7 +41,7 @@ export const articoli: Articolo[] = [
     paragrafi: [
       "Anche quest'anno il Campus torna dalla metà di giugno fino a fine luglio, con sei settimane di attività gratuite dedicate ai ragazzi delle scuole superiori del territorio di Fabriano.",
       "Le tre classi — Beginner, Master e Advanced — riprendono insieme: chi è alla prima esperienza scopre il Campus dall'inizio, chi torna prosegue il percorso con attività più avanzate e responsabilità maggiori.",
-      "Le iscrizioni si raccolgono dalla pagina Unisciti a noi: basta compilare il modulo con i propri dati e una breve motivazione.",
+      "Per partecipare basta scriverci dalla pagina Contatti con i propri dati e una breve motivazione: vi rispondiamo entro pochi giorni.",
     ],
   },
   {
