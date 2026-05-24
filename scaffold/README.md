@@ -5,16 +5,17 @@ Sito ufficiale del Future Campus Fabriano, marchio di Confindustria Ancona — C
 ## Struttura
 
 ```
-/                       Home (media-first, con scroll GSAP)
-/edizioni               Archivio annuale
+/                       Home (hero editorial + manifesto + esperienza timeline + edizioni + CTA)
+/edizioni               Archivio annuale (card minimal: blur default + hover sharp/zoom)
 /edizioni/[anno]        Dettaglio singola edizione
 /blog                   Indice articoli
 /blog/[slug]            Articolo
 /unisciti               Iscrizione al Campus + form
-/sponsor                Partner e sostenitori
 /contatti               Email + form contatto
 /faq                    Domande frequenti
 ```
+
+Lo scroll è quello nativo del browser. La hero è una sezione `100svh` standard che scorre via verso l'alto; la navbar appare quando lo scroll supera il 90% dell'altezza hero.
 
 ## Avvio locale
 
@@ -29,12 +30,13 @@ Apri http://localhost:3000.
 
 I contenuti del sito vivono in `src/content/`:
 
-- `info.ts` — istituzionale, padri fondatori, perché esiste
+- `info.ts` — istituzionale, claim, padri fondatori, perché esiste
 - `edizioni.ts` — archivio annuale con gallery e partner
 - `articoli.ts` — articoli del blog
-- `sponsor.ts` — partner divisi per categoria
 - `faq.ts` — domande frequenti per argomento
 - `contatti.ts` — email pubblica e configurazione destinazione
+
+> `sponsor.ts` non è più referenziato dalla home né dalla navigazione; mantienilo solo se hai bisogno dei dati altrove.
 
 Per pubblicare una nuova edizione o un articolo basta aggiungere un oggetto all'array corrispondente.
 

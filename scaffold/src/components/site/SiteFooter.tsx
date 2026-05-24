@@ -1,60 +1,54 @@
-import Image from "next/image";
 import Link from "next/link";
 
+import { LetteringMark } from "@/components/hero/LetteringMark";
 import { contatti } from "@/content/contatti";
-import { sponsor } from "@/content/sponsor";
+
+const FONT_BODY = { fontFamily: "var(--font-manrope), system-ui, sans-serif" };
 
 const footerLinks = [
   { href: "/edizioni", label: "Edizioni" },
   { href: "/blog", label: "Blog" },
   { href: "/unisciti", label: "Unisciti a noi" },
-  { href: "/sponsor", label: "Sponsor" },
   { href: "/contatti", label: "Contatti" },
   { href: "/faq", label: "FAQ" },
 ];
 
+/**
+ * Footer minimal.
+ * - Lettering FUTURE CAMPUS FABRIANO al posto dei loghi (SVG inline tramite
+ *   `LetteringMark`, colorato in bianco via Tailwind).
+ * - 2 colonne: Sito + Contatti (rimossa la sezione "Partner principali").
+ * - Niente più link a /sponsor.
+ */
 export function SiteFooter() {
-  const partnerSintetici = sponsor
-    .filter((s) => s.categoria === "promotore" || s.categoria === "istituzionale")
-    .slice(0, 5)
-    .map((s) => s.nome);
-
   return (
-    <footer className="mt-24 border-t border-fc-soft/60 bg-fc-dark text-fc-white">
-      <div className="mx-auto max-w-6xl px-5 py-14 md:px-8 md:py-16">
-        <div className="grid gap-10 md:grid-cols-[1.2fr_1fr_1fr] md:gap-12">
+    <footer className="border-t border-fc-soft/60 bg-fc-dark text-fc-white">
+      <div className="mx-auto max-w-6xl px-5 py-16 md:px-8 md:py-20">
+        <div className="grid gap-12 md:grid-cols-[1.4fr_1fr_1fr]">
           <div>
-            <Link href="/" className="inline-flex items-center" aria-label="Future Campus Fabriano">
-              <Image
-                src="/brand/fcf-logo.svg"
-                alt="Future Campus Fabriano"
-                width={208}
-                height={55}
-                className="h-10 w-auto brightness-0 invert"
-              />
-            </Link>
-            <p
-              className="mt-5 max-w-md text-[13px] font-extralight leading-relaxed text-fc-soft"
-              style={{ fontFamily: "var(--font-manrope), system-ui, sans-serif" }}
+            <Link
+              href="/"
+              className="inline-flex items-center text-white"
+              aria-label="Future Campus Fabriano — Home"
             >
-              Marchio di Confindustria Ancona — Comitato Territoriale Fabriano. Un percorso gratuito di formazione e orientamento per i ragazzi delle scuole superiori del territorio.
-            </p>
+              <LetteringMark className="h-auto w-[min(70vw,18rem)] md:w-[20rem]" />
+            </Link>
           </div>
 
           <div>
             <p
               className="text-[10px] font-extralight uppercase tracking-[0.32em] text-fc-accent"
-              style={{ fontFamily: "var(--font-manrope), system-ui, sans-serif" }}
+              style={FONT_BODY}
             >
               Sito
             </p>
-            <ul className="mt-4 space-y-2.5">
+            <ul className="mt-5 space-y-3">
               {footerLinks.map((l) => (
                 <li key={l.href}>
                   <Link
                     href={l.href}
                     className="text-[13px] font-extralight tracking-wide text-fc-soft transition-colors hover:text-fc-white"
-                    style={{ fontFamily: "var(--font-manrope), system-ui, sans-serif" }}
+                    style={FONT_BODY}
                   >
                     {l.label}
                   </Link>
@@ -66,13 +60,13 @@ export function SiteFooter() {
           <div>
             <p
               className="text-[10px] font-extralight uppercase tracking-[0.32em] text-fc-accent"
-              style={{ fontFamily: "var(--font-manrope), system-ui, sans-serif" }}
+              style={FONT_BODY}
             >
               Contatti
             </p>
             <ul
-              className="mt-4 space-y-2.5 text-[13px] font-extralight leading-relaxed text-fc-soft"
-              style={{ fontFamily: "var(--font-manrope), system-ui, sans-serif" }}
+              className="mt-5 space-y-3 text-[13px] font-extralight leading-relaxed text-fc-soft"
+              style={FONT_BODY}
             >
               <li>
                 <a
@@ -88,37 +82,11 @@ export function SiteFooter() {
           </div>
         </div>
 
-        <div className="mt-12 border-t border-white/10 pt-7">
-          <p
-            className="text-[10px] font-extralight uppercase tracking-[0.32em] text-fc-accent"
-            style={{ fontFamily: "var(--font-manrope), system-ui, sans-serif" }}
-          >
-            Partner principali
-          </p>
-          <ul
-            className="mt-4 flex flex-wrap gap-2.5"
-            aria-label="Partner principali"
-          >
-            {partnerSintetici.map((p) => (
-              <li key={p}>
-                <span
-                  className="inline-flex rounded-full border border-white/15 bg-white/[0.04] px-3.5 py-1.5 text-[11.5px] font-extralight tracking-wide text-fc-soft"
-                  style={{ fontFamily: "var(--font-manrope), system-ui, sans-serif" }}
-                >
-                  {p}
-                </span>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div className="mt-10 flex flex-col items-start justify-between gap-3 border-t border-white/10 pt-6 text-[11px] font-extralight tracking-wide text-fc-soft md:flex-row md:items-center">
-          <span style={{ fontFamily: "var(--font-manrope), system-ui, sans-serif" }}>
+        <div className="mt-14 flex flex-col items-start justify-between gap-3 border-t border-white/10 pt-7 text-[11px] font-extralight tracking-wide text-fc-soft md:flex-row md:items-center">
+          <span style={FONT_BODY}>
             © {new Date().getFullYear()} Future Campus Fabriano — Confindustria Ancona
           </span>
-          <span style={{ fontFamily: "var(--font-manrope), system-ui, sans-serif" }}>
-            Sito web {new Date().getFullYear()}
-          </span>
+          <span style={FONT_BODY}>Tutti i diritti riservati</span>
         </div>
       </div>
     </footer>

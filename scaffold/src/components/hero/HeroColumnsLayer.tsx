@@ -6,15 +6,15 @@ import {
 } from "./hero-column-config";
 import { HeroColumnStrip } from "./HeroColumnStrip";
 
-const layerStyle: Record<
-  HeroLayerId,
-  { z: number; opacity: number; blurPx: number }
-> = {
-  deep: { z: 8, opacity: 0.48, blurPx: 10 },
-  rear: { z: 9, opacity: 0.56, blurPx: 7 },
-  mid: { z: 10, opacity: 0.66, blurPx: 4.5 },
-  front: { z: 11, opacity: 0.78, blurPx: 3 },
-  near: { z: 12, opacity: 0.88, blurPx: 1.75 },
+/**
+ * Layer hero ottimizzato.
+ * - Niente più blur: foto nitide.
+ * - Opacità alta (0.95) per restituire colore alle foto.
+ * - Gap visibili tra colonne (8px desktop, 4px mobile).
+ * - Tutte le colonne riempiono l'altezza del layer in modo uniforme.
+ */
+const layerStyle: Record<HeroLayerId, { z: number; opacity: number; blurPx: number }> = {
+  near: { z: 1, opacity: 1, blurPx: 4 },
 };
 
 export type HeroColumnWithSegments = HeroColumnDefinition & {
@@ -26,21 +26,18 @@ type HeroColumnsLayerProps = {
   columns: HeroColumnWithSegments[];
 };
 
-/**
- * Layer a griglia su tutta la larghezza: ogni colonna occupa una frazione uguale dello schermo.
- */
 export function HeroColumnsLayer({ layer, columns }: HeroColumnsLayerProps) {
   const { z, opacity, blurPx } = layerStyle[layer];
   const n = columns.length;
 
   return (
     <div
-      className="pointer-events-none absolute inset-0 grid h-full w-full px-px md:px-[2px]"
+      className="pointer-events-none absolute inset-0 grid h-full w-full"
       style={{
         zIndex: z,
         opacity,
         gridTemplateColumns: `repeat(${n}, minmax(0, 1fr))`,
-        columnGap: "1px",
+        columnGap: "0px",
       }}
     >
       {columns.map((col) => (

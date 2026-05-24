@@ -82,6 +82,34 @@
   will-change: transform;
 }
 
+/* Edizioni passate — foto blur+zoom-leggero di default, hover sharp + zoom lento.
+   Una sola Image, transizioni su filter e transform → smooth, niente scatti. */
+.fc-edizione-image {
+  filter: blur(10px) saturate(0.95);
+  transform: scale(1.06);
+  transition:
+    filter 1500ms cubic-bezier(0.22, 0.61, 0.36, 1),
+    transform 4500ms cubic-bezier(0.22, 0.61, 0.36, 1);
+  will-change: transform, filter;
+}
+.group:hover .fc-edizione-image,
+.group:focus-visible .fc-edizione-image {
+  filter: blur(0px) saturate(1);
+  transform: scale(1.14);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fc-edizione-image {
+    transition: none;
+    filter: blur(6px) saturate(0.95);
+  }
+  .group:hover .fc-edizione-image,
+  .group:focus-visible .fc-edizione-image {
+    filter: blur(0px);
+    transform: scale(1.04);
+  }
+}
+
 /* Come si vive — sfondo brand + griglia punti leggera */
 .fc-vita-dot-grid {
   background-color: #244c90;

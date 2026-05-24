@@ -33,13 +33,11 @@ function MarqueeHalf({ segmentSrcs, blurPx }: MarqueeHalfProps) {
       : `saturate(0.88) contrast(0.96) brightness(1.02)`;
 
   return (
-    <div
-      className="flex w-full shrink-0 flex-col gap-[15px] md:gap-[11px]"
-    >
+    <div className="flex w-full shrink-0 flex-col">
       {segmentSrcs.map((src, i) => (
         <div
           key={`${src}-${i}`}
-          className="relative h-[198px] w-full shrink-0 overflow-hidden rounded-[3px] md:h-[150px] md:rounded-[2px]"
+          className="relative h-[198px] w-full shrink-0 overflow-hidden md:h-[150px]"
         >
           <Image
             src={src}
@@ -83,7 +81,7 @@ export function HeroColumnStrip({
 
   return (
     <div
-      className={`pointer-events-none relative h-[100svh] w-full min-w-0 max-w-full shrink-0 overflow-hidden rounded-[1px] ${visibilityClass} ${rotateClass}`}
+      className={`pointer-events-none relative h-[100svh] w-full min-w-0 max-w-full shrink-0 overflow-hidden ${visibilityClass} ${rotateClass}`}
     >
       <div
         className={`flex w-full flex-col will-change-transform [backface-visibility:hidden] ${marqueeClass}`}

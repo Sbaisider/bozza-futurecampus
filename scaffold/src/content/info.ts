@@ -8,7 +8,7 @@ export const siteInfo = {
   nome: "Future Campus Fabriano",
   claim: "Non un semplice campus, ma una vera e propria esperienza di vita.",
   sottoclaim:
-    "Sei settimane di formazione, contaminazione e scoperta per i ragazzi delle scuole superiori del territorio di Fabriano.",
+    "Sei settimane di formazione, contaminazione e scoperta per i ragazzi delle scuole superiori del territorio di Fabriano e dintorni.",
   marchioDi: "Confindustria Ancona — Comitato Territoriale Fabriano",
   edizioneCorrente: 2026,
   edizioneNumero: "Quinta edizione",

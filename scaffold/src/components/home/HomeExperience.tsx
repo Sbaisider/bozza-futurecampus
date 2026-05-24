@@ -1,21 +1,15 @@
 "use client";
 
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { HeroSection } from "@/components/hero/HeroSection";
-import { HomeAnteprimaEdizioniSection } from "@/components/home/sections/HomeAnteprimaEdizioniSection";
-import { HomeChiSiamoSection } from "@/components/home/sections/HomeChiSiamoSection";
-import { HomeCrescitaSection } from "@/components/home/sections/HomeCrescitaSection";
+import { HomeCtaFinaleSection } from "@/components/home/sections/HomeCtaFinaleSection";
+import { HomeEdizioniPassateSection } from "@/components/home/sections/HomeEdizioniPassateSection";
 import { HomeEsperienzaSection } from "@/components/home/sections/HomeEsperienzaSection";
-import { HomePartnerSection } from "@/components/home/sections/HomePartnerSection";
-import { HomeQuandoSection } from "@/components/home/sections/HomeQuandoSection";
-import { HomeSponsorMiniSection } from "@/components/home/sections/HomeSponsorMiniSection";
-import { HomeVitaSection } from "@/components/home/sections/HomeVitaSection";
+import { HomeManifestoSection } from "@/components/home/sections/HomeManifestoSection";
 import { SiteNavbar } from "@/components/home/SiteNavbar";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import type { HomeMediaPicks } from "@/lib/home-media-picks";
-
-import { useHomeHeroScroll } from "./useHomeHeroScroll";
 
 type HomeExperienceProps = {
   heroImages: string[];
@@ -23,26 +17,46 @@ type HomeExperienceProps = {
 };
 
 /**
- * Hero + scroll GSAP + quattro blocchi premium dopo la hero (Esperienza → … → chiusura).
+ * Home minimal/premium — versione snella.
+ *
+ *  1. Hero
+ *  2. Manifesto
+ *  3. Esperienza (timeline verticale)
+ *  4. Edizioni passate (card grandi, attaccate, hover scale)
+ *  5. CTA finale (Contattaci)
+ *  6. Footer
+ *
+ * Rimossi (su richiesta utente): Numeri, Edizione 2026, Partner/Sponsor.
  */
-export function HomeExperience({ heroImages, media }: HomeExperienceProps) {
+export function HomeExperience({ heroImages, media: _media }: HomeExperienceProps) {
   const heroSectionRef = useRef<HTMLElement>(null);
-  const photoStackRef = useRef<HTMLDivElement>(null);
-  const blueOverlayRef = useRef<HTMLDivElement>(null);
-  const titleScaleRef = useRef<HTMLDivElement>(null);
   const esperienzaSectionRef = useRef<HTMLElement>(null);
   const navbarRef = useRef<HTMLElement>(null);
+  const [navbarVisible, setNavbarVisible] = useState(false);
 
-  useHomeHeroScroll(
-    heroSectionRef,
-    photoStackRef,
-    blueOverlayRef,
-    titleScaleRef,
-    navbarRef,
-    esperienzaSectionRef,
-  );
+  useEffect(() => {
+    const hero = heroSectionRef.current;
+    if (!hero) return;
+    let ticking = false;
+    const update = () => {
+      ticking = false;
+      const threshold = hero.offsetHeight * 0.9;
+      setNavbarVisible(window.scrollY >= threshold);
+    };
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", update);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", update);
+    };
+  }, []);
 
-  /** Il browser non calcola bene #esperienza: la section ha transform GSAP. */
   const scrollToEsperienza = useCallback(() => {
     const el = esperienzaSectionRef.current;
     const nav = navbarRef.current;
@@ -57,33 +71,25 @@ export function HomeExperience({ heroImages, media }: HomeExperienceProps) {
   useEffect(() => {
     if (typeof window === "undefined") return;
     if (window.location.hash !== "#esperienza") return;
-    const t = window.setTimeout(() => {
-      scrollToEsperienza();
-    }, 200);
+    const t = window.setTimeout(scrollToEsperienza, 200);
     return () => window.clearTimeout(t);
   }, [scrollToEsperienza]);
 
   return (
     <div className="relative">
-      <HeroSection
-        images={heroImages}
-        sectionRef={heroSectionRef}
-        photoStackRef={photoStackRef}
-        blueOverlayRef={blueOverlayRef}
-        titleScaleRef={titleScaleRef}
-      />
-      <HomeEsperienzaSection ref={esperienzaSectionRef} media={media} />
-      <HomeChiSiamoSection />
-      <HomeCrescitaSection media={media} />
-      <HomeQuandoSection />
-      <HomeVitaSection media={media} />
-      <HomeAnteprimaEdizioniSection />
-      <HomePartnerSection />
-      <HomeSponsorMiniSection />
+      <HeroSection images={heroImages} sectionRef={heroSectionRef} />
+      <HomeManifestoSection />
+      <HomeEsperienzaSection ref={esperienzaSectionRef} />
+      <HomeEdizioniPassateSection />
+      <HomeCtaFinaleSection />
       <SiteFooter />
       <SiteNavbar
         ref={navbarRef}
-        className="fixed top-0 left-0 right-0 z-[60] will-change-transform"
+        className={`fixed top-0 left-0 right-0 z-[60] transition-[opacity,transform] duration-300 ease-out ${
+          navbarVisible
+            ? "translate-y-0 opacity-100"
+            : "pointer-events-none -translate-y-2 opacity-0"
+        }`}
         onEsperienzaClick={scrollToEsperienza}
       />
     </div>

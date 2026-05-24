@@ -5,9 +5,7 @@ import {
 } from "./hero-column-segments";
 import { HeroColumnsLayer, type HeroColumnWithSegments } from "./HeroColumnsLayer";
 
-function withSegmentSources(
-  images: string[],
-): HeroColumnWithSegments[] {
+function withSegmentSources(images: string[]): HeroColumnWithSegments[] {
   return heroColumnDefinitions.map((def, globalIndex) => ({
     ...def,
     segmentSrcs: segmentUrlsForColumn(
@@ -19,36 +17,17 @@ function withSegmentSources(
 }
 
 /**
- * Cinque layer + sequenze foto per colonna (nessuna ripetizione nello stesso blocco, se possibile).
+ * Pattern hero ottimizzato: 4 colonne verticali in un unico layer nitido.
+ * Foto in marquee con direzioni alternate (↓↑↓↑) e velocità diverse per
+ * ottenere parallax pacato senza overlap caotico. Niente più 5 layer di
+ * profondità sovrapposti con blur e rotazioni.
  */
 export function HeroColumnsStack({ images }: { images: string[] }) {
   if (images.length === 0) return null;
-
   const columns = withSegmentSources(images);
-  const deep = columns.filter((c) => c.layer === "deep");
-  const rear = columns.filter((c) => c.layer === "rear");
-  const mid = columns.filter((c) => c.layer === "mid");
-  const front = columns.filter((c) => c.layer === "front");
-  const near = columns.filter((c) => c.layer === "near");
-
   return (
     <div className="pointer-events-none absolute inset-0 overflow-hidden">
-      {/* Solo sotto md: extra layer deep/rear (sopra md i layer originali coprono lg/md) */}
-      <div className="md:hidden">
-        <HeroColumnsLayer layer="deep" columns={deep} />
-      </div>
-      <div className="md:hidden">
-        <HeroColumnsLayer layer="rear" columns={rear} />
-      </div>
-      <div className="max-lg:hidden">
-        <HeroColumnsLayer layer="deep" columns={deep} />
-      </div>
-      <div className="max-md:hidden">
-        <HeroColumnsLayer layer="rear" columns={rear} />
-      </div>
-      <HeroColumnsLayer layer="mid" columns={mid} />
-      <HeroColumnsLayer layer="front" columns={front} />
-      <HeroColumnsLayer layer="near" columns={near} />
+      <HeroColumnsLayer layer="near" columns={columns} />
     </div>
   );
 }

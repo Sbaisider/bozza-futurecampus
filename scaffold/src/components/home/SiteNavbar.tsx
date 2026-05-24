@@ -8,7 +8,6 @@ const links = [
   { href: "/edizioni", label: "Edizioni" },
   { href: "/blog", label: "Blog" },
   { href: "/unisciti", label: "Unisciti a noi" },
-  { href: "/sponsor", label: "Sponsor" },
   { href: "/contatti", label: "Contatti" },
   { href: "/faq", label: "FAQ" },
 ];
@@ -52,18 +51,30 @@ export const SiteNavbar = forwardRef<HTMLElement, SiteNavbarProps>(
     return (
       <header
         ref={ref}
-        className={`border-b border-fc-soft/80 bg-fc-white/92 shadow-[0_1px_0_rgba(7,8,8,0.04)] backdrop-blur-xl md:bg-fc-white/95 ${className}`}
+        className={`border-b border-fc-soft/60 bg-fc-white/94 shadow-[0_6px_24px_rgba(36,76,144,0.08)] backdrop-blur-xl md:bg-fc-white/96 ${className}`}
       >
         <div className="mx-auto flex h-[3.25rem] max-w-6xl items-center justify-between px-4 md:h-16 md:px-8">
-          <Link href="/" className="flex shrink-0 items-center py-1" aria-label="Future Campus Fabriano — Home">
+          <Link
+            href="/"
+            className="flex shrink-0 items-center gap-3 py-1"
+            aria-label="Future Campus Fabriano — Home"
+          >
             <Image
-              src="/brand/fcf-logo.svg"
+              src="/brand/fcf-emblem.png"
               alt="Future Campus Fabriano"
-              width={152}
-              height={40}
-              className="h-7 w-auto md:h-8"
+              width={96}
+              height={96}
+              className="h-9 w-9 md:h-10 md:w-10"
               priority
             />
+            <span
+              className="hidden text-[11px] font-extralight tracking-[0.22em] text-fc-primary uppercase sm:inline-block"
+              style={{ fontFamily: "var(--font-manrope), system-ui, sans-serif" }}
+            >
+              Future Campus
+              <br />
+              Fabriano
+            </span>
           </Link>
 
           {/* Desktop */}

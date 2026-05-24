@@ -1,6 +1,9 @@
-# Script temporanei usati per la riorganizzazione del repo
+# Script temporanei usati per la riorganizzazione del repo / cleanup
 reorganize-*.cmd
 check-git.cmd
 git-state.txt
 fix-deps.cmd
 fix-deps.ps1
+push-gitkeep.cmd
+cleanup-and-push.cmd
+quick-push.cmd
