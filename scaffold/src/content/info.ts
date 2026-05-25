@@ -51,17 +51,14 @@ export const cosaEFutureCampus = {
 export const padriFondatori = [
   {
     nome: "Gabriele Micozzi",
-    ruolo: "Coach e docente di marketing",
     bio: "Esperto di marketing e formazione, è l'ideatore del format del Campus insieme a Federica Capriotti. Disegna ogni anno il percorso esperienziale dei ragazzi.",
   },
   {
     nome: "Federica Capriotti",
-    ruolo: "Presidente Comitato Fabriano — Confindustria Ancona",
     bio: "Ha portato il progetto dentro Confindustria e ne è oggi la regia operativa. È nata da una sua intuizione la scelta di costruire un campus diverso da qualsiasi percorso di orientamento esistente.",
   },
   {
     nome: "Ing. Francesco Merloni",
-    ruolo: "Padre ideale del Campus",
     bio: "Ha creduto e sostenuto il progetto fin dal primo giorno, attraverso la Fondazione Aristide Merloni. Il suo riconoscimento del ruolo dei giovani nel futuro del territorio è la cornice culturale del Campus.",
   },
 ] as const;

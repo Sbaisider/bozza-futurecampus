@@ -1,8 +1,10 @@
 import type { ReactNode } from "react";
 import Image from "next/image";
 
+import { Reveal } from "@/components/site/Reveal";
+
 type PageHeroProps = {
-  eyebrow: string;
+  eyebrow?: string;
   title: ReactNode;
   lead?: ReactNode;
   imageSrc?: string; // path /foto/...
@@ -57,27 +59,38 @@ export function PageHero({
       <div
         className={`relative z-10 mx-auto flex ${heightClass} max-w-6xl flex-col justify-end px-5 pb-12 pt-28 md:px-8 md:pb-16 md:pt-32 ${align === "center" ? "items-center text-center" : ""}`}
       >
-        <p
-          className={`text-[10px] font-extralight uppercase tracking-[0.42em] ${hasImage ? "text-fc-accent" : "text-fc-primary"}`}
-          style={{ fontFamily: "var(--font-manrope), system-ui, sans-serif" }}
-        >
-          {eyebrow}
-        </p>
-        <h1
-          className={`mt-4 max-w-[22ch] text-pretty text-3xl font-black leading-[1.05] tracking-tight md:text-5xl lg:text-[3.5rem] ${align === "center" ? "mx-auto" : ""}`}
+        {eyebrow && (
+          <Reveal
+            as="p"
+            className={`text-[10px] font-extralight uppercase tracking-[0.42em] ${hasImage ? "text-fc-accent" : "text-fc-primary"}`}
+            style={{ fontFamily: "var(--font-manrope), system-ui, sans-serif" }}
+          >
+            {eyebrow}
+          </Reveal>
+        )}
+        <Reveal
+          as="h1"
+          delay={eyebrow ? 140 : 0}
+          className={`${eyebrow ? "mt-4" : ""} max-w-[22ch] text-pretty text-3xl font-black leading-[1.05] tracking-tight md:text-5xl lg:text-[3.5rem] ${align === "center" ? "mx-auto" : ""}`}
           style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}
         >
           {title}
-        </h1>
+        </Reveal>
         {lead && (
-          <p
+          <Reveal
+            as="p"
+            delay={(eyebrow ? 140 : 0) + 220}
             className={`mt-6 max-w-2xl text-base font-extralight leading-relaxed ${hasImage ? "text-white/90" : "text-fc-secondary"} ${align === "center" ? "mx-auto" : ""}`}
             style={{ fontFamily: "var(--font-manrope), system-ui, sans-serif" }}
           >
             {lead}
-          </p>
+          </Reveal>
         )}
-        {children && <div className="mt-8">{children}</div>}
+        {children && (
+          <Reveal delay={(eyebrow ? 140 : 0) + (lead ? 380 : 220)} className="mt-8">
+            {children}
+          </Reveal>
+        )}
       </div>
     </section>
   );

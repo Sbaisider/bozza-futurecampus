@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 
 import { ArticoloBody } from "@/components/blog/ArticoloBody";
 import { PageShell } from "@/components/site/PageShell";
+import { Reveal, RevealWords } from "@/components/site/Reveal";
 import { fetchArticolo, fetchArticoli, fetchArticoliSlugs } from "@/sanity/lib/fetch";
 import { urlFor } from "@/sanity/lib/image";
 
@@ -42,57 +43,80 @@ export default async function BlogArticoloPage({ params }: PageProps) {
   return (
     <PageShell>
       <article>
-        {/* Header testuale (sopra la foto) */}
-        <header className="bg-fc-white">
-          <div className="mx-auto max-w-3xl px-5 pt-28 pb-10 md:px-8 md:pt-36 md:pb-14">
-            <Link
-              href="/blog"
-              className="text-[10px] font-extralight uppercase tracking-[0.32em] text-fc-secondary transition-colors hover:text-fc-primary"
-              style={FONT_BODY}
-            >
-              ← Tutti gli articoli
-            </Link>
-            <p
+        {/* Hero con foto di copertina come sfondo (blur + leggero zoom) e patina blu */}
+        <header className="relative isolate overflow-hidden bg-fc-primary text-fc-white">
+          {/* Sfondo foto blurato con leggero zoom in loop */}
+          <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden" aria-hidden>
+            <div className="fc-crescita-bg-zoom absolute inset-0 h-full w-full">
+              <Image
+                src={urlFor(a.copertina).width(2200).fit("crop").url()}
+                alt={a.copertina.alt ?? ""}
+                fill
+                priority
+                sizes="100vw"
+                quality={70}
+                className="object-cover"
+                style={{ filter: "blur(24px)", transform: "scale(1.15)" }}
+              />
+            </div>
+          </div>
+
+          {/* Patina blu in overlay (leggera) per leggibilità testo bianco */}
+          <div
+            className="pointer-events-none absolute inset-0 -z-[5] bg-gradient-to-b from-fc-primary/55 via-fc-primary/45 to-fc-primary/65"
+            aria-hidden
+          />
+          {/* Velo scuro sottile per far stagliare meglio il testo */}
+          <div
+            className="pointer-events-none absolute inset-0 -z-[4] bg-gradient-to-t from-black/25 via-transparent to-black/10"
+            aria-hidden
+          />
+
+          <div className="relative mx-auto max-w-3xl px-5 pt-28 pb-20 md:px-8 md:pt-36 md:pb-28">
+            <Reveal as="div">
+              <Link
+                href="/blog"
+                className="text-[10px] font-extralight uppercase tracking-[0.32em] text-fc-white/80 transition-colors hover:text-fc-accent"
+                style={FONT_BODY}
+              >
+                ← Tutti gli articoli
+              </Link>
+            </Reveal>
+            <Reveal
+              as="p"
+              delay={140}
               className="mt-10 text-[10px] font-extralight uppercase tracking-[0.42em] text-fc-accent"
               style={FONT_BODY}
             >
               {a.categoria} · {dateFormatter.format(new Date(a.data))}
-            </p>
-            <h1
-              className="mt-5 text-balance text-[2rem] font-black leading-[1.08] tracking-tight text-fc-dark sm:text-[2.5rem] md:text-[3rem]"
+            </Reveal>
+            <RevealWords
+              as="h1"
+              text={a.titolo}
+              delay={280}
+              className="mt-5 block text-balance text-[2rem] font-black leading-[1.08] tracking-tight text-fc-white sm:text-[2.5rem] md:text-[3rem]"
               style={FONT_DISPLAY}
-            >
-              {a.titolo}
-            </h1>
-            <p
-              className="mt-6 max-w-2xl text-[16px] font-extralight leading-[1.7] text-fc-secondary md:text-[18px]"
+            />
+            <Reveal
+              as="p"
+              delay={650}
+              className="mt-6 max-w-2xl text-[16px] font-extralight leading-[1.7] text-fc-white/85 md:text-[18px]"
               style={FONT_BODY}
             >
               {a.sommario}
-            </p>
+            </Reveal>
             {a.autore ? (
-              <p
-                className="mt-6 text-[11px] font-extralight tracking-[0.24em] text-fc-secondary uppercase"
+              <Reveal
+                as="p"
+                delay={820}
+                className="mt-6 text-[11px] font-extralight tracking-[0.24em] text-fc-white/70 uppercase"
                 style={FONT_BODY}
               >
                 di {a.autore}
-              </p>
+              </Reveal>
             ) : null}
           </div>
         </header>
-
-        {/* Foto copertina full-width */}
-        <div className="relative aspect-[16/9] w-full overflow-hidden bg-fc-dark md:aspect-[21/9]">
-          <Image
-            src={urlFor(a.copertina).width(2200).fit("crop").url()}
-            alt={a.copertina.alt ?? ""}
-            fill
-            priority
-            sizes="100vw"
-            quality={75}
-            className="object-cover"
-          />
-        </div>
 
         {/* Corpo articolo (Portable Text) */}
         <div className="bg-fc-white">
@@ -106,15 +130,16 @@ export default async function BlogArticoloPage({ params }: PageProps) {
       {altri.length > 0 ? (
         <section className="bg-fc-light">
           <div className="mx-auto max-w-6xl px-5 py-20 md:px-8 md:py-24">
-            <h2
+            <Reveal
+              as="h2"
               className="text-balance text-[1.5rem] font-black leading-tight tracking-tight text-fc-dark md:text-[1.85rem]"
               style={FONT_DISPLAY}
             >
               Continua a leggere
-            </h2>
+            </Reveal>
             <ul className="mt-12 grid gap-x-8 gap-y-12 md:grid-cols-3">
-              {altri.map((x) => (
-                <li key={x._id}>
+              {altri.map((x, idx) => (
+                <Reveal as="li" key={x._id} delay={180 + idx * 120}>
                   <Link href={`/blog/${x.slug}`} className="group block">
                     <div className="relative aspect-[4/3] overflow-hidden bg-fc-dark">
                       <Image
@@ -139,7 +164,7 @@ export default async function BlogArticoloPage({ params }: PageProps) {
                       {x.titolo}
                     </h3>
                   </Link>
-                </li>
+                </Reveal>
               ))}
             </ul>
           </div>

@@ -4,6 +4,7 @@ import Link from "next/link";
 
 import { PageHero } from "@/components/site/PageHero";
 import { PageShell } from "@/components/site/PageShell";
+import { Reveal } from "@/components/site/Reveal";
 import { urlFor } from "@/sanity/lib/image";
 import { fetchArticoli } from "@/sanity/lib/fetch";
 
@@ -50,9 +51,10 @@ export default async function BlogIndexPage() {
 
           {/* Articolo in evidenza */}
           {hero ? (
+            <Reveal as="div" className="mb-16 md:mb-24">
             <Link
               href={`/blog/${hero.slug}`}
-              className="group mb-16 grid gap-8 md:mb-24 md:grid-cols-[1.15fr_1fr] md:gap-12 lg:gap-16"
+              className="group grid gap-8 md:grid-cols-[1.15fr_1fr] md:gap-12 lg:gap-16"
             >
               <div className="relative aspect-[4/3] overflow-hidden bg-fc-dark md:aspect-[5/4]">
                 <Image
@@ -92,13 +94,14 @@ export default async function BlogIndexPage() {
                 </span>
               </div>
             </Link>
+            </Reveal>
           ) : null}
 
           {/* Altri articoli */}
           {rest.length > 0 ? (
             <ul className="grid gap-x-8 gap-y-14 border-t border-fc-soft/50 pt-14 md:grid-cols-2 md:gap-x-10 md:pt-20 lg:gap-x-14">
-              {rest.map((a) => (
-                <li key={a._id}>
+              {rest.map((a, idx) => (
+                <Reveal as="li" key={a._id} delay={idx * 130}>
                   <Link href={`/blog/${a.slug}`} className="group block">
                     <div className="relative aspect-[4/3] overflow-hidden bg-fc-dark">
                       <Image
@@ -131,7 +134,7 @@ export default async function BlogIndexPage() {
                       </p>
                     </div>
                   </Link>
-                </li>
+                </Reveal>
               ))}
             </ul>
           ) : null}

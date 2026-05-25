@@ -2,6 +2,7 @@ import { forwardRef } from "react";
 
 import Image from "next/image";
 
+import { Reveal, RevealWords } from "@/components/site/Reveal";
 import { cosaEFutureCampus } from "@/content/info";
 import type { HomeMediaPicks } from "@/lib/home-media-picks";
 
@@ -52,13 +53,16 @@ export const HomeEsperienzaSection = forwardRef<HTMLElement, Props>(
         />
 
         <div className="relative mx-auto max-w-7xl px-5 py-24 text-fc-white md:px-8 md:py-32 lg:py-40">
-          <h2
-            id="esperienza-heading"
+          <RevealWords
+            as="h2"
+            text="Non è il solito campus."
             className="max-w-[18ch] text-balance text-[1.85rem] font-black leading-[1.08] tracking-tight text-fc-white sm:text-[2.25rem] md:text-[2.75rem] lg:text-[3rem]"
-            style={FONT_DISPLAY}
-          >
+            style={{ ...FONT_DISPLAY }}
+          />
+          {/* heading invisibile per accessibilità (id necessario per aria-labelledby) */}
+          <span id="esperienza-heading" className="sr-only">
             Non è il solito campus.
-          </h2>
+          </span>
 
           {/* Timeline ORIZZONTALE */}
           <ol className="relative mt-20 md:mt-28">
@@ -69,8 +73,13 @@ export const HomeEsperienzaSection = forwardRef<HTMLElement, Props>(
             />
 
             <div className="grid gap-x-6 gap-y-14 sm:grid-cols-2 lg:grid-cols-4 lg:gap-x-10">
-              {cosaEFutureCampus.paroleChiave.map((p) => (
-                <li key={p.titolo} className="relative pt-10 md:pt-14">
+              {cosaEFutureCampus.paroleChiave.map((p, idx) => (
+                <Reveal
+                  as="li"
+                  key={p.titolo}
+                  delay={500 + idx * 140}
+                  className="relative pt-10 md:pt-14"
+                >
                   {/* nodo */}
                   <span
                     className="absolute left-0 top-0 flex h-[15px] w-[15px] items-center justify-center md:h-[19px] md:w-[19px]"
@@ -93,7 +102,7 @@ export const HomeEsperienzaSection = forwardRef<HTMLElement, Props>(
                   >
                     {p.testo}
                   </p>
-                </li>
+                </Reveal>
               ))}
             </div>
           </ol>

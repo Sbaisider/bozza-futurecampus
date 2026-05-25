@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { ContactForm } from "@/components/forms/ContactForm";
 import { PageHero } from "@/components/site/PageHero";
 import { PageShell } from "@/components/site/PageShell";
+import { Reveal } from "@/components/site/Reveal";
 import { contatti } from "@/content/contatti";
 
 export const metadata: Metadata = {
@@ -15,9 +16,7 @@ export default function ContattiPage() {
   return (
     <PageShell>
       <PageHero
-        eyebrow="Contatti"
-        title="Scrivici"
-        lead="Per informazioni sul Campus, per collaborazioni, per proporre la tua azienda o per qualsiasi domanda — il modo più semplice è scriverci."
+        title="Contatti"
         imageSrc="/foto/5026.JPG"
         imageAlt=""
         compact
@@ -25,7 +24,7 @@ export default function ContattiPage() {
 
       <section className="bg-fc-light">
         <div className="mx-auto grid max-w-5xl gap-12 px-5 py-16 md:grid-cols-[1fr_1.3fr] md:gap-16 md:px-8 md:py-24">
-          <div>
+          <Reveal as="div">
             <p
               className="text-[10px] font-extralight uppercase tracking-[0.32em] text-fc-primary"
               style={{ fontFamily: "var(--font-manrope), system-ui, sans-serif" }}
@@ -39,12 +38,6 @@ export default function ContattiPage() {
             >
               {contatti.emailPubblica}
             </a>
-            <p
-              className="mt-6 text-[13px] font-extralight leading-relaxed text-fc-secondary"
-              style={{ fontFamily: "var(--font-manrope), system-ui, sans-serif" }}
-            >
-              Per iscrizioni al Campus, ti chiediamo di usare il modulo dedicato nella pagina Unisciti a noi.
-            </p>
 
             <div className="mt-10 border-t border-fc-soft/70 pt-6">
               <p
@@ -66,9 +59,9 @@ export default function ContattiPage() {
                 {contatti.organizzazione}
               </p>
             </div>
-          </div>
+          </Reveal>
 
-          <div>
+          <Reveal as="div" delay={180}>
             <p
               className="text-[10px] font-extralight uppercase tracking-[0.32em] text-fc-primary"
               style={{ fontFamily: "var(--font-manrope), system-ui, sans-serif" }}
@@ -91,7 +84,7 @@ export default function ContattiPage() {
             <div className="mt-6">
               <ContactForm />
             </div>
-          </div>
+          </Reveal>
         </div>
       </section>
     </PageShell>

@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 import { CtaButton } from "@/components/site/CtaButton";
 import { PageHero } from "@/components/site/PageHero";
 import { PageShell } from "@/components/site/PageShell";
+import { Reveal } from "@/components/site/Reveal";
 import { SectionEyebrow } from "@/components/site/SectionEyebrow";
 import { edizioni, getEdizioneBySlug } from "@/content/edizioni";
 
@@ -60,7 +61,7 @@ export default async function EdizioneDettaglioPage({ params }: PageProps) {
       {/* Numeri chiave */}
       <section className="bg-white">
         <div className="mx-auto grid max-w-6xl gap-6 px-5 py-12 sm:grid-cols-3 md:px-8 md:py-14">
-          <div>
+          <Reveal as="div">
             <p
               className="text-[10px] font-extralight uppercase tracking-[0.32em] text-fc-primary"
               style={{ fontFamily: "var(--font-manrope), system-ui, sans-serif" }}
@@ -73,8 +74,8 @@ export default async function EdizioneDettaglioPage({ params }: PageProps) {
             >
               {ed.periodo}
             </p>
-          </div>
-          <div>
+          </Reveal>
+          <Reveal as="div" delay={130}>
             <p
               className="text-[10px] font-extralight uppercase tracking-[0.32em] text-fc-primary"
               style={{ fontFamily: "var(--font-manrope), system-ui, sans-serif" }}
@@ -87,8 +88,8 @@ export default async function EdizioneDettaglioPage({ params }: PageProps) {
             >
               {ed.partecipanti}
             </p>
-          </div>
-          <div>
+          </Reveal>
+          <Reveal as="div" delay={260}>
             <p
               className="text-[10px] font-extralight uppercase tracking-[0.32em] text-fc-primary"
               style={{ fontFamily: "var(--font-manrope), system-ui, sans-serif" }}
@@ -101,7 +102,7 @@ export default async function EdizioneDettaglioPage({ params }: PageProps) {
             >
               {ed.tema}
             </p>
-          </div>
+          </Reveal>
         </div>
       </section>
 
@@ -114,7 +115,9 @@ export default async function EdizioneDettaglioPage({ params }: PageProps) {
             style={{ fontFamily: "var(--font-manrope), system-ui, sans-serif" }}
           >
             {ed.paragrafiRacconto.map((p, i) => (
-              <p key={i}>{p}</p>
+              <Reveal as="p" key={i} delay={480 + i * 120}>
+                {p}
+              </Reveal>
             ))}
           </div>
         </div>
@@ -125,9 +128,11 @@ export default async function EdizioneDettaglioPage({ params }: PageProps) {
         <div className="mx-auto max-w-6xl px-5 py-16 md:px-8 md:py-20">
           <SectionEyebrow label="Momenti chiave" title="I passaggi che hanno fatto questa edizione" />
           <ul className="mt-10 grid gap-5 md:grid-cols-2">
-            {ed.momentiChiave.map((m) => (
-              <li
+            {ed.momentiChiave.map((m, idx) => (
+              <Reveal
+                as="li"
                 key={m.titolo}
+                delay={480 + idx * 110}
                 className="rounded-2xl border border-fc-soft/60 bg-fc-light p-6 transition hover:border-fc-primary/30"
               >
                 <h3
@@ -142,7 +147,7 @@ export default async function EdizioneDettaglioPage({ params }: PageProps) {
                 >
                   {m.descrizione}
                 </p>
-              </li>
+              </Reveal>
             ))}
           </ul>
         </div>
@@ -154,8 +159,13 @@ export default async function EdizioneDettaglioPage({ params }: PageProps) {
           <div className="mx-auto max-w-6xl px-5 py-16 md:px-8 md:py-20">
             <SectionEyebrow label="Gallery" title="Il Campus in immagini" />
             <ul className="mt-10 grid grid-cols-2 gap-2 sm:gap-3 md:grid-cols-3 lg:grid-cols-4">
-              {ed.gallery.map((src) => (
-                <li key={src} className="relative aspect-[4/3] overflow-hidden rounded-lg bg-fc-soft/30">
+              {ed.gallery.map((src, idx) => (
+                <Reveal
+                  as="li"
+                  key={src}
+                  delay={480 + idx * 80}
+                  className="relative aspect-[4/3] overflow-hidden rounded-lg bg-fc-soft/30"
+                >
                   <Image
                     src={src}
                     alt=""
@@ -163,7 +173,7 @@ export default async function EdizioneDettaglioPage({ params }: PageProps) {
                     sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
                     className="object-cover transition-transform duration-500 hover:scale-[1.04]"
                   />
-                </li>
+                </Reveal>
               ))}
             </ul>
           </div>

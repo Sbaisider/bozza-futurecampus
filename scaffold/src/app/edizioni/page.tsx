@@ -4,8 +4,10 @@ import Link from "next/link";
 
 import { PageHero } from "@/components/site/PageHero";
 import { PageShell } from "@/components/site/PageShell";
+import { Reveal } from "@/components/site/Reveal";
 import { getEdizioniOrdinate } from "@/content/edizioni";
 
+const FONT_BODY = { fontFamily: "var(--font-manrope), system-ui, sans-serif" };
 const FONT_DISPLAY = { fontFamily: "var(--font-montserrat), system-ui, sans-serif" };
 
 export const metadata: Metadata = {
@@ -30,8 +32,13 @@ export default function EdizioniIndexPage() {
       <section className="bg-fc-light">
         {/* Card attaccate, solo anno — stesso pattern della HomeEdizioniPassateSection */}
         <ul className="grid grid-cols-2 gap-0 md:grid-cols-5">
-          {edizioni.map((e) => (
-            <li key={e.slug} className="group relative">
+          {edizioni.map((e, idx) => (
+            <Reveal
+              as="li"
+              key={e.slug}
+              delay={idx * 110}
+              className="group relative"
+            >
               <Link
                 href={`/edizioni/${e.slug}`}
                 className="relative block aspect-[3/4] overflow-hidden bg-fc-dark focus:outline-none focus-visible:ring-2 focus-visible:ring-fc-primary/40 md:aspect-[3/4.5]"
@@ -45,14 +52,24 @@ export default function EdizioniIndexPage() {
                   className="fc-edizione-image object-cover"
                 />
                 <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-fc-dark/70 via-fc-dark/15 to-transparent" />
-                <p
-                  className="pointer-events-none absolute inset-x-6 bottom-7 text-[2.75rem] font-black leading-none tracking-tight text-white md:inset-x-7 md:bottom-8 md:text-[3.25rem] lg:text-[3.75rem]"
-                  style={FONT_DISPLAY}
-                >
-                  {e.anno}
-                </p>
+                <div className="pointer-events-none absolute inset-x-6 bottom-7 md:inset-x-7 md:bottom-8">
+                  <p
+                    className="text-[2.75rem] font-black leading-none tracking-tight text-white md:text-[3.25rem] lg:text-[3.75rem]"
+                    style={FONT_DISPLAY}
+                  >
+                    {e.anno}
+                  </p>
+                  {e.anno === 2026 && (
+                    <p
+                      className="mt-3 text-[10px] font-extralight uppercase tracking-[0.32em] text-fc-accent md:text-[11px]"
+                      style={FONT_BODY}
+                    >
+                      In arrivo
+                    </p>
+                  )}
+                </div>
               </Link>
-            </li>
+            </Reveal>
           ))}
         </ul>
       </section>
