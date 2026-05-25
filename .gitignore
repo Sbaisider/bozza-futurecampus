@@ -7,3 +7,7 @@ fix-deps.ps1
 push-gitkeep.cmd
 cleanup-and-push.cmd
 quick-push.cmd
+delete-pages.cmd
+install-sanity.cmd
+import-articoli.cmd
+delete-orphans.cmd

@@ -1,14 +1,37 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { CtaButton } from "@/components/site/CtaButton";
-import { PageHero } from "@/components/site/PageHero";
 import { PageShell } from "@/components/site/PageShell";
-import { Reveal } from "@/components/site/Reveal";
-import { SectionEyebrow } from "@/components/site/SectionEyebrow";
+import { Reveal, RevealWords } from "@/components/site/Reveal";
 import { edizioni, getEdizioneBySlug } from "@/content/edizioni";
+
+const FONT_DISPLAY = { fontFamily: "var(--font-montserrat), system-ui, sans-serif" };
+
+/**
+ * Foto utilizzate per le card delle classi su ciascuna edizione.
+ * Pescate dalla gallery dell'edizione corrispondente: cambiare i path
+ * qui per aggiornare i visual senza toccare il componente.
+ */
+const CLASSI_FOTO: Record<
+  string,
+  Partial<Record<"Beginner" | "Master" | "Advanced", string>>
+> = {
+  "2025": {
+    Beginner: "/foto/7075.JPG",
+    Master: "/foto/7578.JPG",
+    Advanced: "/foto/8505.JPG",
+  },
+  "2024": {
+    Beginner: "/foto/3400.JPG",
+    Master: "/foto/2820.JPG",
+    Advanced: "/foto/3495.JPG",
+  },
+  "2023": {
+    Beginner: "/foto/1294.JPG",
+    Master: "/foto/1841.JPG",
+  },
+};
 
 type PageProps = { params: Promise<{ slug: string }> };
 
@@ -21,7 +44,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const ed = getEdizioneBySlug(slug);
   if (!ed) return { title: "Edizione non trovata" };
   return {
-    title: `Edizione ${ed.anno} — ${ed.numeroEdizione}`,
+    title: `Edizione ${ed.anno}`,
     description: ed.sintesi,
   };
 }
@@ -31,204 +54,135 @@ export default async function EdizioneDettaglioPage({ params }: PageProps) {
   const ed = getEdizioneBySlug(slug);
   if (!ed) notFound();
 
-  const allEdizioni = edizioni.slice().sort((a, b) => a.anno - b.anno);
-  const idx = allEdizioni.findIndex((e) => e.slug === ed.slug);
-  const prev = idx > 0 ? allEdizioni[idx - 1] : null;
-  const next = idx < allEdizioni.length - 1 ? allEdizioni[idx + 1] : null;
+  /* ─── EDIZIONE 2026 — pagina segnaposto: solo "IN ARRIVO" grande ────── */
+  if (ed.anno === 2026) {
+    return (
+      <PageShell>
+        <section className="relative isolate flex min-h-[100svh] items-center justify-center overflow-hidden bg-fc-primary px-5 text-white md:px-8">
+          {/* Sfondo: copertina edizione, blur 24px + zoom in loop */}
+          <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden" aria-hidden>
+            <div className="fc-crescita-bg-zoom absolute inset-0 h-full w-full">
+              <Image
+                src={ed.copertina}
+                alt=""
+                fill
+                priority
+                sizes="100vw"
+                quality={70}
+                className="object-cover"
+                style={{ filter: "blur(24px)", transform: "scale(1.15)" }}
+              />
+            </div>
+          </div>
+          {/* Patina blu */}
+          <div
+            className="pointer-events-none absolute inset-0 -z-[5] bg-gradient-to-b from-fc-primary/60 via-fc-primary/50 to-fc-primary/72"
+            aria-hidden
+          />
+
+          <RevealWords
+            as="h1"
+            text="IN ARRIVO"
+            wordDelay={150}
+            className="relative block text-balance text-center text-[2.25rem] font-black leading-none tracking-tight md:text-[4rem] lg:text-[5.5rem]"
+            style={FONT_DISPLAY}
+          />
+        </section>
+      </PageShell>
+    );
+  }
+
+  /* ─── EDIZIONI passate: hero solo anno + card classi (se presenti) ──── */
+  // 2022: 1 sola classe in dato ma da specifica utente NON si mostrano card
+  // (calendario vuoto). 2023 → 2 card. 2024/2025 → 3 card.
+  const fotoMap = CLASSI_FOTO[ed.slug] ?? {};
+  const showCards = ed.anno !== 2022 && ed.classi.length >= 2;
+  const classi = showCards ? ed.classi : [];
+  const gridCols =
+    classi.length === 3
+      ? "md:grid-cols-3"
+      : classi.length === 2
+        ? "md:grid-cols-2"
+        : "md:grid-cols-1";
 
   return (
     <PageShell>
-      <PageHero
-        eyebrow={`${ed.numeroEdizione} · ${ed.anno}`}
-        title={ed.titolo}
-        lead={ed.sintesi}
-        imageSrc={ed.copertina}
-        imageAlt=""
-      >
-        <div className="flex flex-wrap items-center gap-3">
-          {ed.classi.map((c) => (
-            <span
-              key={c}
-              className="inline-flex rounded-full border border-white/30 bg-white/10 px-3.5 py-1.5 text-[11px] font-extralight tracking-[0.18em] text-white uppercase backdrop-blur-sm"
-              style={{ fontFamily: "var(--font-manrope), system-ui, sans-serif" }}
-            >
-              {c}
-            </span>
-          ))}
-        </div>
-      </PageHero>
-
-      {/* Numeri chiave */}
-      <section className="bg-white">
-        <div className="mx-auto grid max-w-6xl gap-6 px-5 py-12 sm:grid-cols-3 md:px-8 md:py-14">
-          <Reveal as="div">
-            <p
-              className="text-[10px] font-extralight uppercase tracking-[0.32em] text-fc-primary"
-              style={{ fontFamily: "var(--font-manrope), system-ui, sans-serif" }}
-            >
-              Periodo
-            </p>
-            <p
-              className="mt-2 text-[16px] font-black text-fc-dark"
-              style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}
-            >
-              {ed.periodo}
-            </p>
-          </Reveal>
-          <Reveal as="div" delay={130}>
-            <p
-              className="text-[10px] font-extralight uppercase tracking-[0.32em] text-fc-primary"
-              style={{ fontFamily: "var(--font-manrope), system-ui, sans-serif" }}
-            >
-              Partecipanti
-            </p>
-            <p
-              className="mt-2 text-[16px] font-black text-fc-dark"
-              style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}
-            >
-              {ed.partecipanti}
-            </p>
-          </Reveal>
-          <Reveal as="div" delay={260}>
-            <p
-              className="text-[10px] font-extralight uppercase tracking-[0.32em] text-fc-primary"
-              style={{ fontFamily: "var(--font-manrope), system-ui, sans-serif" }}
-            >
-              Tema
-            </p>
-            <p
-              className="mt-2 text-[16px] font-black text-fc-dark"
-              style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}
-            >
-              {ed.tema}
-            </p>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* Racconto */}
-      <section className="bg-fc-light">
-        <div className="mx-auto max-w-3xl px-5 py-16 md:px-8 md:py-20">
-          <SectionEyebrow label="Racconto" title="Cosa è stata questa edizione" />
-          <div
-            className="mt-8 space-y-5 text-[15px] font-extralight leading-relaxed text-fc-dark md:text-[16px]"
-            style={{ fontFamily: "var(--font-manrope), system-ui, sans-serif" }}
-          >
-            {ed.paragrafiRacconto.map((p, i) => (
-              <Reveal as="p" key={i} delay={480 + i * 120}>
-                {p}
-              </Reveal>
-            ))}
+      {/* Hero: solo l'anno, centrato, su sfondo foto blurata + patina blu con zoom continuo */}
+      <section className="relative isolate flex min-h-[70svh] items-center justify-center overflow-hidden bg-fc-primary px-5 text-white md:min-h-[80svh] md:px-8">
+        {/* Sfondo: copertina edizione, blur 24px + zoom in loop */}
+        <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden" aria-hidden>
+          <div className="fc-crescita-bg-zoom absolute inset-0 h-full w-full">
+            <Image
+              src={ed.copertina}
+              alt=""
+              fill
+              priority
+              sizes="100vw"
+              quality={70}
+              className="object-cover"
+              style={{ filter: "blur(24px)", transform: "scale(1.15)" }}
+            />
           </div>
         </div>
+        {/* Patina blu */}
+        <div
+          className="pointer-events-none absolute inset-0 -z-[5] bg-gradient-to-b from-fc-primary/60 via-fc-primary/50 to-fc-primary/72"
+          aria-hidden
+        />
+
+        <RevealWords
+          as="h1"
+          text={String(ed.anno)}
+          className="relative block text-center text-[3.5rem] font-black leading-none tracking-tight md:text-[5.5rem] lg:text-[7rem]"
+          style={FONT_DISPLAY}
+        />
       </section>
 
-      {/* Momenti chiave */}
-      <section className="bg-white">
-        <div className="mx-auto max-w-6xl px-5 py-16 md:px-8 md:py-20">
-          <SectionEyebrow label="Momenti chiave" title="I passaggi che hanno fatto questa edizione" />
-          <ul className="mt-10 grid gap-5 md:grid-cols-2">
-            {ed.momentiChiave.map((m, idx) => (
-              <Reveal
-                as="li"
-                key={m.titolo}
-                delay={480 + idx * 110}
-                className="rounded-2xl border border-fc-soft/60 bg-fc-light p-6 transition hover:border-fc-primary/30"
-              >
-                <h3
-                  className="text-[16px] font-black leading-snug tracking-tight text-fc-dark"
-                  style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}
-                >
-                  {m.titolo}
-                </h3>
-                <p
-                  className="mt-3 text-[14px] font-extralight leading-relaxed text-fc-secondary"
-                  style={{ fontFamily: "var(--font-manrope), system-ui, sans-serif" }}
-                >
-                  {m.descrizione}
-                </p>
-              </Reveal>
-            ))}
-          </ul>
-        </div>
-      </section>
-
-      {/* Gallery */}
-      {ed.gallery.length > 0 && (
-        <section className="bg-fc-light">
-          <div className="mx-auto max-w-6xl px-5 py-16 md:px-8 md:py-20">
-            <SectionEyebrow label="Gallery" title="Il Campus in immagini" />
-            <ul className="mt-10 grid grid-cols-2 gap-2 sm:gap-3 md:grid-cols-3 lg:grid-cols-4">
-              {ed.gallery.map((src, idx) => (
+      {/* Card delle classi: blur+zoom-leggero di default, sharp+zoom-più-deciso su hover.
+          Stesso pattern visuale delle card della pagina /edizioni. */}
+      {classi.length > 0 && (
+        <section className="bg-fc-dark">
+          <ul className={`grid grid-cols-1 gap-0 ${gridCols}`}>
+            {classi.map((classe, idx) => {
+              const photo = fotoMap[classe as keyof typeof fotoMap];
+              return (
                 <Reveal
                   as="li"
-                  key={src}
-                  delay={480 + idx * 80}
-                  className="relative aspect-[4/3] overflow-hidden rounded-lg bg-fc-soft/30"
+                  key={classe}
+                  delay={idx * 140}
+                  className="group relative"
                 >
-                  <Image
-                    src={src}
-                    alt=""
-                    fill
-                    sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
-                    className="object-cover transition-transform duration-500 hover:scale-[1.04]"
-                  />
+                  <div className="relative min-h-[60vh] overflow-hidden bg-fc-dark md:min-h-[80vh]">
+                    {photo ? (
+                      <Image
+                        src={photo}
+                        alt=""
+                        fill
+                        sizes={
+                          classi.length === 3
+                            ? "(min-width: 768px) 33vw, 100vw"
+                            : "(min-width: 768px) 50vw, 100vw"
+                        }
+                        quality={72}
+                        className="fc-edizione-image object-cover"
+                      />
+                    ) : null}
+                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-fc-dark/80 via-fc-dark/25 to-transparent" />
+                    <div className="pointer-events-none absolute inset-x-6 bottom-7 md:inset-x-10 md:bottom-10">
+                      <p
+                        className="text-[2.5rem] font-black leading-none tracking-tight text-white md:text-[3.5rem] lg:text-[4.5rem]"
+                        style={FONT_DISPLAY}
+                      >
+                        {classe}
+                      </p>
+                    </div>
+                  </div>
                 </Reveal>
-              ))}
-            </ul>
-          </div>
+              );
+            })}
+          </ul>
         </section>
       )}
-
-      {/* Partner */}
-      {ed.partner.length > 0 && (
-        <section className="bg-white">
-          <div className="mx-auto max-w-6xl px-5 py-16 md:px-8 md:py-20">
-            <SectionEyebrow label="Partner di questa edizione" title="Chi ha reso possibile il Campus" />
-            <ul className="mt-8 flex flex-wrap gap-2.5">
-              {ed.partner.map((p) => (
-                <li key={p.nome}>
-                  <span
-                    className="inline-flex rounded-full border border-fc-soft/70 bg-fc-light px-4 py-2 text-[12px] font-extralight tracking-wide text-fc-secondary"
-                    style={{ fontFamily: "var(--font-manrope), system-ui, sans-serif" }}
-                  >
-                    {p.nome}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
-      )}
-
-      {/* Navigazione fra edizioni */}
-      <section className="bg-fc-light">
-        <div className="mx-auto flex max-w-6xl flex-col gap-6 px-5 py-12 md:flex-row md:items-center md:justify-between md:px-8 md:py-16">
-          <div className="flex flex-wrap gap-4">
-            {prev && (
-              <Link
-                href={`/edizioni/${prev.slug}`}
-                className="text-[12px] font-extralight tracking-[0.18em] text-fc-secondary uppercase transition-colors hover:text-fc-primary"
-                style={{ fontFamily: "var(--font-manrope), system-ui, sans-serif" }}
-              >
-                ← Edizione {prev.anno}
-              </Link>
-            )}
-            {next && (
-              <Link
-                href={`/edizioni/${next.slug}`}
-                className="text-[12px] font-extralight tracking-[0.18em] text-fc-secondary uppercase transition-colors hover:text-fc-primary"
-                style={{ fontFamily: "var(--font-manrope), system-ui, sans-serif" }}
-              >
-                Edizione {next.anno} →
-              </Link>
-            )}
-          </div>
-          <CtaButton href="/edizioni" variant="ghost">
-            Torna a tutte le edizioni
-          </CtaButton>
-        </div>
-      </section>
     </PageShell>
   );
 }
