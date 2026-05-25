@@ -2,9 +2,11 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
+import { CalendarioEdizione } from "@/components/edizioni/CalendarioEdizione";
 import { PageShell } from "@/components/site/PageShell";
 import { Reveal, RevealWords } from "@/components/site/Reveal";
 import { edizioni, getEdizioneBySlug } from "@/content/edizioni";
+import { getAttivitaPerAnno } from "@/content/edizioni-attivita";
 
 const FONT_DISPLAY = { fontFamily: "var(--font-montserrat), system-ui, sans-serif" };
 
@@ -32,6 +34,33 @@ const CLASSI_FOTO: Record<
     Master: "/foto/1841.JPG",
   },
 };
+
+/**
+ * 20 foto della prima edizione (Fabriano 2022) usate nel marquee auto-scroll
+ * sotto l'hero. Ordine arbitrario — il marquee è infinito e duplicato.
+ */
+const PHOTOS_2022: string[] = [
+  "/edizioni/2022/fabriano/1.JPG",
+  "/edizioni/2022/fabriano/3%20(1).JPG",
+  "/edizioni/2022/fabriano/3%20(2).JPG",
+  "/edizioni/2022/fabriano/4.JPG",
+  "/edizioni/2022/fabriano/5.JPG",
+  "/edizioni/2022/fabriano/6.JPG",
+  "/edizioni/2022/fabriano/7.JPG",
+  "/edizioni/2022/fabriano/8.JPG",
+  "/edizioni/2022/fabriano/9.JPG",
+  "/edizioni/2022/fabriano/10.JPG",
+  "/edizioni/2022/fabriano/11.JPG",
+  "/edizioni/2022/fabriano/12.JPG",
+  "/edizioni/2022/fabriano/13.JPG",
+  "/edizioni/2022/fabriano/14.JPG",
+  "/edizioni/2022/fabriano/15.JPG",
+  "/edizioni/2022/fabriano/16.JPG",
+  "/edizioni/2022/fabriano/17.JPG",
+  "/edizioni/2022/fabriano/18.JPG",
+  "/edizioni/2022/fabriano/19.JPG",
+  "/edizioni/2022/fabriano/20.JPG",
+];
 
 type PageProps = { params: Promise<{ slug: string }> };
 
@@ -93,10 +122,14 @@ export default async function EdizioneDettaglioPage({ params }: PageProps) {
   }
 
   /* ─── EDIZIONI passate: hero solo anno + card classi (se presenti) ──── */
-  // 2022: 1 sola classe in dato ma da specifica utente NON si mostrano card
-  // (calendario vuoto). 2023 → 2 card. 2024/2025 → 3 card.
+  // Logica card: nascoste se l'edizione ha un calendario attività popolato
+  // (in quel caso le classi sono già visualizzate nel calendario via dot
+  // colorati) oppure se è il 2022 (richiesta utente). Le edizioni 2024/2025
+  // mostrano ancora 3 card finché non avranno il loro calendario attività.
+  const attivitaAnno = getAttivitaPerAnno(ed.anno);
+  const hasCalendario = attivitaAnno.length > 0;
   const fotoMap = CLASSI_FOTO[ed.slug] ?? {};
-  const showCards = ed.anno !== 2022 && ed.classi.length >= 2;
+  const showCards = !hasCalendario && ed.anno !== 2022 && ed.classi.length >= 2;
   const classi = showCards ? ed.classi : [];
   const gridCols =
     classi.length === 3
@@ -180,6 +213,38 @@ export default async function EdizioneDettaglioPage({ params }: PageProps) {
                 </Reveal>
               );
             })}
+          </ul>
+        </section>
+      )}
+
+      {/* Calendario attività dell'edizione (mostrato quando ci sono attività
+          popolate in edizioni-attivita.ts). Per il 2023 ha 23 attività su 2
+          mesi; per 2024/2025 ancora vuoto. */}
+      {hasCalendario && <CalendarioEdizione attivita={attivitaAnno} anno={ed.anno} />}
+
+      {/* Marquee orizzontale infinito delle foto della 1ª edizione (solo 2022).
+          Lista duplicata per loop seamless con keyframe -50%. */}
+      {ed.anno === 2022 && (
+        <section className="overflow-hidden bg-fc-dark py-12 md:py-16">
+          <ul
+            className="fc-edizione-2022-marquee items-center gap-3 md:gap-4"
+            aria-label="Foto dell'edizione 2022"
+          >
+            {[...PHOTOS_2022, ...PHOTOS_2022].map((src, i) => (
+              <li
+                key={`${src}-${i}`}
+                className="relative h-[180px] w-[240px] shrink-0 overflow-hidden rounded-md ring-1 ring-white/10 md:h-[240px] md:w-[320px]"
+              >
+                <Image
+                  src={src}
+                  alt=""
+                  fill
+                  sizes="(max-width: 768px) 240px, 320px"
+                  quality={70}
+                  className="object-cover"
+                />
+              </li>
+            ))}
           </ul>
         </section>
       )}

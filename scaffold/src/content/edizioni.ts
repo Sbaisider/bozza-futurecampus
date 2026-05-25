@@ -95,7 +95,7 @@ export const edizioni: Edizione[] = [
     ],
     periodo: "Giugno – luglio 2023",
     partecipanti: 50,
-    classi: ["Beginner", "Master"],
+    classi: ["Beginner", "Master", "Insieme"],
     momentiChiave: [
       {
         titolo: "Apertura della classe Master",
@@ -143,7 +143,7 @@ export const edizioni: Edizione[] = [
     ],
     periodo: "Giugno – luglio 2024",
     partecipanti: "100+",
-    classi: ["Beginner", "Master", "Advanced"],
+    classi: ["Beginner", "Master", "Advanced", "Insieme"],
     momentiChiave: [
       {
         titolo: "Nasce la classe Advanced",

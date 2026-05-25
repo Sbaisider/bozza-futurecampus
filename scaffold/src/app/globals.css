@@ -110,6 +110,30 @@
   }
 }
 
+/* ──────────────────────────────────────────────────────────────────────────
+   Edizione 2022 — marquee orizzontale auto-scroll delle foto sotto l'hero.
+   Riusa la keyframe fc-esperienza-scroll-x (translate -50%) — la lista DOM
+   è duplicata in page.tsx per ottenere un loop seamless. Pausa on-hover per
+   accessibilità. In prefers-reduced-motion l'animazione si ferma (no wrap).
+   ─────────────────────────────────────────────────────────────────────── */
+.fc-edizione-2022-marquee {
+  display: flex;
+  width: max-content;
+  animation-name: fc-esperienza-scroll-x;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-duration: 80s;
+  will-change: transform;
+}
+.fc-edizione-2022-marquee:hover {
+  animation-play-state: paused;
+}
+@media (prefers-reduced-motion: reduce) {
+  .fc-edizione-2022-marquee {
+    animation: none;
+  }
+}
+
 /* Come si vive — sfondo brand + griglia punti leggera */
 .fc-vita-dot-grid {
   background-color: #244c90;
