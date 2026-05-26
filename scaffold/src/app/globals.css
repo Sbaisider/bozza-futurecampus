@@ -134,6 +134,21 @@
   }
 }
 
+/* Carosello orizzontale Edizioni passate (solo mobile): nasconde la scrollbar
+   ma mantiene lo scroll touch/trackpad. Da md in su torna griglia statica. */
+.fc-edizioni-carousel {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Edge legacy */
+  scroll-padding-left: 1.25rem;
+  scroll-padding-right: 1.25rem;
+  /* Bounce iOS più gradevole su scroll orizzontale */
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+}
+.fc-edizioni-carousel::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
+
 /* Come si vive — sfondo brand + griglia punti leggera */
 .fc-vita-dot-grid {
   background-color: #244c90;
@@ -250,4 +265,23 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-manrope), system-ui, sans-serif;
+  /* Evita scroll orizzontale indesiderato su mobile (es. tracking-wide su titoli stretti). */
+  overflow-x: hidden;
+}
+
+/* iOS Safari: input/textarea con font-size < 16px causano zoom automatico al focus.
+   I componenti form impostano già 16px su mobile e scendono a 14px da sm in su. */
+@supports (-webkit-touch-callout: none) {
+  input,
+  textarea,
+  select {
+    font-size: max(16px, 1em);
+  }
+  @media (min-width: 640px) {
+    input,
+    textarea,
+    select {
+      font-size: inherit;
+    }
+  }
 }

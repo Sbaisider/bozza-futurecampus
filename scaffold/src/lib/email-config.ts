@@ -3,9 +3,9 @@
  *
  * Setup richiesto (file .env.local):
  *   RESEND_API_KEY=re_xxxxx
- *   EMAIL_FROM=Future Campus <no-reply@futurecampusfabriano.it>
- *   EMAIL_TO_ISCRIZIONI=iscrizioni@futurecampusfabriano.it
- *   EMAIL_TO_CONTATTI=info@futurecampusfabriano.it
+ *   EMAIL_FROM=Future Campus <no-reply@futurecampus.it>
+ *   EMAIL_TO_ISCRIZIONI=iscrizioni@futurecampus.it
+ *   EMAIL_TO_CONTATTI=info@futurecampus.it
  *
  * Per ottenere RESEND_API_KEY: account su https://resend.com, sezione API keys.
  * Per "From" è necessario verificare il dominio in Resend.
@@ -24,9 +24,9 @@ export function getEmailConfig() {
   return {
     mode: (isLive ? "live" : "console") as EmailMode,
     apiKey: apiKey ?? "",
-    from: from ?? "Future Campus <no-reply@futurecampusfabriano.it>",
-    toIscrizioni: toIscrizioni ?? "iscrizioni@futurecampusfabriano.it",
-    toContatti: toContatti ?? "info@futurecampusfabriano.it",
+    from: from ?? "Future Campus <no-reply@futurecampus.it>",
+    toIscrizioni: toIscrizioni ?? "iscrizioni@futurecampus.it",
+    toContatti: toContatti ?? "info@futurecampus.it",
   };
 }
 

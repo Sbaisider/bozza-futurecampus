@@ -11,16 +11,16 @@ const FONT_DISPLAY = { fontFamily: "var(--font-montserrat), system-ui, sans-seri
 export function HomePadriFondatoriSection() {
   return (
     <section className="relative z-10 bg-fc-light">
-      <div className="mx-auto max-w-6xl px-5 py-24 md:px-8 md:py-32">
+      <div className="mx-auto max-w-6xl px-5 py-20 sm:py-24 md:px-8 md:py-32">
         <Reveal
           as="h2"
-          className="max-w-[24ch] text-balance text-[1.85rem] font-black leading-[1.08] tracking-tight text-fc-dark sm:text-[2.25rem] md:text-[2.75rem]"
+          className="max-w-[24ch] text-balance text-[1.65rem] font-black leading-[1.1] tracking-tight text-fc-dark sm:text-[2rem] md:text-[2.75rem]"
           style={FONT_DISPLAY}
         >
           Chi ha dato origine al Campus.
         </Reveal>
 
-        <ul className="mt-16 grid gap-12 border-t border-fc-soft/50 pt-14 md:mt-20 md:grid-cols-3 md:gap-10 md:pt-16 lg:gap-14">
+        <ul className="mt-12 grid gap-10 border-t border-fc-soft/50 pt-10 sm:mt-16 sm:gap-12 sm:pt-14 md:mt-20 md:grid-cols-3 md:gap-10 md:pt-16 lg:gap-14">
           {padriFondatori.map((p, idx) => (
             <Reveal
               as="li"

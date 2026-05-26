@@ -183,14 +183,14 @@ export function CalendarioEdizione({ attivita, anno }: Props) {
 
   return (
     <section
-      className="bg-fc-light px-5 py-12 md:px-8 md:py-16"
+      className="bg-fc-light px-4 py-10 sm:px-5 sm:py-12 md:px-8 md:py-16"
       aria-label={`Calendario delle attività dell'edizione ${anno}`}
     >
       <div className="mx-auto max-w-6xl">
         {/* Titolo + legenda */}
         <div className="mb-8 flex flex-col gap-4 md:mb-12 md:flex-row md:items-end md:justify-between">
           <h2
-            className="text-[2rem] font-black leading-none tracking-tight text-fc-dark md:text-[2.75rem]"
+            className="text-[1.65rem] font-black leading-[1.1] tracking-tight text-fc-dark sm:text-[2rem] md:text-[2.75rem]"
             style={FONT_DISPLAY}
           >
             Il calendario del {anno}
@@ -199,7 +199,7 @@ export function CalendarioEdizione({ attivita, anno }: Props) {
         </div>
 
         {/* Una griglia per ogni mese */}
-        <div className="grid gap-10 md:grid-cols-2 md:gap-12">
+        <div className="grid gap-8 sm:gap-10 md:grid-cols-2 md:gap-12">
           {mesi.map((m) => (
             <MeseGriglia
               key={`${m.year}-${m.monthIdx}`}
@@ -347,7 +347,7 @@ function DayCell({
 }) {
   const isInteractive = !!onSelect;
   const base =
-    "relative aspect-square rounded-md border border-fc-soft/40 bg-white p-1.5 text-left text-[11px] text-fc-secondary transition md:p-2 md:text-[12px]";
+    "relative aspect-square rounded-md border border-fc-soft/40 bg-white p-1 text-left text-[10.5px] text-fc-secondary transition sm:p-1.5 sm:text-[11px] md:p-2 md:text-[12px]";
   const interactive =
     "hover:border-fc-primary/60 hover:bg-fc-primary/[0.04] focus:outline-none focus-visible:ring-2 focus-visible:ring-fc-primary/40 cursor-pointer";
   const empty = "opacity-70";
@@ -362,12 +362,12 @@ function DayCell({
     <>
       <span className="block font-medium text-fc-dark">{day}</span>
       {dots.length > 0 && (
-        <div className="absolute inset-x-1.5 bottom-1.5 flex gap-1 md:inset-x-2 md:bottom-2">
+        <div className="absolute inset-x-1 bottom-1 flex gap-0.5 sm:inset-x-1.5 sm:bottom-1.5 sm:gap-1 md:inset-x-2 md:bottom-2">
           {dots.map((d) => (
             <span
               key={d.key}
               aria-hidden
-              className="h-1.5 flex-1 rounded-full"
+              className="h-1 flex-1 rounded-full sm:h-1.5"
               style={{ backgroundColor: d.color }}
             />
           ))}
@@ -430,7 +430,7 @@ function ModaleAttivita({
       onClick={onClose}
     >
       <div
-        className="relative mx-4 flex max-h-[92svh] w-full max-w-5xl flex-col overflow-hidden rounded-lg bg-fc-dark text-white shadow-2xl md:mx-8"
+        className="relative mx-2 flex max-h-[94svh] w-full max-w-5xl flex-col overflow-hidden rounded-lg bg-fc-dark text-white shadow-2xl sm:mx-4 md:mx-8"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Pulsante chiudi */}
@@ -484,7 +484,9 @@ function ModaleAttivita({
         {/* Carosello: per OGNI attività e OGNI sua foto montiamo un'Image
             (stack di N×5 elementi assoluti). Solo la (currentIdx, photoIdx)
             è opaca → switch attività E switch foto istantanei. */}
-        <div className="relative w-full bg-black" style={{ aspectRatio: "16 / 10" }}>
+        <div
+          className="relative w-full bg-black aspect-[4/3] sm:aspect-[16/10]"
+        >
           {attivitaList.flatMap((act, aIdx) =>
             act.foto.map((src, fIdx) => {
               const isVisible = aIdx === currentIdx && fIdx === photoIdx;
@@ -553,9 +555,8 @@ function ModaleAttivita({
         </div>
 
         {/* Meta + descrizione */}
-        {/* Meta + descrizione */}
-        <div className="flex-1 overflow-y-auto px-5 py-5 md:px-8 md:py-6">
-          <div className="mb-2 flex flex-wrap items-center gap-2 text-[12px] text-fc-soft md:text-[13px]">
+        <div className="flex-1 overflow-y-auto px-4 py-4 sm:px-5 sm:py-5 md:px-8 md:py-6">
+          <div className="mb-2 flex flex-wrap items-center gap-2 text-[11.5px] text-fc-soft sm:text-[12px] md:text-[13px]">
             {classiOf(attivita).map((c) => (
               <span
                 key={c}
@@ -578,13 +579,13 @@ function ModaleAttivita({
             </span>
           </div>
           <h3
-            className="text-[1.5rem] font-black leading-tight tracking-tight md:text-[2rem]"
+            className="text-[1.25rem] font-black leading-[1.15] tracking-tight sm:text-[1.5rem] md:text-[2rem]"
             style={FONT_DISPLAY}
           >
             {attivita.titolo}
           </h3>
           {attivita.descrizione ? (
-            <p className="mt-2 max-w-3xl text-[14px] leading-relaxed text-fc-soft md:text-[15px]">
+            <p className="mt-2 max-w-3xl text-[13.5px] leading-relaxed text-fc-soft sm:text-[14px] md:text-[15px]">
               {attivita.descrizione}
             </p>
           ) : null}

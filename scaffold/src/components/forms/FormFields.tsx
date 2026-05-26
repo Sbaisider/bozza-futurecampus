@@ -21,7 +21,7 @@ export function TextInput(props: TextInputProps) {
   return (
     <input
       {...props}
-      className={`mt-2 block w-full rounded-xl border border-fc-soft/70 bg-white px-4 py-3 text-[14px] font-extralight text-fc-dark placeholder:text-fc-soft transition-colors focus:border-fc-primary focus:outline-none focus:ring-2 focus:ring-fc-primary/15 ${props.className ?? ""}`}
+      className={`mt-2 block w-full rounded-xl border border-fc-soft/70 bg-white px-4 py-3.5 text-[16px] font-extralight text-fc-dark placeholder:text-fc-soft transition-colors focus:border-fc-primary focus:outline-none focus:ring-2 focus:ring-fc-primary/15 sm:py-3 sm:text-[14px] ${props.className ?? ""}`}
       style={{ ...FONT_BODY, ...(props.style ?? {}) }}
     />
   );
@@ -32,7 +32,7 @@ export function TextArea(props: TextAreaProps) {
   return (
     <textarea
       {...props}
-      className={`mt-2 block w-full rounded-xl border border-fc-soft/70 bg-white px-4 py-3 text-[14px] font-extralight leading-relaxed text-fc-dark placeholder:text-fc-soft transition-colors focus:border-fc-primary focus:outline-none focus:ring-2 focus:ring-fc-primary/15 ${props.className ?? ""}`}
+      className={`mt-2 block w-full rounded-xl border border-fc-soft/70 bg-white px-4 py-3.5 text-[16px] font-extralight leading-relaxed text-fc-dark placeholder:text-fc-soft transition-colors focus:border-fc-primary focus:outline-none focus:ring-2 focus:ring-fc-primary/15 sm:py-3 sm:text-[14px] ${props.className ?? ""}`}
       style={{ ...FONT_BODY, ...(props.style ?? {}) }}
     />
   );

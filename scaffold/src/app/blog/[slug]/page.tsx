@@ -72,7 +72,7 @@ export default async function BlogArticoloPage({ params }: PageProps) {
             aria-hidden
           />
 
-          <div className="relative mx-auto max-w-3xl px-5 pt-28 pb-20 md:px-8 md:pt-36 md:pb-28">
+          <div className="relative mx-auto max-w-3xl px-5 pt-24 pb-16 sm:pt-28 sm:pb-20 md:px-8 md:pt-36 md:pb-28">
             <Reveal as="div">
               <Link
                 href="/blog"
@@ -82,25 +82,25 @@ export default async function BlogArticoloPage({ params }: PageProps) {
                 ← Tutti gli articoli
               </Link>
             </Reveal>
-            <Reveal
-              as="p"
-              delay={140}
-              className="mt-10 text-[10px] font-extralight uppercase tracking-[0.42em] text-fc-accent"
-              style={FONT_BODY}
-            >
-              {a.categoria} · {dateFormatter.format(new Date(a.data))}
+            <Reveal as="div" delay={140} className="mt-8 md:mt-10">
+              <span
+                className="inline-flex items-center rounded-full bg-white/95 px-4 py-2 text-[10px] font-medium uppercase tracking-[0.32em] text-fc-primary shadow-[0_8px_24px_-8px_rgba(0,0,0,0.35)] ring-1 ring-white/60 backdrop-blur-sm sm:tracking-[0.42em]"
+                style={FONT_BODY}
+              >
+                {a.categoria} · {dateFormatter.format(new Date(a.data))}
+              </span>
             </Reveal>
             <RevealWords
               as="h1"
               text={a.titolo}
               delay={280}
-              className="mt-5 block text-balance text-[2rem] font-black leading-[1.08] tracking-tight text-fc-white sm:text-[2.5rem] md:text-[3rem]"
+              className="mt-5 block text-balance text-[1.75rem] font-black leading-[1.1] tracking-tight text-fc-white sm:text-[2.25rem] md:text-[3rem]"
               style={FONT_DISPLAY}
             />
             <Reveal
               as="p"
               delay={650}
-              className="mt-6 max-w-2xl text-[16px] font-extralight leading-[1.7] text-fc-white/85 md:text-[18px]"
+              className="mt-5 max-w-2xl text-[15px] font-extralight leading-[1.7] text-fc-white/85 sm:text-[16px] md:text-[18px]"
               style={FONT_BODY}
             >
               {a.sommario}
@@ -120,7 +120,7 @@ export default async function BlogArticoloPage({ params }: PageProps) {
 
         {/* Corpo articolo (Portable Text) */}
         <div className="bg-fc-white">
-          <div className="mx-auto max-w-2xl px-5 py-20 md:px-8 md:py-28">
+          <div className="mx-auto max-w-2xl px-5 py-14 sm:py-20 md:px-8 md:py-28">
             <ArticoloBody value={a.corpo} />
           </div>
         </div>
@@ -129,15 +129,15 @@ export default async function BlogArticoloPage({ params }: PageProps) {
       {/* Altri articoli */}
       {altri.length > 0 ? (
         <section className="bg-fc-light">
-          <div className="mx-auto max-w-6xl px-5 py-20 md:px-8 md:py-24">
+          <div className="mx-auto max-w-6xl px-5 py-14 sm:py-20 md:px-8 md:py-24">
             <Reveal
               as="h2"
-              className="text-balance text-[1.5rem] font-black leading-tight tracking-tight text-fc-dark md:text-[1.85rem]"
+              className="text-balance text-[1.4rem] font-black leading-tight tracking-tight text-fc-dark sm:text-[1.5rem] md:text-[1.85rem]"
               style={FONT_DISPLAY}
             >
               Continua a leggere
             </Reveal>
-            <ul className="mt-12 grid gap-x-8 gap-y-12 md:grid-cols-3">
+            <ul className="mt-10 grid gap-x-8 gap-y-10 sm:mt-12 sm:gap-y-12 md:grid-cols-3">
               {altri.map((x, idx) => (
                 <Reveal as="li" key={x._id} delay={180 + idx * 120}>
                   <Link href={`/blog/${x.slug}`} className="group block">

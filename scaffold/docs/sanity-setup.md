@@ -45,13 +45,21 @@ Richiede ~1 minuto.
 
 ## 4. Autorizza il dominio dello Studio (CORS)
 
-Lo Studio gira a `http://localhost:3000/studio` (dev) e `https://futurecampusfabriano.it/studio` (prod). Sanity richiede di aggiungerli alla whitelist:
+Lo Studio gira a `http://localhost:3000/studio` (dev) e `https://futurecampus.it/studio` (prod). Sanity richiede di aggiungerli alla whitelist:
 
-1. Su https://www.sanity.io/manage → tuo progetto → tab **API**
+1. Apri https://www.sanity.io/manage/personal/project/kgdcsa4h/api
 2. **CORS origins** → **Add CORS origin**
-3. Aggiungi:
-   - `http://localhost:3000` (allow credentials: sì)
-   - L'URL del sito in produzione (es. `https://futurecampusfabriano.it`) quando il sito è live
+3. Aggiungi (un origin alla volta):
+   - `http://localhost:3000` — **Allow credentials: SÌ** (serve per login allo Studio in dev)
+   - `https://futurecampus.it` — **Allow credentials: SÌ**
+   - `https://www.futurecampus.it` — **Allow credentials: SÌ**
+   - (opzionale) URL del preview di Vercel se vuoi che lo Studio funzioni anche da `*.vercel.app`
+
+> In alternativa via CLI (richiede `npx sanity login` la prima volta):
+> ```bash
+> npx sanity cors add https://futurecampus.it --credentials
+> npx sanity cors add https://www.futurecampus.it --credentials
+> ```
 
 ---
 

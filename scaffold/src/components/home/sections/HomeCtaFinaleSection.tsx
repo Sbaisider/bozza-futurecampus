@@ -12,21 +12,21 @@ const FONT_DISPLAY = { fontFamily: "var(--font-montserrat), system-ui, sans-seri
 export function HomeCtaFinaleSection() {
   return (
     <section className="relative z-10 bg-fc-primary text-white">
-      <div className="mx-auto max-w-4xl px-5 py-28 text-center md:px-8 md:py-36 lg:py-44">
+      <div className="mx-auto max-w-4xl px-5 py-20 text-center sm:py-28 md:px-8 md:py-36 lg:py-44">
         <Reveal
           as="h2"
-          className="text-balance text-[2rem] font-black leading-[1.08] tracking-tight sm:text-[2.5rem] md:text-[3rem] lg:text-[3.5rem]"
+          className="text-balance text-[1.75rem] font-black leading-[1.1] tracking-tight sm:text-[2.25rem] md:text-[3rem] lg:text-[3.5rem]"
           style={FONT_DISPLAY}
         >
           Vuoi avere più informazioni
-          <br />
-          riguardo il campus?
+          <br className="hidden sm:block" />
+          {" "}riguardo il campus?
         </Reveal>
 
-        <Reveal delay={280} className="mt-12 flex items-center justify-center">
+        <Reveal delay={280} className="mt-9 flex items-center justify-center sm:mt-12">
           <Link
             href="/contatti"
-            className="inline-flex items-center justify-center bg-white px-9 py-4 text-[11px] font-black uppercase tracking-[0.22em] text-fc-primary transition-colors hover:bg-fc-accent hover:text-white"
+            className="inline-flex min-h-[48px] items-center justify-center bg-white px-8 py-4 text-[11px] font-black uppercase tracking-[0.2em] text-fc-primary transition-colors hover:bg-fc-accent hover:text-white sm:px-9 sm:tracking-[0.22em]"
             style={FONT_DISPLAY}
           >
             Contattaci

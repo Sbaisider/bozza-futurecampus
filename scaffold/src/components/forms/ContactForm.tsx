@@ -109,7 +109,7 @@ export function ContactForm() {
       <button
         type="submit"
         disabled={status === "sending"}
-        className="inline-flex w-full items-center justify-center rounded-full bg-fc-primary px-6 py-3.5 text-[12px] font-black tracking-[0.18em] text-white uppercase shadow-sm transition hover:bg-fc-accent disabled:opacity-60 sm:w-auto"
+        className="inline-flex min-h-[48px] w-full items-center justify-center rounded-full bg-fc-primary px-6 py-3.5 text-[12px] font-black tracking-[0.18em] text-white uppercase shadow-sm transition hover:bg-fc-accent disabled:opacity-60 sm:w-auto"
         style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}
       >
         {status === "sending" ? "Invio in corso…" : "Invia messaggio"}

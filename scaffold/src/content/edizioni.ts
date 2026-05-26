@@ -199,7 +199,7 @@ export const edizioni: Edizione[] = [
     ],
     periodo: "Giugno – 23 luglio 2025",
     partecipanti: 150,
-    classi: ["Beginner", "Master", "Advanced"],
+    classi: ["Beginner", "Master", "Advanced", "Insieme"],
     momentiChiave: [
       {
         titolo: "Ex Advanced diventano coach",

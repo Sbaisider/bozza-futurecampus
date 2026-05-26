@@ -1,7 +1,5 @@
 import { forwardRef } from "react";
 
-import Image from "next/image";
-
 import { Reveal, RevealWords } from "@/components/site/Reveal";
 import { cosaEFutureCampus } from "@/content/info";
 import type { HomeMediaPicks } from "@/lib/home-media-picks";
@@ -9,16 +7,13 @@ import type { HomeMediaPicks } from "@/lib/home-media-picks";
 const FONT_BODY = { fontFamily: "var(--font-manrope), system-ui, sans-serif" };
 const FONT_DISPLAY = { fontFamily: "var(--font-montserrat), system-ui, sans-serif" };
 
-const BACKDROP_PHOTO = "/foto/1287.JPG";
-
 type Props = {
   media?: HomeMediaPicks;
 };
 
 /**
- * Esperienza in formato timeline ORIZZONTALE su sfondo foto blurata + patina blu.
- * - Sfondo: foto del campus, blur 24px, leggero zoom in loop (fc-crescita-bg-zoom).
- * - Patina blu primary in overlay per leggibilità.
+ * Esperienza in formato timeline ORIZZONTALE su blu pieno (coerente con la hero mobile).
+ * - Sfondo: bg-fc-primary + texture a punti leggera + gradient sottile.
  * - 4 nodi su linea orizzontale, scritte bianche.
  */
 export const HomeEsperienzaSection = forwardRef<HTMLElement, Props>(
@@ -30,33 +25,27 @@ export const HomeEsperienzaSection = forwardRef<HTMLElement, Props>(
         aria-labelledby="esperienza-heading"
         className="relative z-10 isolate overflow-hidden scroll-mt-24 bg-fc-primary"
       >
-        {/* Sfondo foto blurata con leggero zoom in loop */}
-        <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden" aria-hidden>
-          <div className="fc-crescita-bg-zoom absolute inset-0 h-full w-full">
-            <Image
-              src={BACKDROP_PHOTO}
-              alt=""
-              fill
-              sizes="100vw"
-              quality={60}
-              priority={false}
-              className="object-cover"
-              style={{ filter: "blur(24px)", transform: "scale(1.15)" }}
-            />
-          </div>
-        </div>
-
-        {/* Patina blu in overlay per leggibilità testo bianco */}
+        {/* Texture a punti molto leggera (stessa della hero mobile) */}
         <div
-          className="pointer-events-none absolute inset-0 -z-[5] bg-gradient-to-b from-fc-primary/85 via-fc-primary/78 to-fc-primary/90"
+          className="pointer-events-none absolute inset-0"
+          style={{
+            backgroundImage:
+              "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.06) 1px, transparent 0)",
+            backgroundSize: "22px 22px",
+          }}
+          aria-hidden
+        />
+        {/* Glow morbido in alto, scurimento in basso → profondità */}
+        <div
+          className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.06] via-transparent to-black/30"
           aria-hidden
         />
 
-        <div className="relative mx-auto max-w-7xl px-5 py-24 text-fc-white md:px-8 md:py-32 lg:py-40">
+        <div className="relative mx-auto max-w-7xl px-5 py-20 text-fc-white sm:py-24 md:px-8 md:py-32 lg:py-40">
           <RevealWords
             as="h2"
             text="Non è il solito campus."
-            className="max-w-[18ch] text-balance text-[1.85rem] font-black leading-[1.08] tracking-tight text-fc-white sm:text-[2.25rem] md:text-[2.75rem] lg:text-[3rem]"
+            className="max-w-[18ch] text-balance text-[1.65rem] font-black leading-[1.1] tracking-tight text-fc-white sm:text-[2.25rem] md:text-[2.75rem] lg:text-[3rem]"
             style={{ ...FONT_DISPLAY }}
           />
           {/* heading invisibile per accessibilità (id necessario per aria-labelledby) */}
@@ -64,21 +53,21 @@ export const HomeEsperienzaSection = forwardRef<HTMLElement, Props>(
             Non è il solito campus.
           </span>
 
-          {/* Timeline ORIZZONTALE */}
-          <ol className="relative mt-20 md:mt-28">
-            {/* linea orizzontale */}
+          {/* Timeline ORIZZONTALE (la linea appare solo da sm in su quando le card sono affiancate) */}
+          <ol className="relative mt-16 md:mt-28">
+            {/* linea orizzontale — nascosta su mobile (single-col) per evitare tratto verticale strano */}
             <span
-              className="absolute left-0 right-0 top-[7px] h-px bg-fc-white/25 md:top-[9px]"
+              className="absolute left-0 right-0 top-[7px] hidden h-px bg-fc-white/25 sm:block md:top-[9px]"
               aria-hidden
             />
 
-            <div className="grid gap-x-6 gap-y-14 sm:grid-cols-2 lg:grid-cols-4 lg:gap-x-10">
+            <div className="grid gap-x-6 gap-y-10 sm:grid-cols-2 sm:gap-y-14 lg:grid-cols-4 lg:gap-x-10">
               {cosaEFutureCampus.paroleChiave.map((p, idx) => (
                 <Reveal
                   as="li"
                   key={p.titolo}
                   delay={500 + idx * 140}
-                  className="relative pt-10 md:pt-14"
+                  className="relative pt-8 sm:pt-10 md:pt-14"
                 >
                   {/* nodo */}
                   <span

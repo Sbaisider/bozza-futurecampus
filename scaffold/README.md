@@ -47,15 +47,15 @@ Le foto vanno caricate in `/public/foto/` e referenziate per path (es. `"/foto/8
 I form di iscrizione e contatto inviano le email tramite [Resend](https://resend.com).
 
 1. Crea un account su https://resend.com
-2. Verifica il dominio `futurecampusfabriano.it` (sezione Domains)
+2. Verifica il dominio `futurecampus.it` (sezione Domains)
 3. Genera una API key (sezione API Keys)
 4. Copia `.env.example` in `.env.local` e compila:
 
 ```
 RESEND_API_KEY=re_xxxxx
-EMAIL_FROM=Future Campus <no-reply@futurecampusfabriano.it>
-EMAIL_TO_ISCRIZIONI=iscrizioni@futurecampusfabriano.it
-EMAIL_TO_CONTATTI=info@futurecampusfabriano.it
+EMAIL_FROM=Future Campus <no-reply@futurecampus.it>
+EMAIL_TO_ISCRIZIONI=iscrizioni@futurecampus.it
+EMAIL_TO_CONTATTI=info@futurecampus.it
 ```
 
 Finché le variabili non sono impostate, i form funzionano graficamente ma stampano il payload in console (modalità sviluppo, nessun invio reale).

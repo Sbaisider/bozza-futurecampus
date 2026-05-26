@@ -5,8 +5,8 @@
  */
 
 export const contatti = {
-  emailPubblica: "info@futurecampusfabriano.it",
-  emailIscrizioni: "iscrizioni@futurecampusfabriano.it",
+  emailPubblica: "info@futurecampus.it",
+  emailIscrizioni: "iscrizioni@futurecampus.it",
   sedeAttivita: "Fabriano (AN) — locali Creativity in Fabriano, BPER Banca",
   organizzazione: "Confindustria Ancona — Comitato Territoriale Fabriano",
 } as const;

@@ -10,6 +10,15 @@ const links = [
   { href: "/contatti", label: "Contatti" },
 ];
 
+// Mobile panel: solo Edizioni e Blog (Home/Contatti rimossi su richiesta).
+const mobileLinks = [
+  { href: "/edizioni", label: "Edizioni" },
+  { href: "/blog", label: "Blog" },
+];
+
+const FONT_BODY = { fontFamily: "var(--font-manrope), system-ui, sans-serif" };
+const FONT_DISPLAY = { fontFamily: "var(--font-montserrat), system-ui, sans-serif" };
+
 export type SiteNavbarProps = {
   className?: string;
   /** Scroll imperativo opzionale: serve solo alla Home per l'ancora #esperienza. */
@@ -51,11 +60,12 @@ export const SiteNavbar = forwardRef<HTMLElement, SiteNavbarProps>(
         ref={ref}
         className={`border-b border-fc-soft/60 bg-fc-white/94 shadow-[0_6px_24px_rgba(36,76,144,0.08)] backdrop-blur-xl md:bg-fc-white/96 ${className}`}
       >
-        <div className="mx-auto flex h-[3.25rem] max-w-6xl items-center justify-between px-4 md:h-16 md:px-8">
+        <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4 md:h-16 md:px-8">
           <Link
             href="/"
-            className="flex shrink-0 items-center gap-3 py-1"
+            className="flex shrink-0 items-center gap-2.5 py-1 md:gap-3"
             aria-label="Future Campus Fabriano — Home"
+            onClick={close}
           >
             <Image
               src="/brand/fcf-emblem.png"
@@ -66,8 +76,8 @@ export const SiteNavbar = forwardRef<HTMLElement, SiteNavbarProps>(
               priority
             />
             <span
-              className="hidden text-[11px] font-extralight tracking-[0.22em] text-fc-primary uppercase sm:inline-block"
-              style={{ fontFamily: "var(--font-manrope), system-ui, sans-serif" }}
+              className="text-[10.5px] font-extralight tracking-[0.2em] text-fc-primary uppercase leading-[1.15] sm:text-[11px] sm:tracking-[0.22em]"
+              style={FONT_BODY}
             >
               Future Campus
               <br />
@@ -83,7 +93,7 @@ export const SiteNavbar = forwardRef<HTMLElement, SiteNavbarProps>(
                   <Link
                     href={l.href}
                     className="text-[12px] font-extralight tracking-[0.18em] text-fc-secondary uppercase transition-colors hover:text-fc-primary"
-                    style={{ fontFamily: "var(--font-manrope), system-ui, sans-serif" }}
+                    style={FONT_BODY}
                   >
                     {l.label}
                   </Link>
@@ -95,7 +105,7 @@ export const SiteNavbar = forwardRef<HTMLElement, SiteNavbarProps>(
           {/* Mobile: hamburger */}
           <button
             type="button"
-            className="relative z-[70] flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-fc-soft/70 bg-white/90 text-fc-primary shadow-sm transition hover:border-fc-primary/35 hover:bg-white md:hidden"
+            className="relative z-[70] flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-fc-soft/70 bg-white/90 text-fc-primary shadow-sm transition active:scale-95 hover:border-fc-primary/35 hover:bg-white md:hidden"
             aria-expanded={open}
             aria-controls={panelId}
             aria-label={open ? "Chiudi menu" : "Apri menu"}
@@ -122,55 +132,100 @@ export const SiteNavbar = forwardRef<HTMLElement, SiteNavbarProps>(
           </button>
         </div>
 
-        {/* Mobile overlay + pannello */}
+        {/* ─── Mobile overlay + pannello ───────────────────────────────── */}
         <div
           className={`fixed inset-0 z-[65] md:hidden ${
             open ? "pointer-events-auto" : "pointer-events-none"
           }`}
           aria-hidden={!open}
         >
+          {/* Backdrop scuro cliccabile per chiudere */}
           <button
             type="button"
-            className={`absolute inset-0 bg-fc-dark/40 backdrop-blur-[2px] transition-opacity duration-300 ease-out ${
+            className={`absolute inset-0 bg-fc-dark/55 backdrop-blur-[3px] transition-opacity duration-300 ease-out ${
               open ? "opacity-100" : "opacity-0"
             }`}
             tabIndex={open ? 0 : -1}
             aria-label="Chiudi menu"
             onClick={close}
           />
+
+          {/* Pannello laterale a tema blu primario, premium */}
           <nav
             id={panelId}
-            className={`absolute top-0 right-0 flex h-[min(100dvh,100%)] w-[min(100%,20rem)] flex-col border-l border-fc-soft/60 bg-fc-white/97 py-6 pl-6 shadow-[-12px_0_48px_rgba(36,76,144,0.12)] backdrop-blur-xl transition-transform duration-300 ease-out ${
+            className={`absolute top-0 right-0 flex h-[100dvh] w-[min(100%,22rem)] flex-col overflow-hidden bg-fc-primary text-fc-white shadow-[-18px_0_60px_rgba(0,0,0,0.32)] transition-transform duration-[400ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${
               open ? "translate-x-0" : "translate-x-full"
             }`}
             aria-label="Menu principale"
-            style={{ paddingTop: "max(1.5rem, env(safe-area-inset-top))" }}
+            style={{
+              paddingTop: "max(1.25rem, env(safe-area-inset-top))",
+              paddingBottom: "max(1.5rem, env(safe-area-inset-bottom))",
+            }}
           >
-            <ul className="flex flex-1 flex-col gap-1 pr-4">
-              {links.map((l, i) => (
-                <li key={l.label} style={{ transitionDelay: open ? `${i * 35}ms` : "0ms" }}>
+            {/* Texture a punti molto leggera (coerente con la hero mobile) */}
+            <div
+              className="pointer-events-none absolute inset-0 opacity-50"
+              style={{
+                backgroundImage:
+                  "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.07) 1px, transparent 0)",
+                backgroundSize: "22px 22px",
+              }}
+              aria-hidden
+            />
+
+            {/* Header pannello: spazio per la X dell'hamburger (in alto a destra nella navbar) */}
+            <div className="relative h-10 px-6 pb-6" aria-hidden />
+
+            {/* Eyebrow "Menu" */}
+            <p
+              className={`relative px-6 pb-3 text-[10px] font-extralight uppercase tracking-[0.42em] text-fc-accent transition-opacity duration-500 ${
+                open ? "opacity-100" : "opacity-0"
+              }`}
+              style={{ ...FONT_BODY, transitionDelay: open ? "120ms" : "0ms" }}
+            >
+              Menu
+            </p>
+
+            {/* Lista link grandi, tap-friendly */}
+            <ul className="relative flex-1 overflow-y-auto px-6">
+              {mobileLinks.map((l, i) => (
+                <li
+                  key={l.label}
+                  className={`border-b border-white/10 transition-all duration-500 ${
+                    open ? "translate-x-0 opacity-100" : "translate-x-4 opacity-0"
+                  }`}
+                  style={{ transitionDelay: open ? `${180 + i * 70}ms` : "0ms" }}
+                >
                   <Link
                     href={l.href}
-                    className={`block border-b border-fc-soft/40 py-3.5 text-[13px] font-extralight tracking-[0.22em] text-fc-secondary uppercase transition-colors hover:text-fc-primary ${
-                      open ? "opacity-100" : "opacity-0"
-                    }`}
-                    style={{
-                      fontFamily: "var(--font-manrope), system-ui, sans-serif",
-                      transition: "opacity 0.35s ease, color 0.2s",
-                    }}
                     onClick={close}
+                    className="group flex items-center justify-between py-4 text-[22px] font-black tracking-tight text-fc-white transition-colors hover:text-fc-accent"
+                    style={FONT_DISPLAY}
                   >
-                    {l.label}
+                    <span>{l.label}</span>
+                    <span
+                      aria-hidden
+                      className="text-fc-white/40 transition-all duration-300 group-hover:translate-x-1 group-hover:text-fc-accent"
+                    >
+                      →
+                    </span>
                   </Link>
                 </li>
               ))}
             </ul>
-            <div className="mt-6 pr-4">
+
+            {/* CTA Contattaci in fondo */}
+            <div
+              className={`relative px-6 pt-6 transition-opacity duration-500 ${
+                open ? "opacity-100" : "opacity-0"
+              }`}
+              style={{ transitionDelay: open ? "500ms" : "0ms" }}
+            >
               <Link
                 href="/contatti"
                 onClick={close}
-                className="block w-full rounded-full bg-fc-primary px-5 py-3 text-center text-[12px] font-black tracking-[0.16em] text-white uppercase shadow-sm transition hover:bg-fc-accent"
-                style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}
+                className="flex min-h-[52px] w-full items-center justify-center rounded-full bg-fc-accent px-5 py-3.5 text-[12px] font-black tracking-[0.18em] text-fc-white uppercase shadow-[0_8px_24px_-8px_rgba(19,172,234,0.7)] transition active:scale-[0.98] hover:bg-fc-white hover:text-fc-primary"
+                style={FONT_DISPLAY}
               >
                 Contattaci
               </Link>

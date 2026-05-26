@@ -88,24 +88,19 @@ export default async function EdizioneDettaglioPage({ params }: PageProps) {
     return (
       <PageShell>
         <section className="relative isolate flex min-h-[100svh] items-center justify-center overflow-hidden bg-fc-primary px-5 text-white md:px-8">
-          {/* Sfondo: copertina edizione, blur 24px + zoom in loop */}
-          <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden" aria-hidden>
-            <div className="fc-crescita-bg-zoom absolute inset-0 h-full w-full">
-              <Image
-                src={ed.copertina}
-                alt=""
-                fill
-                priority
-                sizes="100vw"
-                quality={70}
-                className="object-cover"
-                style={{ filter: "blur(24px)", transform: "scale(1.15)" }}
-              />
-            </div>
-          </div>
-          {/* Patina blu */}
+          {/* Texture a punti molto leggera (stessa della hero mobile) */}
           <div
-            className="pointer-events-none absolute inset-0 -z-[5] bg-gradient-to-b from-fc-primary/60 via-fc-primary/50 to-fc-primary/72"
+            className="pointer-events-none absolute inset-0"
+            style={{
+              backgroundImage:
+                "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.06) 1px, transparent 0)",
+              backgroundSize: "22px 22px",
+            }}
+            aria-hidden
+          />
+          {/* Glow morbido in alto, scurimento in basso → profondità */}
+          <div
+            className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.06] via-transparent to-black/30"
             aria-hidden
           />
 
@@ -140,26 +135,21 @@ export default async function EdizioneDettaglioPage({ params }: PageProps) {
 
   return (
     <PageShell>
-      {/* Hero: solo l'anno, centrato, su sfondo foto blurata + patina blu con zoom continuo */}
+      {/* Hero: solo l'anno, centrato, su blu pieno con texture a punti (coerente con la hero mobile) */}
       <section className="relative isolate flex min-h-[70svh] items-center justify-center overflow-hidden bg-fc-primary px-5 text-white md:min-h-[80svh] md:px-8">
-        {/* Sfondo: copertina edizione, blur 24px + zoom in loop */}
-        <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden" aria-hidden>
-          <div className="fc-crescita-bg-zoom absolute inset-0 h-full w-full">
-            <Image
-              src={ed.copertina}
-              alt=""
-              fill
-              priority
-              sizes="100vw"
-              quality={70}
-              className="object-cover"
-              style={{ filter: "blur(24px)", transform: "scale(1.15)" }}
-            />
-          </div>
-        </div>
-        {/* Patina blu */}
+        {/* Texture a punti molto leggera (stessa della hero mobile) */}
         <div
-          className="pointer-events-none absolute inset-0 -z-[5] bg-gradient-to-b from-fc-primary/60 via-fc-primary/50 to-fc-primary/72"
+          className="pointer-events-none absolute inset-0"
+          style={{
+            backgroundImage:
+              "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.06) 1px, transparent 0)",
+            backgroundSize: "22px 22px",
+          }}
+          aria-hidden
+        />
+        {/* Glow morbido in alto, scurimento in basso → profondità */}
+        <div
+          className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.06] via-transparent to-black/30"
           aria-hidden
         />
 

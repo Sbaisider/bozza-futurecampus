@@ -32,8 +32,8 @@ export function PageHero({
 }: PageHeroProps) {
   const hasImage = Boolean(imageSrc);
   const heightClass = compact
-    ? "min-h-[44vh] md:min-h-[52vh]"
-    : "min-h-[58vh] md:min-h-[70vh]";
+    ? "min-h-[42svh] md:min-h-[52vh]"
+    : "min-h-[56svh] md:min-h-[70vh]";
 
   return (
     <section
@@ -57,12 +57,12 @@ export function PageHero({
       )}
 
       <div
-        className={`relative z-10 mx-auto flex ${heightClass} max-w-6xl flex-col justify-end px-5 pb-12 pt-28 md:px-8 md:pb-16 md:pt-32 ${align === "center" ? "items-center text-center" : ""}`}
+        className={`relative z-10 mx-auto flex ${heightClass} max-w-6xl flex-col justify-end px-5 pb-10 pt-24 sm:pb-12 sm:pt-28 md:px-8 md:pb-16 md:pt-32 ${align === "center" ? "items-center text-center" : ""}`}
       >
         {eyebrow && (
           <Reveal
             as="p"
-            className={`text-[10px] font-extralight uppercase tracking-[0.42em] ${hasImage ? "text-fc-accent" : "text-fc-primary"}`}
+            className={`text-[10px] font-extralight uppercase tracking-[0.32em] sm:tracking-[0.42em] ${hasImage ? "text-fc-accent" : "text-fc-primary"}`}
             style={{ fontFamily: "var(--font-manrope), system-ui, sans-serif" }}
           >
             {eyebrow}
@@ -71,7 +71,7 @@ export function PageHero({
         <Reveal
           as="h1"
           delay={eyebrow ? 140 : 0}
-          className={`${eyebrow ? "mt-4" : ""} max-w-[22ch] text-pretty text-3xl font-black leading-[1.05] tracking-tight md:text-5xl lg:text-[3.5rem] ${align === "center" ? "mx-auto" : ""}`}
+          className={`${eyebrow ? "mt-3 sm:mt-4" : ""} max-w-[22ch] text-balance text-pretty text-[1.85rem] font-black leading-[1.08] tracking-tight sm:text-3xl md:text-5xl lg:text-[3.5rem] ${align === "center" ? "mx-auto" : ""}`}
           style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}
         >
           {title}
@@ -80,7 +80,7 @@ export function PageHero({
           <Reveal
             as="p"
             delay={(eyebrow ? 140 : 0) + 220}
-            className={`mt-6 max-w-2xl text-base font-extralight leading-relaxed ${hasImage ? "text-white/90" : "text-fc-secondary"} ${align === "center" ? "mx-auto" : ""}`}
+            className={`mt-5 max-w-2xl text-[14.5px] font-extralight leading-relaxed sm:mt-6 sm:text-base ${hasImage ? "text-white/90" : "text-fc-secondary"} ${align === "center" ? "mx-auto" : ""}`}
             style={{ fontFamily: "var(--font-manrope), system-ui, sans-serif" }}
           >
             {lead}

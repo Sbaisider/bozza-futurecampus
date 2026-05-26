@@ -23,7 +23,7 @@ export default function ContattiPage() {
       />
 
       <section className="bg-fc-light">
-        <div className="mx-auto grid max-w-5xl gap-12 px-5 py-16 md:grid-cols-[1fr_1.3fr] md:gap-16 md:px-8 md:py-24">
+        <div className="mx-auto grid max-w-5xl gap-10 px-5 py-12 sm:gap-12 sm:py-16 md:grid-cols-[1fr_1.3fr] md:gap-16 md:px-8 md:py-24">
           <Reveal as="div">
             <p
               className="text-[10px] font-extralight uppercase tracking-[0.32em] text-fc-primary"
@@ -33,7 +33,7 @@ export default function ContattiPage() {
             </p>
             <a
               href={`mailto:${contatti.emailPubblica}`}
-              className="mt-3 inline-block break-words text-[18px] font-black leading-tight tracking-tight text-fc-dark transition-colors hover:text-fc-primary md:text-[20px]"
+              className="mt-3 inline-block break-all text-[15.5px] font-black leading-tight tracking-tight text-fc-dark transition-colors hover:text-fc-primary sm:text-[18px] md:text-[20px]"
               style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}
             >
               {contatti.emailPubblica}

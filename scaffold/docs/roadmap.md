@@ -82,7 +82,7 @@ Ultimo aggiornamento: 25 maggio 2026.
 - **Pagina `/edizioni/[slug]`** — controllare allineamento al nuovo design.
 - **SEO** — metadati e Open Graph dedicati per home, `/edizioni`, `/blog`.
 - **Mobile QA** — la hero "muro di foto" + la timeline orizzontale funzionano bene su mobile? Test su iPhone reale.
-- **CORS produzione** — quando il sito andrà online, aggiungere il dominio (`https://futurecampusfabriano.it`) alla whitelist CORS di Sanity (Manage → API → CORS origins).
+- **CORS produzione** — prima del deploy aggiungere `https://futurecampus.it` e `https://www.futurecampus.it` alla whitelist CORS di Sanity (Manage → API → CORS origins, allow credentials: sì). Istruzioni complete in `docs/sanity-setup.md`.
 
 ---
 

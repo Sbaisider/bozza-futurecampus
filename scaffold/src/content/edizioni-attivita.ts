@@ -65,6 +65,17 @@ function foto5(folder: string, ext: "jpg" | "JPG" = "jpg"): string[] {
   return [1, 2, 3, 4, 5].map((n) => `${safe}/${n}.${ext}`);
 }
 
+/**
+ * Variante di `foto5` per quando i nomi file NON seguono lo schema 1..5
+ * (es. edizione 2025, in cui le foto conservano la numerazione originale
+ * di scatto: 3.JPG, 7.JPG, 10.JPG, ecc.). Accetta la lista esplicita dei
+ * 5 file da includere e gestisce comunque l'URL-encoding per segmento.
+ */
+function fotoFiles(folder: string, files: string[]): string[] {
+  const safe = folder.split("/").map(encodeURIComponent).join("/");
+  return files.map((f) => `${safe}/${f}`);
+}
+
 /* ──────────────────────────────────────────────────────────────────────────
    2023 — Fabriano. Prima edizione con tre classi: Beginner, Master, Insieme
    (no Advanced: in quell'anno non esisteva ancora). 23 attività totali (9+9+5).
@@ -420,6 +431,443 @@ const ATTIVITA_2024_INSIEME: Attivita[] = [
   },
 ];
 
+/* ──────────────────────────────────────────────────────────────────────────
+   2025 — Fabriano. Quarta edizione: 150 ragazzi, tre classi a pieno regime
+   (Beginner + Master + Advanced) più la trasversale Insieme. I nomi file
+   conservano la numerazione di scatto originale → usiamo `fotoFiles`.
+   ─────────────────────────────────────────────────────────────────────── */
+
+const BASE_2025 = "/edizioni/2025/fabriano";
+
+const ATTIVITA_2025_BEGINNER: Attivita[] = [
+  {
+    id: "rotary-soft-skill",
+    data: "2025-06-12",
+    titolo: "Rotary + Soft Skill",
+    foto: fotoFiles(`${BASE_2025}/beginner/06_12_25_B_Rotary+SoftSkill`, [
+      "3.JPG",
+      "4.JPG",
+      "7.JPG",
+      "8.JPG",
+      "10.JPG",
+    ]),
+  },
+  {
+    id: "gestione-risorse-economiche",
+    data: "2025-06-16",
+    titolo: "La gestione delle risorse economiche",
+    foto: fotoFiles(
+      `${BASE_2025}/beginner/06_16_25_B_LaGestioneDelleRisorseEconomiche`,
+      ["2.JPG", "3.JPG", "4.JPG", "6.JPG", "7.JPG"],
+    ),
+  },
+  {
+    id: "sicurezza-cc-ps",
+    data: "2025-06-19",
+    titolo: "Sicurezza + Carabinieri + Polizia Stradale",
+    foto: fotoFiles(`${BASE_2025}/beginner/06_19_25_B_Sicurezza+CC+PS`, [
+      "1.JPG",
+      "2.JPG",
+      "5.JPG",
+      "9.JPG",
+      "10.JPG",
+    ]),
+  },
+  {
+    id: "elica",
+    data: "2025-06-26",
+    titolo: "Elica",
+    foto: fotoFiles(`${BASE_2025}/beginner/06_26_25_B_Elica`, [
+      "1.JPG",
+      "2.JPG",
+      "4.JPG",
+      "6.JPG",
+      "10.JPG",
+    ]),
+  },
+  {
+    id: "teatro-gentile",
+    data: "2025-06-27",
+    titolo: "Teatro Gentile",
+    foto: fotoFiles(`${BASE_2025}/beginner/06_27_25_TeatroGentile`, [
+      "1.jpg",
+      "2.jpg",
+      "3.jpg",
+      "4.jpg",
+      "5.jpg",
+    ]),
+  },
+  {
+    id: "ai",
+    data: "2025-07-01",
+    titolo: "Intelligenza Artificiale",
+    foto: fotoFiles(`${BASE_2025}/beginner/07_01_25_B_AI`, [
+      "1.JPG",
+      "2.JPG",
+      "3.JPG",
+      "4.JPG",
+      "5.JPG",
+    ]),
+  },
+  {
+    id: "ciclo-prodotto",
+    data: "2025-07-02",
+    titolo: "Il ciclo del prodotto",
+    foto: fotoFiles(`${BASE_2025}/beginner/07_02_25_B_IlCicloDelProdotto`, [
+      "1.JPG",
+      "2.JPG",
+      "3.JPG",
+      "4.JPG",
+      "5.JPG",
+    ]),
+  },
+  {
+    id: "comunicazione-video",
+    data: "2025-07-04",
+    titolo: "Comunicazione attraverso il video",
+    foto: fotoFiles(
+      `${BASE_2025}/beginner/07_04_25_B_ComunicazioneAttraversoVideo`,
+      ["1.JPG", "3.JPG", "4.JPG", "7.JPG", "9.JPG"],
+    ),
+  },
+  {
+    id: "cyberbullismo-soft-skill-2",
+    data: "2025-07-07",
+    titolo: "Cyberbullismo + Soft Skill 2",
+    foto: fotoFiles(
+      `${BASE_2025}/beginner/07_07_25_B_Cyberbullismo+SoftSkill2`,
+      ["1.JPG", "2.JPG", "3.JPG", "4.JPG", "5.JPG"],
+    ),
+  },
+  {
+    id: "simulazione-colloquio-lavoro",
+    data: "2025-07-08",
+    titolo: "Simulazione colloquio di lavoro",
+    foto: fotoFiles(
+      `${BASE_2025}/beginner/07_08_25_B_SimulazioneColloquioLavoro`,
+      ["1.JPG", "3.JPG", "5.JPG", "6.JPG", "7.JPG"],
+    ),
+  },
+  {
+    id: "airforce-electrolux",
+    data: "2025-07-16",
+    titolo: "AirForce + Electrolux",
+    foto: fotoFiles(`${BASE_2025}/beginner/07_16_25_B_Airforce_Electrolux`, [
+      "1.JPG",
+      "2.JPG",
+      "4.JPG",
+      "5.JPG",
+      "7.JPG",
+    ]),
+  },
+];
+
+const ATTIVITA_2025_MASTER: Attivita[] = [
+  {
+    id: "un-viaggio-senza-fine",
+    data: "2025-06-13",
+    titolo: "Un viaggio senza fine",
+    foto: fotoFiles(`${BASE_2025}/master/06_13_25_M_UnViaggioSenzaFine`, [
+      "1.JPG",
+      "2.JPG",
+      "3.JPG",
+      "4.JPG",
+      "5.JPG",
+    ]),
+  },
+  {
+    id: "saracino-parole-gesti-connessioni",
+    data: "2025-06-18",
+    titolo: "S. Saracino · Parole, gesti, connessioni",
+    foto: fotoFiles(
+      `${BASE_2025}/master/06_18_25_M_SSaracino_ParoleGestiConnessioni`,
+      ["1.JPG", "2.JPG", "4.JPG", "5.JPG", "6.JPG"],
+    ),
+  },
+  {
+    id: "univpm",
+    data: "2025-06-27",
+    titolo: "UNIVPM",
+    foto: fotoFiles(`${BASE_2025}/master/06_27_25_M_UnivPM`, [
+      "2.JPG",
+      "4.JPG",
+      "6.JPG",
+      "7.JPG",
+      "8.JPG",
+    ]),
+  },
+  {
+    id: "diasen",
+    data: "2025-07-02",
+    titolo: "Diasen",
+    foto: fotoFiles(`${BASE_2025}/master/07_02_25_M_Diasen`, [
+      "2.JPG",
+      "3.JPG",
+      "4.JPG",
+      "5.JPG",
+      "6.JPG",
+    ]),
+  },
+  {
+    id: "mani-in-pasta",
+    data: "2025-07-03",
+    titolo: "Le mani in pasta",
+    foto: fotoFiles(`${BASE_2025}/master/07_03_25_M_LeManiInPasta`, [
+      "1.JPG",
+      "2.JPG",
+      "6.JPG",
+      "7.JPG",
+      "8.JPG",
+    ]),
+  },
+  {
+    id: "creativita",
+    data: "2025-07-07",
+    titolo: "La creatività!",
+    foto: fotoFiles(`${BASE_2025}/master/07_07_25_M_LaCreatività!`, [
+      "1.JPG",
+      "2.JPG",
+      "3.JPG",
+      "4.JPG",
+      "5.JPG",
+    ]),
+  },
+  {
+    id: "ariston-project-work",
+    data: "2025-07-10",
+    titolo: "Ariston · Project Work",
+    foto: fotoFiles(`${BASE_2025}/master/07_10_25_M_AristonProjectWork`, [
+      "1.JPG",
+      "2.JPG",
+      "3.JPG",
+      "4.JPG",
+      "5.JPG",
+    ]),
+  },
+  {
+    id: "ariston-lean-game",
+    data: "2025-07-11",
+    titolo: "Ariston · Lean Game",
+    foto: fotoFiles(`${BASE_2025}/master/07_11_25_M_AristonLeanGame`, [
+      "1.JPG",
+      "2.JPG",
+      "3.JPG",
+      "4.JPG",
+      "5.JPG",
+    ]),
+  },
+  {
+    id: "business-model-canvas",
+    data: "2025-07-14",
+    titolo: "Business Model Canvas",
+    foto: fotoFiles(`${BASE_2025}/master/07_14_25_BusinessModelCanvas`, [
+      "1.jpg",
+      "2.jpg",
+      "3.jpg",
+      "4.jpg",
+      "5.jpg",
+    ]),
+  },
+  {
+    id: "carisma-power",
+    data: "2025-07-17",
+    titolo: "Carisma Power",
+    foto: fotoFiles(`${BASE_2025}/master/07_17_25_M_CarismaPower`, [
+      "1.JPG",
+      "2.JPG",
+      "3.JPG",
+      "4.JPG",
+      "5.JPG",
+    ]),
+  },
+  {
+    id: "tecnoimpianti-fabcon",
+    data: "2025-07-18",
+    titolo: "Tecnoimpianti + FabCon",
+    foto: fotoFiles(`${BASE_2025}/master/07_18_25_Tecnoimpianti_FabCon`, [
+      "1.jpg",
+      "2.jpg",
+      "3.jpg",
+      "4.jpg",
+      "5.jpg",
+    ]),
+  },
+];
+
+const ATTIVITA_2025_ADVANCED: Attivita[] = [
+  {
+    id: "consiglieri-comunali-1-giorno",
+    data: "2025-06-13",
+    titolo: "Consiglieri Comunali per un giorno",
+    foto: fotoFiles(
+      `${BASE_2025}/advanced/06_13_25_A_ConsiglieriComunaliX1Giorno`,
+      ["1.JPG", "2.JPG", "3.JPG", "4.JPG", "5.JPG"],
+    ),
+  },
+  {
+    id: "mann-hummel",
+    data: "2025-06-30",
+    titolo: "Mann + Hummel",
+    foto: fotoFiles(`${BASE_2025}/advanced/06_30_25_A_Mann+Hummel`, [
+      "1.JPG",
+      "2.JPG",
+      "3.JPG",
+      "4.JPG",
+      "5.JPG",
+    ]),
+  },
+  {
+    id: "public-speaking",
+    data: "2025-07-10",
+    titolo: "Public Speaking",
+    foto: fotoFiles(`${BASE_2025}/advanced/07_10_25_A_PublicSpeaking`, [
+      "1.JPG",
+      "2.JPG",
+      "3.JPG",
+      "4.JPG",
+      "9425.JPG",
+    ]),
+  },
+  {
+    id: "sailing-experience",
+    data: "2025-07-11",
+    titolo: "Sailing Experience · Confindustria AN + CRN",
+    foto: fotoFiles(
+      `${BASE_2025}/advanced/07_11_25_SailingExperienceConfindAN+CRN`,
+      ["1.jpg", "3.jpg", "5.jpg", "6.jpg", "7.jpg"],
+    ),
+  },
+  {
+    id: "sicurezza-cri",
+    data: "2025-07-14",
+    titolo: "Sicurezza + Croce Rossa",
+    foto: fotoFiles(`${BASE_2025}/advanced/07_14_25_A_Sicurezza+CRI`, [
+      "1.JPG",
+      "4.JPG",
+      "5.JPG",
+      "7.JPG",
+      "8.JPG",
+    ]),
+  },
+  {
+    id: "consigliere-regionale-1-giorno",
+    data: "2025-07-18",
+    titolo: "Consigliere Regionale per un giorno",
+    foto: fotoFiles(
+      `${BASE_2025}/advanced/07_18_25_A_ConsiglieriRegionaleX1Giorno`,
+      ["1.JPG", "2.JPG", "4.JPG", "8.JPG", "9.JPG"],
+    ),
+  },
+  {
+    id: "mondialita",
+    data: "2025-07-21",
+    titolo: "La mondialità",
+    foto: fotoFiles(`${BASE_2025}/advanced/07_21_25_A_LaMondialità`, [
+      "1.JPG",
+      "3.JPG",
+      "4.JPG",
+      "5.JPG",
+      "8.JPG",
+    ]),
+  },
+];
+
+const ATTIVITA_2025_INSIEME: Attivita[] = [
+  {
+    id: "giornata-inaugurale",
+    data: "2025-06-11",
+    titolo: "Giornata inaugurale",
+    foto: fotoFiles(`${BASE_2025}/tutti/06_11_25_GiornataInagurale`, [
+      "1.JPG",
+      "2.JPG",
+      "3.JPG",
+      "4.JPG",
+      "5.JPG",
+    ]),
+  },
+  {
+    id: "officina-futuro",
+    data: "2025-06-12",
+    titolo: "Officina Futuro",
+    foto: fotoFiles(`${BASE_2025}/tutti/06_12_25_Pom_Officina Futuro`, [
+      "1.JPG",
+      "2.JPG",
+      "3.JPG",
+      "4.JPG",
+      "5.JPG",
+    ]),
+  },
+  {
+    id: "salvo-apprendimento-memoria",
+    data: "2025-06-17",
+    titolo: "M. Salvo · Tecniche di apprendimento e memoria",
+    foto: fotoFiles(
+      `${BASE_2025}/tutti/06_17_25_MSalvo_TecnicheApprendimentoMemoria`,
+      ["1.JPG", "3.JPG", "4.JPG", "6.JPG", "7.JPG"],
+    ),
+  },
+  {
+    id: "urban-game-la-fratta",
+    data: "2025-06-20",
+    titolo: "Urban Game + La Fratta",
+    foto: fotoFiles(`${BASE_2025}/tutti/06_20_25_UrbanGame+LaFratta`, [
+      "1.JPG",
+      "2.JPG",
+      "4.JPG",
+      "7.JPG",
+      "8.JPG",
+    ]),
+  },
+  {
+    id: "mostra-giotto",
+    data: "2025-06-30",
+    titolo: "Mostra Giotto",
+    foto: fotoFiles(`${BASE_2025}/tutti/06_30_25_M_Giotto`, [
+      "1.JPG",
+      "3.JPG",
+      "4.JPG",
+      "5.JPG",
+      "6.JPG",
+    ]),
+  },
+  {
+    id: "hackathon",
+    data: "2025-07-15",
+    titolo: "Hackathon",
+    foto: fotoFiles(`${BASE_2025}/tutti/07_15_25_Hackathon`, [
+      "2.JPG",
+      "4.JPG",
+      "6.JPG",
+      "7.JPG",
+      "10.JPG",
+    ]),
+  },
+  {
+    id: "giotto-inaugurazione",
+    data: "2025-07-16",
+    titolo: "Giotto · inaugurazione",
+    foto: fotoFiles(`${BASE_2025}/tutti/07_16_25_GiottoInaugurazione`, [
+      "1.JPG",
+      "2.JPG",
+      "3.JPG",
+      "4.JPG",
+      "5.JPG",
+    ]),
+  },
+  {
+    id: "giornata-finale",
+    data: "2025-07-23",
+    titolo: "Giornata finale",
+    foto: fotoFiles(`${BASE_2025}/tutti/07_23_25_GiornataFinale`, [
+      "2.JPG",
+      "3.JPG",
+      "6.JPG",
+      "8.JPG",
+      "9.JPG",
+    ]),
+  },
+];
+
 /**
  * Indice: chiave = anno (stringa, es. "2025"), valore = elenco classi
  * con relative attività. Lasciare `attivita: []` per le classi che non
@@ -442,9 +890,10 @@ export const edizioniAttivita: Record<string, ClasseAnnata[]> = {
   ],
 
   "2025": [
-    { classe: "Beginner", attivita: [] },
-    { classe: "Master", attivita: [] },
-    { classe: "Advanced", attivita: [] },
+    { classe: "Beginner", attivita: ATTIVITA_2025_BEGINNER },
+    { classe: "Master", attivita: ATTIVITA_2025_MASTER },
+    { classe: "Advanced", attivita: ATTIVITA_2025_ADVANCED },
+    { classe: "Insieme", attivita: ATTIVITA_2025_INSIEME },
   ],
 
   "2026": [

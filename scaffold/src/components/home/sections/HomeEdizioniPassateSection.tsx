@@ -7,15 +7,12 @@ import { getEdizioniOrdinate } from "@/content/edizioni";
 const FONT_BODY = { fontFamily: "var(--font-manrope), system-ui, sans-serif" };
 const FONT_DISPLAY = { fontFamily: "var(--font-montserrat), system-ui, sans-serif" };
 
-const BACKDROP_PHOTO = "/foto/1287.JPG";
-
 /**
  * Edizioni passate: 4 card foto attaccate (gap 0), full-bleed (niente padding
  * laterale al container). Card più alte e prominenti, hover che scala 1.06
  * verso l'interno (z-index alto per non venir tagliata dai vicini).
  *
- * Sfondo: stessa foto della sezione "Non è il solito campus" con blur 24px
- * e patina blu primary per coerenza visiva.
+ * Sfondo: blu pieno + texture a punti (stesso della hero mobile).
  */
 export function HomeEdizioniPassateSection() {
   const edizioni = getEdizioniOrdinate("desc")
@@ -24,25 +21,19 @@ export function HomeEdizioniPassateSection() {
 
   return (
     <section className="relative z-10 isolate overflow-hidden bg-fc-primary">
-      {/* Sfondo foto blurata con leggero zoom in loop */}
-      <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden" aria-hidden>
-        <div className="fc-crescita-bg-zoom absolute inset-0 h-full w-full">
-          <Image
-            src={BACKDROP_PHOTO}
-            alt=""
-            fill
-            sizes="100vw"
-            quality={60}
-            priority={false}
-            className="object-cover"
-            style={{ filter: "blur(24px)", transform: "scale(1.15)" }}
-          />
-        </div>
-      </div>
-
-      {/* Patina blu in overlay per leggibilità testo bianco */}
+      {/* Texture a punti molto leggera (stessa della hero mobile) */}
       <div
-        className="pointer-events-none absolute inset-0 -z-[5] bg-gradient-to-b from-fc-primary/85 via-fc-primary/78 to-fc-primary/90"
+        className="pointer-events-none absolute inset-0"
+        style={{
+          backgroundImage:
+            "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.06) 1px, transparent 0)",
+          backgroundSize: "22px 22px",
+        }}
+        aria-hidden
+      />
+      {/* Glow morbido in alto, scurimento in basso → profondità */}
+      <div
+        className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.06] via-transparent to-black/30"
         aria-hidden
       />
 
@@ -54,7 +45,7 @@ export function HomeEdizioniPassateSection() {
               className="max-w-[20ch] text-balance text-[1.85rem] font-black leading-[1.08] tracking-tight text-fc-white sm:text-[2.25rem] md:text-[2.75rem]"
               style={FONT_DISPLAY}
             >
-              Quattro anni di campus.
+              Edizioni passate
             </h2>
           </Reveal>
           <Reveal as="div" delay={180} className="self-start md:self-end">
@@ -69,32 +60,43 @@ export function HomeEdizioniPassateSection() {
         </div>
       </div>
 
-      {/* Card a tutta larghezza, attaccate. Blur+zoom-leggero di default,
-          al hover il blur sparisce e parte uno zoom lento. Tutto su un singolo
-          layer Image (no crossfade) → niente scatti, transizioni smooth. */}
-      <ul className="relative mt-16 grid grid-cols-2 gap-0 md:mt-20 md:grid-cols-4">
+      {/* MOBILE (<md): carosello orizzontale con snap, swipe-friendly.
+          DESKTOP (md+): griglia full-bleed 4 colonne come prima.
+          Blur+zoom-leggero di default; hover su desktop attiva sharp+zoom. */}
+      <ul
+        className="
+          fc-edizioni-carousel
+          relative mt-12 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth
+          px-5 pb-5 pt-2
+          md:mt-20 md:grid md:grid-cols-4 md:gap-0 md:overflow-visible md:px-0 md:py-0
+        "
+      >
         {edizioni.map((e, idx) => (
           <Reveal
             as="li"
             key={e.slug}
             delay={300 + idx * 110}
-            className="group relative"
+            className="
+              group relative shrink-0 snap-center
+              w-[78vw] max-w-[22rem]
+              md:w-auto md:max-w-none md:shrink md:snap-align-none
+            "
           >
             <Link
               href={`/edizioni/${e.slug}`}
-              className="relative block aspect-[3/4] overflow-hidden bg-fc-dark focus:outline-none focus-visible:ring-2 focus-visible:ring-fc-primary/40 md:aspect-[3/4.5]"
+              className="relative block aspect-[3/4] overflow-hidden rounded-xl bg-fc-dark shadow-[0_18px_40px_-12px_rgba(0,0,0,0.55)] ring-1 ring-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-fc-accent md:rounded-none md:shadow-none md:ring-0 md:aspect-[3/4.5] md:focus-visible:ring-fc-primary/40"
             >
               <Image
                 src={e.copertina}
                 alt={`Edizione ${e.anno}`}
                 fill
-                sizes="(min-width: 768px) 25vw, 50vw"
+                sizes="(min-width: 768px) 25vw, 78vw"
                 quality={72}
                 className="fc-edizione-image object-cover"
               />
               <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-fc-dark/70 via-fc-dark/15 to-transparent" />
               <p
-                className="pointer-events-none absolute inset-x-6 bottom-7 text-[2.75rem] font-black leading-none tracking-tight text-white md:inset-x-7 md:bottom-8 md:text-[3.5rem] lg:text-[4.25rem]"
+                className="pointer-events-none absolute inset-x-4 bottom-5 text-[2.25rem] font-black leading-none tracking-tight text-white sm:inset-x-6 sm:bottom-7 sm:text-[2.75rem] md:inset-x-7 md:bottom-8 md:text-[3.5rem] lg:text-[4.25rem]"
                 style={FONT_DISPLAY}
               >
                 {e.anno}
@@ -103,6 +105,9 @@ export function HomeEdizioniPassateSection() {
           </Reveal>
         ))}
       </ul>
+
+      {/* Spazio in fondo (solo mobile) per evitare che il carosello tocchi la sezione successiva */}
+      <div className="h-10 md:hidden" aria-hidden />
     </section>
   );
 }
