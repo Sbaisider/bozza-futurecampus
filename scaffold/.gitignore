@@ -43,3 +43,4 @@ next-env.d.ts
 # backup foto/video originali (creati dagli script in /scripts)
 /public/foto-originali/
 /public/video-originali/
+/public/edizioni-originali/

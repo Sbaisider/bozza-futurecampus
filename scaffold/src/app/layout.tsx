@@ -46,6 +46,7 @@ export default function RootLayout({
   return (
     <html
       lang="it"
+      data-scroll-behavior="smooth"
       className={`${manrope.variable} ${graduate.variable} ${montserrat.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col bg-fc-light font-sans text-fc-dark">

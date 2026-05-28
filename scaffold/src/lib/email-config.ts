@@ -48,11 +48,14 @@ export async function sendEmail({
 }): Promise<{ ok: true } | { ok: false; error: string }> {
   const cfg = getEmailConfig();
 
+  // Difesa in profondità: niente CR/LF nell'oggetto (header injection).
+  const safeSubject = subject.replace(/[\r\n]+/g, " ").trim();
+
   if (cfg.mode === "console") {
     // eslint-disable-next-line no-console
     console.info(
       "[email/console] mock send (configurare RESEND_API_KEY in .env.local per invio reale)",
-      { to, subject, replyTo },
+      { to, subject: safeSubject, replyTo },
     );
     return { ok: true };
   }
@@ -67,7 +70,7 @@ export async function sendEmail({
       body: JSON.stringify({
         from: cfg.from,
         to: [to],
-        subject,
+        subject: safeSubject,
         html,
         reply_to: replyTo,
       }),

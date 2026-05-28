@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { escapeHtml, getEmailConfig, sendEmail } from "@/lib/email-config";
+import { clientIp, rateLimit } from "@/lib/rate-limit";
 
 type IscrizionePayload = {
   nome?: string;
@@ -14,12 +15,25 @@ type IscrizionePayload = {
 };
 
 const ISCRIZIONE_MAX_LEN = 4000;
+const MAX_BODY_BYTES = 100_000;
 
 function isEmail(v: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
 }
 
 export async function POST(req: Request) {
+  const limit = rateLimit(`iscrizione:${clientIp(req)}`, 5, 60_000);
+  if (!limit.ok) {
+    return NextResponse.json(
+      { ok: false, error: "Troppe richieste. Riprova tra poco." },
+      { status: 429, headers: { "Retry-After": String(limit.retryAfterSec) } },
+    );
+  }
+
+  if (Number(req.headers.get("content-length") ?? 0) > MAX_BODY_BYTES) {
+    return NextResponse.json({ ok: false, error: "Payload troppo grande" }, { status: 413 });
+  }
+
   let body: IscrizionePayload;
   try {
     body = (await req.json()) as IscrizionePayload;
