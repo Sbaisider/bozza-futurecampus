@@ -66,20 +66,22 @@ const nextConfig: NextConfig = {
   },
 
   /**
-   * Ottimizzazione immagini: Next genera versioni AVIF/WebP a richiesta,
-   * usando i breakpoint qui sotto. Riduce il peso scaricato da JPG enormi
-   * di camera (3-15MB) a 30-200KB per il browser.
+   * Immagini servite "raw" senza l'optimizer di Vercel.
+   *
+   * Perché: l'optimizer di Vercel ritorna 400 su questo progetto (vedi
+   * runtime logs/test); le foto sorgente sono comunque già pre-ottimizzate
+   * da `scripts/optimize-images.mjs` (max 1920px, JPEG q78 mozjpeg, ~170 KB
+   * di media). Servirle dirette evita il routing per /_next/image e fa
+   * vedere tutto subito. Da rimettere a `unoptimized: false` quando l'issue
+   * dell'optimizer è risolto.
    */
   images: {
+    unoptimized: true,
     formats: ["image/avif", "image/webp"],
-    // Dimensioni che il sito userà davvero (vs le 8 di default).
     deviceSizes: [360, 640, 828, 1080, 1280, 1920],
     imageSizes: [16, 32, 64, 96, 160, 256, 384],
-    // Qualità abilitate: 52 hero column strip, 60 sfondi blurred, 70/72 gallery/card, 75 gallery, 85 hero.
     qualities: [52, 55, 60, 70, 72, 75, 85],
-    // Cache lato CDN/Next: 30 giorni. In dev è ininfluente, in prod aiuta.
     minimumCacheTTL: 60 * 60 * 24 * 30,
-    // Sanity CDN per le immagini caricate da Studio.
     remotePatterns: [
       {
         protocol: "https",
