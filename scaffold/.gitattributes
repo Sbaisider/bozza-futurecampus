@@ -1,3 +1,5 @@
-# Foto e video serviti da Next da public/ — Git LFS (limite GitHub 100MB/file sui blob Git).
-public/foto/** filter=lfs diff=lfs merge=lfs -text
-public/video/** filter=lfs diff=lfs merge=lfs -text
+# Storia: prima si usava Git LFS per /public/foto e /public/video, ma la quota
+# GitHub LFS si era esaurita e Vercel materializzava solo i pointer (130 byte di
+# testo) → immagini vuote sul sito live. Ora gli asset in /public sono blob git
+# normali; sono comunque pre-ottimizzati a max 1920px / JPEG q78 da
+# scripts/optimize-images.mjs (~170 KB di media).
