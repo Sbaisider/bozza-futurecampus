@@ -45,7 +45,7 @@ export function SiteFooter() {
                 <li key={l.href}>
                   <Link
                     href={l.href}
-                    className="text-[13px] font-extralight tracking-wide text-fc-soft transition-colors hover:text-fc-white"
+                    className="block py-1.5 text-[13px] font-extralight tracking-wide text-fc-soft transition-colors hover:text-fc-white"
                     style={FONT_BODY}
                   >
                     {l.label}
@@ -69,13 +69,13 @@ export function SiteFooter() {
               <li>
                 <a
                   href={`mailto:${contatti.emailPubblica}`}
-                  className="transition-colors hover:text-fc-white"
+                  className="block break-all py-1.5 transition-colors hover:text-fc-white"
                 >
                   {contatti.emailPubblica}
                 </a>
               </li>
-              <li>{contatti.sedeAttivita}</li>
-              <li>{contatti.organizzazione}</li>
+              <li className="py-1.5">{contatti.sedeAttivita}</li>
+              <li className="py-1.5">{contatti.organizzazione}</li>
             </ul>
           </div>
         </div>
