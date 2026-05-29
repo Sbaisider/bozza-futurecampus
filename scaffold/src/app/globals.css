@@ -261,12 +261,18 @@ html {
   }
 }
 
+/* Niente overflow orizzontale (a livello html: copre anche pinch-zoom-rebound su iOS/Android). */
+html,
+body {
+  overflow-x: clip;
+  max-width: 100vw;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-manrope), system-ui, sans-serif;
-  /* Evita scroll orizzontale indesiderato su mobile (es. tracking-wide su titoli stretti). */
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 /* iOS Safari: input/textarea con font-size < 16px causano zoom automatico al focus.

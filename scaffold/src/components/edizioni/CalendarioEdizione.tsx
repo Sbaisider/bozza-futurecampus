@@ -183,7 +183,7 @@ export function CalendarioEdizione({ attivita, anno }: Props) {
 
   return (
     <section
-      className="bg-fc-light px-4 py-10 sm:px-5 sm:py-12 md:px-8 md:py-16"
+      className="overflow-hidden bg-fc-light px-4 py-10 sm:px-5 sm:py-12 md:px-8 md:py-16"
       aria-label={`Calendario delle attività dell'edizione ${anno}`}
     >
       <div className="mx-auto max-w-6xl">
@@ -430,7 +430,7 @@ function ModaleAttivita({
       onClick={onClose}
     >
       <div
-        className="relative mx-2 flex max-h-[94svh] w-full max-w-5xl flex-col overflow-hidden rounded-lg bg-fc-dark text-white shadow-2xl sm:mx-4 md:mx-8"
+        className="relative mx-2 flex max-h-[min(94svh,calc(100dvh-1rem))] w-full max-w-[min(100dvw-1rem,64rem)] flex-col overflow-hidden rounded-lg bg-fc-dark text-white shadow-2xl sm:mx-4 sm:max-w-[min(100dvw-2rem,64rem)] md:mx-8 md:max-w-[min(100dvw-4rem,64rem)]"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Pulsante chiudi */}
