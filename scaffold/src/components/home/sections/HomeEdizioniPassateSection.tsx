@@ -92,6 +92,12 @@ export function HomeEdizioniPassateSection() {
                 fill
                 sizes="(min-width: 768px) 25vw, 78vw"
                 quality={72}
+                /* Carosello a 4 card: carica subito tutte, cosi` quando l'utente
+                   fa swipe orizzontale le card laterali sono gia` pronte (con
+                   lazy default capitava di vedere un rettangolo nero perche` la
+                   foto si scaricava solo quando la card restava "a riposo" in
+                   viewport per qualche istante). */
+                loading="eager"
                 className="fc-edizione-image object-cover"
               />
               <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-fc-dark/70 via-fc-dark/15 to-transparent" />
