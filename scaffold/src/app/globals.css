@@ -82,24 +82,27 @@
   will-change: transform;
 }
 
-/* Edizioni passate — foto sempre blurate (anche mobile), unblur+zoom su
-   hover desktop. Su mobile niente animazione/will-change → stato statico,
-   nessun layer compositor permanente, niente scatti nello scroll. */
+/* Edizioni passate — foto blurate di default, sharp+zoom al hover/tap.
+   Le regole :hover/:focus-visible/:active sono FUORI dal media query così
+   funzionano anche al tap su mobile (era il comportamento originale).
+   will-change vive dentro @media (hover) per non avere un compositor layer
+   permanente su touch device → niente scatti nel carosello mobile. */
 .fc-edizione-image {
   filter: blur(10px) saturate(0.95);
   transform: scale(1.06);
+  transition:
+    filter 1500ms cubic-bezier(0.22, 0.61, 0.36, 1),
+    transform 4500ms cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.group:hover .fc-edizione-image,
+.group:focus-visible .fc-edizione-image,
+.group:active .fc-edizione-image {
+  filter: blur(0px) saturate(1);
+  transform: scale(1.14);
 }
 @media (hover: hover) {
   .fc-edizione-image {
-    transition:
-      filter 1500ms cubic-bezier(0.22, 0.61, 0.36, 1),
-      transform 4500ms cubic-bezier(0.22, 0.61, 0.36, 1);
     will-change: transform, filter;
-  }
-  .group:hover .fc-edizione-image,
-  .group:focus-visible .fc-edizione-image {
-    filter: blur(0px) saturate(1);
-    transform: scale(1.14);
   }
 }
 
@@ -109,7 +112,8 @@
     filter: blur(6px) saturate(0.95);
   }
   .group:hover .fc-edizione-image,
-  .group:focus-visible .fc-edizione-image {
+  .group:focus-visible .fc-edizione-image,
+  .group:active .fc-edizione-image {
     filter: blur(0px);
     transform: scale(1.04);
   }
