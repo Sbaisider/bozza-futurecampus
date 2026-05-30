@@ -106,6 +106,15 @@
   }
 }
 
+/* Su mobile (< md) riduciamo molto il blur di default così le copertine
+   sono leggibili al primo colpo d'occhio nel carosello. */
+@media (max-width: 767px) {
+  .fc-edizione-image {
+    filter: blur(2px) saturate(0.98);
+    transform: scale(1.02);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .fc-edizione-image {
     transition: none;

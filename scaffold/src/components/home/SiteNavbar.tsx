@@ -7,13 +7,15 @@ import { forwardRef, useCallback, useEffect, useId, useState } from "react";
 const links = [
   { href: "/edizioni", label: "Edizioni" },
   { href: "/blog", label: "Blog" },
+  { href: "/social", label: "Social" },
   { href: "/contatti", label: "Contatti" },
 ];
 
-// Mobile panel: solo Edizioni e Blog (Home/Contatti rimossi su richiesta).
+// Mobile panel: solo Edizioni, Blog e Social (Home/Contatti rimossi su richiesta).
 const mobileLinks = [
   { href: "/edizioni", label: "Edizioni" },
   { href: "/blog", label: "Blog" },
+  { href: "/social", label: "Social" },
 ];
 
 const FONT_BODY = { fontFamily: "var(--font-manrope), system-ui, sans-serif" };

@@ -44,7 +44,7 @@ export const edizioni: Edizione[] = [
     titolo: "Il primo Campus, l'idea che diventa realtà",
     sintesi:
       "Cinquanta ragazzi, una sola classe, sei settimane di scoperta. La prima volta di Future Campus.",
-    copertina: "/foto/520.JPG",
+    copertina: "/edizioni/copertine/copertina2022.JPG",
     paragrafiRacconto: [
       "Era il 10 giugno 2022 e nessuno sapeva cosa aspettarsi. Cinquanta ragazzi delle scuole superiori, un format mai sperimentato, un'idea condivisa: provare a fare formazione in modo diverso, dove l'esperienza vale più del libro di testo.",
       "Da quel primo gruppo è nato tutto. Alcuni di quei ragazzi sono tornati ogni anno, prima come allievi della classe master, poi come coach dei più giovani.",
@@ -88,7 +88,7 @@ export const edizioni: Edizione[] = [
     titolo: "Nascono le due classi: Beginner e Master",
     sintesi:
       "I primi ragazzi chiedono di continuare. Si aprono due classi parallele e il Campus raddoppia.",
-    copertina: "/foto/1287.JPG",
+    copertina: "/edizioni/copertine/copertina2023.JPG",
     paragrafiRacconto: [
       "La sorpresa è arrivata a fine 2022: i ragazzi della prima edizione hanno chiesto di non interrompere il percorso. Così è nata la classe Master, accanto a una nuova Beginner di ingressi.",
       "Quarantadue iscritti nella sola Beginner, più i veterani del Master: il Campus passa da un'idea fragile a una formula riconoscibile, ripetibile, desiderata.",
@@ -135,7 +135,7 @@ export const edizioni: Edizione[] = [
     titolo: "Tre classi, oltre 100 ragazzi, un premio nazionale",
     sintesi:
       "La formula si consolida con la classe Advanced. Future Campus vince il premio Cultura del concorso Finanza e Territorio Marche.",
-    copertina: "/foto/3400.JPG",
+    copertina: "/edizioni/copertine/copertina2024.JPG",
     paragrafiRacconto: [
       "Con l'edizione 2024 il Campus si struttura definitivamente: tre classi parallele — Beginner, Master, Advanced — e oltre cento ragazzi coinvolti per tutta l'estate.",
       "Per la classe Beginner, giochi indoor e outdoor di team building. Per la Master, due giorni intensivi dentro un'azienda per costruire e presentare un progetto vero. Per l'Advanced, l'energia di gruppo diventa il filo conduttore di ogni attività, inclusa una giornata a Bruxelles ospiti della Camera di Commercio delle Marche.",
@@ -192,7 +192,7 @@ export const edizioni: Edizione[] = [
     titolo: "Centocinquanta ragazzi, le tre classi a pieno regime",
     sintesi:
       "Centocinquanta partecipanti, gli ex-Advanced diventano coach dei più giovani: il Campus è ormai una comunità.",
-    copertina: "/foto/7075.JPG",
+    copertina: "/edizioni/copertine/copertina2025.JPG",
     paragrafiRacconto: [
       "Centocinquanta ragazzi divisi in Beginner, Master e Advanced. E in più, i veterani della classe Advanced del 2024 tornano come coach per i più giovani: il Campus è diventato una comunità che si autoalimenta.",
       "Seminari su intelligenza artificiale e sicurezza sul lavoro, simulazioni di colloqui, visite alle imprese, incontri con istituzioni, public speaking, problem solving. Al termine, gli attestati a tutti i 150 partecipanti.",

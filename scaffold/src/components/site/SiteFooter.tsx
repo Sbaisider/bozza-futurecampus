@@ -8,6 +8,7 @@ const FONT_BODY = { fontFamily: "var(--font-manrope), system-ui, sans-serif" };
 const footerLinks = [
   { href: "/edizioni", label: "Edizioni" },
   { href: "/blog", label: "Blog" },
+  { href: "/social", label: "Social" },
   { href: "/contatti", label: "Contatti" },
 ];
 
@@ -23,7 +24,7 @@ export function SiteFooter() {
     <footer className="border-t border-fc-soft/60 bg-fc-dark text-fc-white">
       <div className="mx-auto max-w-6xl px-5 py-16 md:px-8 md:py-20">
         <div className="grid gap-12 md:grid-cols-[1.4fr_1fr_1fr]">
-          <div>
+          <div className="flex flex-col items-start">
             <Link
               href="/"
               className="inline-flex items-center text-white"
@@ -31,6 +32,48 @@ export function SiteFooter() {
             >
               <LetteringMark className="h-auto w-[min(70vw,18rem)] md:w-[20rem]" />
             </Link>
+            <div className="mt-5 flex w-[min(70vw,18rem)] items-center justify-center gap-4 md:w-[20rem]">
+              <a
+                href="https://www.facebook.com/ConfindustriaFABRIANO/?locale=it_IT"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Facebook — Confindustria Fabriano"
+                className="text-white/90 transition-colors hover:text-white"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  className="h-5 w-5"
+                  aria-hidden="true"
+                >
+                  <path d="M13.5 21v-7.5h2.52l.38-2.93H13.5V8.7c0-.85.24-1.43 1.46-1.43h1.56V4.65c-.27-.04-1.2-.12-2.28-.12-2.26 0-3.81 1.38-3.81 3.91v2.18H7.9v2.93h2.52V21h3.08z" />
+                </svg>
+              </a>
+              <a
+                href="https://www.instagram.com/futurecampusfabriano/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Instagram — Future Campus Fabriano"
+                className="text-white/90 transition-colors hover:text-white"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.7"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="h-5 w-5"
+                  aria-hidden="true"
+                >
+                  <rect x="3" y="3" width="18" height="18" rx="5" />
+                  <circle cx="12" cy="12" r="4" />
+                  <circle cx="17.3" cy="6.7" r="0.9" fill="currentColor" stroke="none" />
+                </svg>
+              </a>
+            </div>
           </div>
 
           <div>
