@@ -82,31 +82,46 @@
   will-change: transform;
 }
 
-/* Edizioni passate — foto blur+zoom-leggero di default, hover sharp + zoom lento.
-   Una sola Image, transizioni su filter e transform → smooth, niente scatti. */
+/* Edizioni passate.
+   - Desktop (hover): foto blurate+leggermente scalate di default, sharp+zoom
+     lento all'hover. Animazione cinematografica.
+   - Mobile (no hover): foto SHARP fin da subito, niente blur/transform/
+     will-change → niente layer compositor permanente né scatti durante lo
+     scroll del carosello.
+   Una sola Image per card, l'overlay scuro in basso garantisce leggibilità
+   dell'anno. */
 .fc-edizione-image {
-  filter: blur(10px) saturate(0.95);
-  transform: scale(1.06);
-  transition:
-    filter 1500ms cubic-bezier(0.22, 0.61, 0.36, 1),
-    transform 4500ms cubic-bezier(0.22, 0.61, 0.36, 1);
-  will-change: transform, filter;
+  filter: saturate(0.95);
 }
-.group:hover .fc-edizione-image,
-.group:focus-visible .fc-edizione-image {
-  filter: blur(0px) saturate(1);
-  transform: scale(1.14);
+@media (hover: hover) {
+  .fc-edizione-image {
+    filter: blur(10px) saturate(0.95);
+    transform: scale(1.06);
+    transition:
+      filter 1500ms cubic-bezier(0.22, 0.61, 0.36, 1),
+      transform 4500ms cubic-bezier(0.22, 0.61, 0.36, 1);
+    will-change: transform, filter;
+  }
+  .group:hover .fc-edizione-image,
+  .group:focus-visible .fc-edizione-image {
+    filter: blur(0px) saturate(1);
+    transform: scale(1.14);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .fc-edizione-image {
     transition: none;
-    filter: blur(6px) saturate(0.95);
   }
-  .group:hover .fc-edizione-image,
-  .group:focus-visible .fc-edizione-image {
-    filter: blur(0px);
-    transform: scale(1.04);
+  @media (hover: hover) {
+    .fc-edizione-image {
+      filter: blur(6px) saturate(0.95);
+    }
+    .group:hover .fc-edizione-image,
+    .group:focus-visible .fc-edizione-image {
+      filter: blur(0px);
+      transform: scale(1.04);
+    }
   }
 }
 
