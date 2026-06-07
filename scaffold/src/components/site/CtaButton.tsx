@@ -20,7 +20,7 @@ export function CtaButton({
     "inline-flex items-center justify-center px-6 py-3 text-[12px] font-black tracking-[0.18em] uppercase transition focus:outline-none focus:ring-2 focus:ring-fc-accent/60 focus:ring-offset-2";
   const variants: Record<NonNullable<CtaButtonProps["variant"]>, string> = {
     primary:
-      "rounded-full bg-fc-primary text-white shadow-sm hover:bg-fc-accent",
+      "rounded-full bg-fc-primary text-white shadow-sm hover:bg-fc-accent hover:text-fc-dark",
     ghost:
       "rounded-full border border-fc-primary/25 bg-white text-fc-primary hover:border-fc-primary/55",
     "outline-light":

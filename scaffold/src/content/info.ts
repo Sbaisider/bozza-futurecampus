@@ -50,16 +50,16 @@ export const cosaEFutureCampus = {
 
 export const padriFondatori = [
   {
-    nome: "Gabriele Micozzi",
-    bio: "Esperto di marketing e formazione, è l'ideatore del format del Campus insieme a Federica Capriotti. Disegna ogni anno il percorso esperienziale dei ragazzi.",
-  },
-  {
     nome: "Federica Capriotti",
     bio: "Ha portato il progetto dentro Confindustria e ne è oggi la regia operativa. È nata da una sua intuizione la scelta di costruire un campus diverso da qualsiasi percorso di orientamento esistente.",
   },
   {
     nome: "Ing. Francesco Merloni",
     bio: "Ha creduto e sostenuto il progetto fin dal primo giorno, attraverso la Fondazione Aristide Merloni. Il suo riconoscimento del ruolo dei giovani nel futuro del territorio è la cornice culturale del Campus.",
+  },
+  {
+    nome: "Gabriele Micozzi",
+    bio: "Esperto di marketing e formazione. Da un'indagine condotta sui giovani del territorio è nata la sua idea del Campus, di cui è ideatore del format insieme a Federica Capriotti.",
   },
 ] as const;
 

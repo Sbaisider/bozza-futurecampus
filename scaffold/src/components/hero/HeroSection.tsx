@@ -68,7 +68,7 @@ export function HeroSection({ images, sectionRef }: HeroSectionProps) {
         {/* Hint scroll in basso */}
         <div className="relative z-[2] pb-8 text-center">
           <p
-            className="text-[10px] font-extralight uppercase tracking-[0.32em] text-fc-white/55"
+            className="text-[10px] font-extralight uppercase tracking-[0.32em] text-fc-white/75"
             style={{ fontFamily: "var(--font-manrope), system-ui, sans-serif" }}
           >
             Scorri

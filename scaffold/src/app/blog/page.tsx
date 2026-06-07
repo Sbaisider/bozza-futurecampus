@@ -15,6 +15,16 @@ export const metadata: Metadata = {
   title: "Blog",
   description:
     "Aggiornamenti, storie e contenuti del Future Campus Fabriano durante tutto l'anno.",
+  alternates: { canonical: "/blog" },
+  openGraph: {
+    type: "website",
+    siteName: "Future Campus Fabriano",
+    locale: "it_IT",
+    title: "Blog · Future Campus Fabriano",
+    description: "Storie, aggiornamenti e approfondimenti dal Future Campus Fabriano.",
+    url: "/blog",
+    images: [{ url: "/og.jpg", width: 1200, height: 630, alt: "Future Campus Fabriano" }],
+  },
 };
 
 const dateFormatter = new Intl.DateTimeFormat("it-IT", {

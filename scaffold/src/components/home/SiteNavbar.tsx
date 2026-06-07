@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { forwardRef, useCallback, useEffect, useId, useState } from "react";
 
 const links = [
@@ -37,6 +38,7 @@ export const SiteNavbar = forwardRef<HTMLElement, SiteNavbarProps>(
   function SiteNavbar({ className = "" }, ref) {
     const [open, setOpen] = useState(false);
     const panelId = useId();
+    const pathname = usePathname();
 
     const close = useCallback(() => setOpen(false), []);
 
@@ -94,7 +96,8 @@ export const SiteNavbar = forwardRef<HTMLElement, SiteNavbarProps>(
                 <li key={l.label}>
                   <Link
                     href={l.href}
-                    className="text-[12px] font-extralight tracking-[0.18em] text-fc-secondary uppercase transition-colors hover:text-fc-primary"
+                    aria-current={pathname === l.href ? "page" : undefined}
+                    className="text-[12px] font-extralight tracking-[0.18em] text-fc-secondary uppercase transition-colors hover:text-fc-primary aria-[current=page]:text-fc-primary"
                     style={FONT_BODY}
                   >
                     {l.label}
@@ -180,7 +183,7 @@ export const SiteNavbar = forwardRef<HTMLElement, SiteNavbarProps>(
 
             {/* Eyebrow "Menu" */}
             <p
-              className={`relative px-6 pb-3 text-[10px] font-extralight uppercase tracking-[0.42em] text-fc-accent transition-opacity duration-500 ${
+              className={`relative px-6 pb-3 text-[10px] font-extralight uppercase tracking-[0.42em] text-fc-white/80 transition-opacity duration-500 ${
                 open ? "opacity-100" : "opacity-0"
               }`}
               style={{ ...FONT_BODY, transitionDelay: open ? "120ms" : "0ms" }}
@@ -201,6 +204,7 @@ export const SiteNavbar = forwardRef<HTMLElement, SiteNavbarProps>(
                   <Link
                     href={l.href}
                     onClick={close}
+                    aria-current={pathname === l.href ? "page" : undefined}
                     className="group flex items-center justify-between py-4 text-[22px] font-black tracking-tight text-fc-white transition-colors hover:text-fc-accent"
                     style={FONT_DISPLAY}
                   >
@@ -226,7 +230,7 @@ export const SiteNavbar = forwardRef<HTMLElement, SiteNavbarProps>(
               <Link
                 href="/contatti"
                 onClick={close}
-                className="flex min-h-[52px] w-full items-center justify-center rounded-full bg-fc-accent px-5 py-3.5 text-[12px] font-black tracking-[0.18em] text-fc-white uppercase shadow-[0_8px_24px_-8px_rgba(19,172,234,0.7)] transition active:scale-[0.98] hover:bg-fc-white hover:text-fc-primary"
+                className="flex min-h-[52px] w-full items-center justify-center rounded-full bg-fc-accent px-5 py-3.5 text-[12px] font-black tracking-[0.18em] text-fc-dark uppercase shadow-[0_8px_24px_-8px_rgba(19,172,234,0.7)] transition active:scale-[0.98] hover:bg-fc-white hover:text-fc-primary"
                 style={FONT_DISPLAY}
               >
                 Contattaci

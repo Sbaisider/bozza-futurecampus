@@ -10,6 +10,17 @@ export const metadata: Metadata = {
   title: "Contatti",
   description:
     "Scrivi al Future Campus Fabriano per informazioni, collaborazioni o opportunità di partnership.",
+  alternates: { canonical: "/contatti" },
+  openGraph: {
+    type: "website",
+    siteName: "Future Campus Fabriano",
+    locale: "it_IT",
+    title: "Contatti · Future Campus Fabriano",
+    description:
+      "Scrivi al Future Campus Fabriano per informazioni, collaborazioni o partnership.",
+    url: "/contatti",
+    images: [{ url: "/og.jpg", width: 1200, height: 630, alt: "Future Campus Fabriano" }],
+  },
 };
 
 export default function ContattiPage() {

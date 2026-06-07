@@ -44,8 +44,8 @@ export function Reveal({
     const el = ref.current;
     if (!el) return;
     if (typeof IntersectionObserver === "undefined") {
-      setRevealed(true);
-      return;
+      const raf = requestAnimationFrame(() => setRevealed(true));
+      return () => cancelAnimationFrame(raf);
     }
     const io = new IntersectionObserver(
       (entries) => {
@@ -114,8 +114,8 @@ export function RevealWords({
     const el = ref.current;
     if (!el) return;
     if (typeof IntersectionObserver === "undefined") {
-      setRevealed(true);
-      return;
+      const raf = requestAnimationFrame(() => setRevealed(true));
+      return () => cancelAnimationFrame(raf);
     }
     const io = new IntersectionObserver(
       (entries) => {
@@ -133,9 +133,16 @@ export function RevealWords({
     return () => io.disconnect();
   }, [revealed]);
 
-  // Spezza per righe (mantiene a-capo espliciti) poi per parole.
-  const lines = text.split("\n");
-  let wordIndex = 0;
+  // Spezza per righe (mantiene a-capo espliciti) poi per parole. L'indice globale
+  // di parola (per lo stagger cross-line) è precalcolato QUI, fuori dal JSX, così
+  // il render non muta variabili di scope (react-hooks/immutability).
+  let running = 0;
+  const lineData = text.split("\n").map((line) =>
+    line.split(/(\s+)/).map((token) => {
+      const isWord = token !== "" && !/^\s+$/.test(token);
+      return { token, isWord, wordIndex: isWord ? running++ : -1 };
+    }),
+  );
 
   return (
     <Tag
@@ -144,30 +151,25 @@ export function RevealWords({
       className={className}
       style={style}
     >
-      {lines.map((line, lineIdx) => {
-        const words = line.split(/(\s+)/);
-        return (
-          <span key={lineIdx} style={{ display: "block" }}>
-            {words.map((token, tokenIdx) => {
-              if (token === "") return null;
-              if (/^\s+$/.test(token)) {
-                return <span key={tokenIdx}>{token}</span>;
-              }
-              const localDelay = delay + wordIndex * wordDelay;
-              wordIndex += 1;
-              return (
-                <span
-                  key={tokenIdx}
-                  className="fc-reveal-word"
-                  style={{ animationDelay: `${localDelay}ms` }}
-                >
-                  {token}
-                </span>
-              );
-            })}
-          </span>
-        );
-      })}
+      {lineData.map((tokens, lineIdx) => (
+        <span key={lineIdx} style={{ display: "block" }}>
+          {tokens.map(({ token, isWord, wordIndex }, tokenIdx) => {
+            if (token === "") return null;
+            if (!isWord) {
+              return <span key={tokenIdx}>{token}</span>;
+            }
+            return (
+              <span
+                key={tokenIdx}
+                className="fc-reveal-word"
+                style={{ animationDelay: `${delay + wordIndex * wordDelay}ms` }}
+              >
+                {token}
+              </span>
+            );
+          })}
+        </span>
+      ))}
     </Tag>
   );
 }

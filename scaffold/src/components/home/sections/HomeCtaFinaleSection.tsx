@@ -26,7 +26,7 @@ export function HomeCtaFinaleSection() {
         <Reveal delay={280} className="mt-9 flex items-center justify-center sm:mt-12">
           <Link
             href="/contatti"
-            className="inline-flex min-h-[48px] items-center justify-center bg-white px-8 py-4 text-[11px] font-black uppercase tracking-[0.2em] text-fc-primary transition-colors hover:bg-fc-accent hover:text-white sm:px-9 sm:tracking-[0.22em]"
+            className="inline-flex min-h-[48px] items-center justify-center bg-white px-8 py-4 text-[11px] font-black uppercase tracking-[0.2em] text-fc-primary transition-colors hover:bg-fc-accent hover:text-fc-dark sm:px-9 sm:tracking-[0.22em]"
             style={FONT_DISPLAY}
           >
             Contattaci

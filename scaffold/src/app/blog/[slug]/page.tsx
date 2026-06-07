@@ -25,11 +25,35 @@ export async function generateStaticParams() {
   return slugs.map((slug) => ({ slug }));
 }
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.futurecampus.it";
+
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const a = await fetchArticolo(slug);
-  if (!a) return { title: "Articolo non trovato" };
-  return { title: a.titolo, description: a.sommario };
+  if (!a) return { title: "Articolo non trovato", robots: { index: false } };
+  const ogImage = urlFor(a.copertina).width(1200).height(630).fit("crop").url();
+  return {
+    title: a.titolo,
+    description: a.sommario,
+    alternates: { canonical: `/blog/${a.slug}` },
+    openGraph: {
+      type: "article",
+      url: `/blog/${a.slug}`,
+      title: a.titolo,
+      description: a.sommario,
+      siteName: "Future Campus Fabriano",
+      locale: "it_IT",
+      publishedTime: new Date(a.data).toISOString(),
+      authors: a.autore ? [a.autore] : undefined,
+      images: [{ url: ogImage, width: 1200, height: 630, alt: a.copertina.alt ?? a.titolo }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: a.titolo,
+      description: a.sommario,
+      images: [ogImage],
+    },
+  };
 }
 
 export default async function BlogArticoloPage({ params }: PageProps) {
@@ -40,9 +64,58 @@ export default async function BlogArticoloPage({ params }: PageProps) {
   const tutti = await fetchArticoli();
   const altri = tutti.filter((x) => x.slug !== a.slug).slice(0, 3);
 
+  const cover = urlFor(a.copertina).width(1200).height(630).fit("crop").url();
+  const publishedISO = new Date(a.data).toISOString();
+  const blogJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: a.titolo,
+    description: a.sommario,
+    image: [cover],
+    datePublished: publishedISO,
+    dateModified: publishedISO,
+    inLanguage: "it-IT",
+    articleSection: a.categoria,
+    author: a.autore
+      ? { "@type": "Person", name: a.autore }
+      : { "@type": "Organization", name: "Future Campus Fabriano" },
+    publisher: {
+      "@type": "Organization",
+      name: "Future Campus Fabriano",
+      logo: { "@type": "ImageObject", url: `${SITE_URL}/brand/fcf-logo.svg` },
+    },
+    mainEntityOfPage: { "@type": "WebPage", "@id": `${SITE_URL}/blog/${a.slug}` },
+  };
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/` },
+      { "@type": "ListItem", position: 2, name: "Blog", item: `${SITE_URL}/blog` },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: a.titolo,
+        item: `${SITE_URL}/blog/${a.slug}`,
+      },
+    ],
+  };
+
   return (
     <PageShell>
       <article>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(blogJsonLd).replace(/</g, "\\u003c"),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(breadcrumbJsonLd).replace(/</g, "\\u003c"),
+          }}
+        />
         {/* Hero con foto di copertina come sfondo (blur + leggero zoom) e patina blu */}
         <header className="relative isolate overflow-hidden bg-fc-primary text-fc-white">
           {/* Sfondo foto blurato con leggero zoom in loop */}

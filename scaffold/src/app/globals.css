@@ -10,14 +10,14 @@
   --color-foreground: var(--foreground);
   --color-fc-primary: #244c90;
   --color-fc-accent: #13acea;
-  --color-fc-secondary: #77819a;
+  /* #5b6577 → ~5.6:1 su bianco, ~5.1:1 su #f3f5f7: passa WCAG AA (4.5:1) ovunque. */
+  --color-fc-secondary: #5b6577;
   --color-fc-soft: #b6c4d1;
   --color-fc-dark: #070808;
   --color-fc-light: #f3f5f7;
   --color-fc-white: #ffffff;
   --font-sans: var(--font-manrope);
   --font-display: var(--font-montserrat);
-  --font-accent: var(--font-graduate);
 }
 
 @keyframes fc-hero-scroll-up {
@@ -291,6 +291,25 @@ body {
   color: var(--foreground);
   font-family: var(--font-manrope), system-ui, sans-serif;
   overflow-x: clip;
+}
+
+/* Skip-to-content link: nascosto finché non riceve focus da tastiera (WCAG 2.4.1). */
+.fc-skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+  padding: 0.5rem 1rem;
+  border-radius: 0 0 0.5rem 0;
+  background: var(--color-fc-primary);
+  color: #ffffff;
+  font-family: var(--font-manrope), system-ui, sans-serif;
+  font-size: 0.875rem;
+}
+.fc-skip-link:focus {
+  left: 0;
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
 }
 
 /* iOS Safari: input/textarea con font-size < 16px causano zoom automatico al focus.

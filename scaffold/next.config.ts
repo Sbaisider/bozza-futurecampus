@@ -77,6 +77,11 @@ const nextConfig: NextConfig = {
    */
   images: {
     unoptimized: true,
+    // NB: con `unoptimized: true` le chiavi formats/deviceSizes/imageSizes/
+    // minimumCacheTTL sono INERTI (nessun routing per /_next/image). Restano qui
+    // pronte per quando l'optimizer verrà riabilitato. `qualities` va tenuta:
+    // serve ancora a validare la prop `quality` in dev (senza, default [75] +
+    // warning). `remotePatterns` resta per compatibilità futura con cdn.sanity.io.
     formats: ["image/avif", "image/webp"],
     deviceSizes: [360, 640, 828, 1080, 1280, 1920],
     imageSizes: [16, 32, 64, 96, 160, 256, 384],
@@ -109,6 +114,11 @@ const nextConfig: NextConfig = {
         key: "Permissions-Policy",
         value: "camera=(), microphone=(), geolocation=(), browsing-topics=()",
       },
+      // Isola il contesto di navigazione (mitiga Spectre / cross-window attacks).
+      // COEP NON impostato di proposito: romperebbe le immagini da cdn.sanity.io.
+      // Per /studio la COOP viene rilassata a same-origin-allow-popups (login OAuth).
+      { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
+      { key: "Cross-Origin-Resource-Policy", value: "same-origin" },
       // HSTS solo in produzione: servirlo su http://localhost "avvelena" il
       // browser forzando https su tutte le porte di localhost.
       ...(isDev
@@ -121,6 +131,12 @@ const nextConfig: NextConfig = {
           ]),
     ];
 
+    // Asset statici in /public sostituiti manualmente a nome fisso: cache lunga
+    // immutabile (Next gestisce già /_next/static; questi path no).
+    const longCache = [
+      { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
+    ];
+
     return [
       {
         source: "/:path*",
@@ -129,9 +145,16 @@ const nextConfig: NextConfig = {
           { key: "Content-Security-Policy", value: SITE_CSP },
         ],
       },
+      { source: "/foto/:path*", headers: longCache },
+      { source: "/edizioni/:path*", headers: longCache },
+      { source: "/brand/:path*", headers: longCache },
       {
         source: "/studio/:path*",
-        headers: [{ key: "Content-Security-Policy", value: STUDIO_CSP }],
+        headers: [
+          { key: "Content-Security-Policy", value: STUDIO_CSP },
+          // Rilassa la COOP per lo Studio: il login OAuth di Sanity usa un popup.
+          { key: "Cross-Origin-Opener-Policy", value: "same-origin-allow-popups" },
+        ],
       },
     ];
   },

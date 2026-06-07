@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 
 import { FieldLabel, Honeypot, TextArea, TextInput } from "./FormFields";
 
@@ -9,6 +9,14 @@ type Status = "idle" | "sending" | "ok" | "error";
 export function IscrizioneForm() {
   const [status, setStatus] = useState<Status>("idle");
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const successRef = useRef<HTMLDivElement>(null);
+  const errorRef = useRef<HTMLParagraphElement>(null);
+
+  // Sposta il focus sul messaggio di esito così tastiera/screen reader lo annunciano.
+  useEffect(() => {
+    if (status === "ok") successRef.current?.focus();
+    else if (status === "error") errorRef.current?.focus();
+  }, [status]);
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -50,8 +58,10 @@ export function IscrizioneForm() {
   if (status === "ok") {
     return (
       <div
+        ref={successRef}
+        tabIndex={-1}
         role="status"
-        className="rounded-2xl border border-fc-primary/20 bg-white px-6 py-8 text-[14px] font-extralight leading-relaxed text-fc-dark"
+        className="rounded-2xl border border-fc-primary/20 bg-white px-6 py-8 text-[14px] font-extralight leading-relaxed text-fc-dark outline-none"
         style={{ fontFamily: "var(--font-manrope), system-ui, sans-serif" }}
       >
         <p
@@ -67,7 +77,7 @@ export function IscrizioneForm() {
           Grazie, ci siamo!
         </h3>
         <p className="mt-3">
-          Abbiamo ricevuto la tua candidatura. L'organizzazione del Campus ti ricontatterà dalla casella ufficiale per i prossimi passaggi.
+          Abbiamo ricevuto la tua candidatura. L&apos;organizzazione del Campus ti ricontatterà dalla casella ufficiale per i prossimi passaggi.
         </p>
         <button
           type="button"
@@ -127,8 +137,10 @@ export function IscrizioneForm() {
 
       {status === "error" && errorMsg && (
         <p
+          ref={errorRef}
+          tabIndex={-1}
           role="alert"
-          className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-[13px] text-red-700"
+          className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-[13px] text-red-700 outline-none"
           style={{ fontFamily: "var(--font-manrope), system-ui, sans-serif" }}
         >
           {errorMsg}
@@ -139,7 +151,7 @@ export function IscrizioneForm() {
         <button
           type="submit"
           disabled={status === "sending"}
-          className="inline-flex min-h-[48px] w-full items-center justify-center rounded-full bg-fc-primary px-6 py-3.5 text-[12px] font-black tracking-[0.18em] text-white uppercase shadow-sm transition hover:bg-fc-accent disabled:opacity-60 sm:w-auto"
+          className="inline-flex min-h-[48px] w-full items-center justify-center rounded-full bg-fc-primary px-6 py-3.5 text-[12px] font-black tracking-[0.18em] text-white uppercase shadow-sm transition hover:bg-fc-accent hover:text-fc-dark disabled:opacity-60 sm:w-auto"
           style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}
         >
           {status === "sending" ? "Invio in corso…" : "Invia iscrizione"}
@@ -148,7 +160,7 @@ export function IscrizioneForm() {
           className="mt-3 text-[11px] font-extralight leading-relaxed text-fc-secondary sm:max-w-md"
           style={{ fontFamily: "var(--font-manrope), system-ui, sans-serif" }}
         >
-          Inviando il modulo dichiari di aver preso visione dell'informativa privacy. Conserveremo i tuoi dati solo per la gestione dell'iscrizione al Campus.
+          Inviando il modulo dichiari di aver preso visione dell&apos;informativa privacy. Conserveremo i tuoi dati solo per la gestione dell&apos;iscrizione al Campus.
         </p>
       </div>
     </form>

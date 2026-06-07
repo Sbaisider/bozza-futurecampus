@@ -8,6 +8,17 @@ export const metadata: Metadata = {
   title: "Social",
   description:
     "Seguici sui canali social ufficiali di Future Campus Fabriano e Confindustria Fabriano.",
+  alternates: { canonical: "/social" },
+  openGraph: {
+    type: "website",
+    siteName: "Future Campus Fabriano",
+    locale: "it_IT",
+    title: "Social · Future Campus Fabriano",
+    description:
+      "Seguici sui canali social ufficiali di Future Campus Fabriano e Confindustria Fabriano.",
+    url: "/social",
+    images: [{ url: "/og.jpg", width: 1200, height: 630, alt: "Future Campus Fabriano" }],
+  },
 };
 
 export default function SocialPage() {

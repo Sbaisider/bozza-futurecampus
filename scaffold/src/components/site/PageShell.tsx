@@ -17,7 +17,9 @@ export function PageShell({ children, withTopGap = true }: PageShellProps) {
   return (
     <div className="flex min-h-full flex-1 flex-col">
       <SiteNavbar className="sticky top-0 z-50" />
-      <main className={`flex-1 ${withTopGap ? "" : ""}`}>{children}</main>
+      <main id="main-content" className={`flex-1 ${withTopGap ? "" : ""}`}>
+        {children}
+      </main>
       <SiteFooter />
     </div>
   );

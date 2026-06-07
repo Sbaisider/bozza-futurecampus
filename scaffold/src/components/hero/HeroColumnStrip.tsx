@@ -24,11 +24,14 @@ const GAP_PX = 11;
 type MarqueeHalfProps = {
   segmentSrcs: string[];
   blurPx: number;
-  /** Carica con priorità la prima foto (LCP candidate above-the-fold). */
-  priorityFirst?: boolean;
+  /** Carica subito (eager, NON priority) la prima foto della prima metà:
+   *  evita il flash ma senza preload/fetchpriority=high, che ruberebbe banda
+   *  al vero LCP (il LetteringMark SVG). Le tile sono decorative, blurate e
+   *  dietro un velo: non meritano priorità. */
+  eagerFirst?: boolean;
 };
 
-function MarqueeHalf({ segmentSrcs, blurPx, priorityFirst = false }: MarqueeHalfProps) {
+function MarqueeHalf({ segmentSrcs, blurPx, eagerFirst = false }: MarqueeHalfProps) {
   const blur =
     blurPx > 0
       ? `blur(${blurPx}px) saturate(0.88) contrast(0.96) brightness(1.02)`
@@ -37,7 +40,7 @@ function MarqueeHalf({ segmentSrcs, blurPx, priorityFirst = false }: MarqueeHalf
   return (
     <div className="flex w-full shrink-0 flex-col">
       {segmentSrcs.map((src, i) => {
-        const isLcpCandidate = priorityFirst && i === 0;
+        const isFirst = eagerFirst && i === 0;
         return (
           <div
             key={`${src}-${i}`}
@@ -51,8 +54,8 @@ function MarqueeHalf({ segmentSrcs, blurPx, priorityFirst = false }: MarqueeHalf
               quality={HERO_COLUMN_IMAGE_QUALITY}
               className="object-cover max-md:scale-[1.05] md:scale-100"
               draggable={false}
-              {...(isLcpCandidate
-                ? { priority: true }
+              {...(isFirst
+                ? { loading: "eager" as const }
                 : { loading: "lazy" as const, fetchPriority: "low" as const })}
               style={{
                 filter: blur,
@@ -96,7 +99,7 @@ export function HeroColumnStrip({
           animationDelay: `${animationDelaySec}s`,
         }}
       >
-        <MarqueeHalf key="a" segmentSrcs={segmentSrcs} blurPx={blurPx} priorityFirst />
+        <MarqueeHalf key="a" segmentSrcs={segmentSrcs} blurPx={blurPx} eagerFirst />
         <MarqueeHalf key="b" segmentSrcs={segmentSrcs} blurPx={blurPx} />
       </div>
     </div>

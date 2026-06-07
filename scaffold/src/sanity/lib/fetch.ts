@@ -8,8 +8,10 @@ import {
 
 /**
  * Helper di fetch tipizzati. ISR di 60s: dopo "Publish" da Studio il sito
- * mostra il nuovo contenuto entro 1 minuto al massimo (su Vercel, con webhook,
- * istantaneo). Nessuna variabile interna usa Date.now() → safe per SSR.
+ * mostra il nuovo contenuto entro 1 minuto al massimo. I `tags` sono già qui:
+ * per renderlo istantaneo basta aggiungere una route webhook che chiami
+ * `revalidateTag('articoli')` (TODO, non ancora attiva). Nessuna variabile
+ * interna usa Date.now() → safe per SSR.
  */
 const REVALIDATE_SEC = 60;
 

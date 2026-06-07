@@ -42,8 +42,16 @@ export function rateLimit(key: string, limit: number, windowMs: number): RateLim
   return { ok: true, retryAfterSec: 0 };
 }
 
+// Gli header x-forwarded-for / x-real-ip sono spoofabili se NON c'è un proxy
+// fidato davanti. Ci fidiamo solo su Vercel (sempre) o con TRUST_PROXY_HEADERS=1.
+// Altrove tutti finiscono nel bucket "unknown" (fail-safe: limite condiviso,
+// non bypassabile per-IP) invece di un per-IP falsabile.
+const TRUST_PROXY =
+  process.env.VERCEL === "1" || process.env.TRUST_PROXY_HEADERS === "1";
+
 /** Estrae l'IP del client dagli header del proxy (Vercel imposta x-forwarded-for). */
 export function clientIp(req: Request): string {
+  if (!TRUST_PROXY) return "unknown";
   const xff = req.headers.get("x-forwarded-for");
   if (xff) {
     const first = xff.split(",")[0]?.trim();

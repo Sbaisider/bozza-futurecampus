@@ -68,13 +68,28 @@ export async function generateStaticParams() {
   return edizioni.map((e) => ({ slug: e.slug }));
 }
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.futurecampus.it";
+
+const absPath = (p: string) => (p.startsWith("/") ? p : `/${p}`);
+
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const ed = getEdizioneBySlug(slug);
-  if (!ed) return { title: "Edizione non trovata" };
+  if (!ed) return { title: "Edizione non trovata", robots: { index: false } };
+  const cover = absPath(ed.copertina);
   return {
-    title: `Edizione ${ed.anno}`,
+    title: `${ed.numeroEdizione} · ${ed.titolo}`,
     description: ed.sintesi,
+    alternates: { canonical: `/edizioni/${ed.slug}` },
+    openGraph: {
+      type: "website",
+      url: `/edizioni/${ed.slug}`,
+      title: `Future Campus ${ed.anno} — ${ed.titolo}`,
+      description: ed.sintesi,
+      siteName: "Future Campus Fabriano",
+      locale: "it_IT",
+      images: [{ url: cover, alt: `Future Campus ${ed.anno}` }],
+    },
   };
 }
 
@@ -83,10 +98,73 @@ export default async function EdizioneDettaglioPage({ params }: PageProps) {
   const ed = getEdizioneBySlug(slug);
   if (!ed) notFound();
 
+  const eventJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "EducationEvent",
+    name: `Future Campus ${ed.anno} — ${ed.titolo}`,
+    description: ed.sintesi,
+    inLanguage: "it-IT",
+    image: `${SITE_URL}${absPath(ed.copertina)}`,
+    isAccessibleForFree: true,
+    location: {
+      "@type": "Place",
+      name: "Fabriano",
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "Fabriano",
+        addressRegion: "AN",
+        addressCountry: "IT",
+      },
+    },
+    organizer: { "@type": "Organization", name: "Future Campus Fabriano", url: SITE_URL },
+    ...(ed.isCorrente
+      ? {
+          offers: {
+            "@type": "Offer",
+            price: "0",
+            priceCurrency: "EUR",
+            availability: "https://schema.org/InStock",
+            url: `${SITE_URL}/contatti`,
+          },
+        }
+      : {}),
+  };
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/` },
+      { "@type": "ListItem", position: 2, name: "Edizioni", item: `${SITE_URL}/edizioni` },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: String(ed.anno),
+        item: `${SITE_URL}/edizioni/${ed.slug}`,
+      },
+    ],
+  };
+  const jsonLd = (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(eventJsonLd).replace(/</g, "\\u003c"),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbJsonLd).replace(/</g, "\\u003c"),
+        }}
+      />
+    </>
+  );
+
   /* ─── EDIZIONE 2026 — pagina segnaposto: solo "IN ARRIVO" grande ────── */
   if (ed.anno === 2026) {
     return (
       <PageShell>
+        {jsonLd}
         <section className="relative isolate flex min-h-[100svh] items-center justify-center overflow-hidden bg-fc-primary px-5 text-white md:px-8">
           {/* Texture a punti molto leggera (stessa della hero mobile) */}
           <div
@@ -135,6 +213,7 @@ export default async function EdizioneDettaglioPage({ params }: PageProps) {
 
   return (
     <PageShell>
+      {jsonLd}
       {/* Hero: solo l'anno, centrato, su blu pieno con texture a punti (coerente con la hero mobile) */}
       <section className="relative isolate flex min-h-[70svh] items-center justify-center overflow-hidden bg-fc-primary px-5 text-white md:min-h-[80svh] md:px-8">
         {/* Texture a punti molto leggera (stessa della hero mobile) */}

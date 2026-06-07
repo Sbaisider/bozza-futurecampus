@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 
 import { FieldLabel, Honeypot, TextArea, TextInput } from "./FormFields";
 
@@ -9,6 +9,14 @@ type Status = "idle" | "sending" | "ok" | "error";
 export function ContactForm() {
   const [status, setStatus] = useState<Status>("idle");
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const successRef = useRef<HTMLDivElement>(null);
+  const errorRef = useRef<HTMLParagraphElement>(null);
+
+  // Sposta il focus sul messaggio di esito così tastiera/screen reader lo annunciano.
+  useEffect(() => {
+    if (status === "ok") successRef.current?.focus();
+    else if (status === "error") errorRef.current?.focus();
+  }, [status]);
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -48,8 +56,10 @@ export function ContactForm() {
   if (status === "ok") {
     return (
       <div
+        ref={successRef}
+        tabIndex={-1}
         role="status"
-        className="rounded-2xl border border-fc-primary/20 bg-white px-6 py-7 text-[14px] font-extralight leading-relaxed text-fc-dark"
+        className="rounded-2xl border border-fc-primary/20 bg-white px-6 py-7 text-[14px] font-extralight leading-relaxed text-fc-dark outline-none"
         style={{ fontFamily: "var(--font-manrope), system-ui, sans-serif" }}
       >
         <p
@@ -98,8 +108,10 @@ export function ContactForm() {
 
       {status === "error" && errorMsg && (
         <p
+          ref={errorRef}
+          tabIndex={-1}
           role="alert"
-          className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-[13px] text-red-700"
+          className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-[13px] text-red-700 outline-none"
           style={{ fontFamily: "var(--font-manrope), system-ui, sans-serif" }}
         >
           {errorMsg}
@@ -109,7 +121,7 @@ export function ContactForm() {
       <button
         type="submit"
         disabled={status === "sending"}
-        className="inline-flex min-h-[48px] w-full items-center justify-center rounded-full bg-fc-primary px-6 py-3.5 text-[12px] font-black tracking-[0.18em] text-white uppercase shadow-sm transition hover:bg-fc-accent disabled:opacity-60 sm:w-auto"
+        className="inline-flex min-h-[48px] w-full items-center justify-center rounded-full bg-fc-primary px-6 py-3.5 text-[12px] font-black tracking-[0.18em] text-white uppercase shadow-sm transition hover:bg-fc-accent hover:text-fc-dark disabled:opacity-60 sm:w-auto"
         style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}
       >
         {status === "sending" ? "Invio in corso…" : "Invia messaggio"}

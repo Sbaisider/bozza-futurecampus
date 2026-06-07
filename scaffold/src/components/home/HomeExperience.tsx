@@ -78,14 +78,7 @@ export function HomeExperience({ heroImages, media: _media }: HomeExperienceProp
   }, [scrollToEsperienza]);
 
   return (
-    <div className="relative">
-      <HeroSection images={heroImages} sectionRef={heroSectionRef} />
-      <HomeManifestoSection />
-      <HomeEsperienzaSection ref={esperienzaSectionRef} />
-      <HomePadriFondatoriSection />
-      <HomeEdizioniPassateSection />
-      <HomeCtaFinaleSection />
-      <SiteFooter />
+    <>
       <SiteNavbar
         ref={navbarRef}
         className={`fixed top-0 left-0 right-0 z-[60] transition-[opacity,transform] duration-300 ease-out ${
@@ -95,6 +88,15 @@ export function HomeExperience({ heroImages, media: _media }: HomeExperienceProp
         }`}
         onEsperienzaClick={scrollToEsperienza}
       />
-    </div>
+      <main id="main-content" className="flex min-h-full flex-1 flex-col">
+        <HeroSection images={heroImages} sectionRef={heroSectionRef} />
+        <HomeManifestoSection />
+        <HomeEsperienzaSection ref={esperienzaSectionRef} />
+        <HomePadriFondatoriSection />
+        <HomeEdizioniPassateSection />
+        <HomeCtaFinaleSection />
+      </main>
+      <SiteFooter />
+    </>
   );
 }

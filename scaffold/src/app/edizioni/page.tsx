@@ -14,6 +14,17 @@ export const metadata: Metadata = {
   title: "Edizioni",
   description:
     "L'archivio delle edizioni del Future Campus Fabriano: dalla prima del 2022 alla quinta del 2026.",
+  alternates: { canonical: "/edizioni" },
+  openGraph: {
+    type: "website",
+    siteName: "Future Campus Fabriano",
+    locale: "it_IT",
+    title: "Edizioni · Future Campus Fabriano",
+    description:
+      "Dal 2022 al 2026: ogni edizione del Future Campus Fabriano, edizione per edizione.",
+    url: "/edizioni",
+    images: [{ url: "/og.jpg", width: 1200, height: 630, alt: "Future Campus Fabriano" }],
+  },
 };
 
 export default function EdizioniIndexPage() {

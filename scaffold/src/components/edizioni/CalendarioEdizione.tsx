@@ -13,7 +13,7 @@
  * `?attivita=slug` può essere aggiunta dopo come polish.
  */
 
-import { useEffect, useMemo, useState, useCallback } from "react";
+import { useEffect, useMemo, useRef, useState, useCallback } from "react";
 import Image from "next/image";
 
 import type { AttivitaConClasse, ClasseNome } from "@/content/edizioni-attivita";
@@ -130,15 +130,20 @@ export function CalendarioEdizione({ attivita, anno }: Props) {
   const [openIdx, setOpenIdx] = useState(0);
   const [photoIdx, setPhotoIdx] = useState(0);
   const aperta = openActivities?.[openIdx] ?? null;
+  // Elemento che ha aperto la modale: vi si riporta il focus alla chiusura (WCAG 2.4.3).
+  const triggerRef = useRef<HTMLElement | null>(null);
 
   const close = useCallback(() => {
     setOpenActivities(null);
     setOpenIdx(0);
     setPhotoIdx(0);
+    triggerRef.current?.focus();
+    triggerRef.current = null;
   }, []);
 
   const openDay = useCallback((acts: AttivitaConClasse[]) => {
     if (acts.length === 0) return;
+    triggerRef.current = document.activeElement as HTMLElement | null;
     setOpenActivities(acts);
     setOpenIdx(0);
     setPhotoIdx(0);
@@ -421,6 +426,13 @@ function ModaleAttivita({
 }: ModaleProps) {
   const attivita = attivitaList[currentIdx];
   const multi = attivitaList.length > 1;
+  const dialogRef = useRef<HTMLDivElement>(null);
+
+  // All'apertura sposta il focus dentro la modale (esce dal contenuto sottostante).
+  useEffect(() => {
+    dialogRef.current?.focus();
+  }, []);
+
   return (
     <div
       role="dialog"
@@ -430,7 +442,9 @@ function ModaleAttivita({
       onClick={onClose}
     >
       <div
-        className="relative mx-2 flex max-h-[min(94svh,calc(100dvh-1rem))] w-full max-w-[min(100dvw-1rem,64rem)] flex-col overflow-hidden rounded-lg bg-fc-dark text-white shadow-2xl sm:mx-4 sm:max-w-[min(100dvw-2rem,64rem)] md:mx-8 md:max-w-[min(100dvw-4rem,64rem)]"
+        ref={dialogRef}
+        tabIndex={-1}
+        className="relative mx-2 flex max-h-[min(94svh,calc(100dvh-1rem))] w-full max-w-[min(100dvw-1rem,64rem)] flex-col overflow-hidden rounded-lg bg-fc-dark text-white shadow-2xl outline-none sm:mx-4 sm:max-w-[min(100dvw-2rem,64rem)] md:mx-8 md:max-w-[min(100dvw-4rem,64rem)]"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Pulsante chiudi */}
