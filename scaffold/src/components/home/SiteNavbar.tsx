@@ -80,7 +80,7 @@ export const SiteNavbar = forwardRef<HTMLElement, SiteNavbarProps>(
               priority
             />
             <span
-              className="text-[10.5px] font-extralight tracking-[0.2em] text-fc-primary uppercase leading-[1.15] sm:text-[11px] sm:tracking-[0.22em]"
+              className="text-[10.5px] font-semibold tracking-[0.2em] text-fc-primary uppercase leading-[1.15] sm:text-[11px] sm:tracking-[0.22em]"
               style={FONT_BODY}
             >
               Future Campus
@@ -97,7 +97,7 @@ export const SiteNavbar = forwardRef<HTMLElement, SiteNavbarProps>(
                   <Link
                     href={l.href}
                     aria-current={pathname === l.href ? "page" : undefined}
-                    className="text-[12px] font-extralight tracking-[0.18em] text-fc-secondary uppercase transition-colors hover:text-fc-primary aria-[current=page]:text-fc-primary"
+                    className="text-[12px] font-bold tracking-[0.18em] text-fc-secondary uppercase transition-colors hover:text-fc-primary aria-[current=page]:text-fc-primary"
                     style={FONT_BODY}
                   >
                     {l.label}
@@ -183,7 +183,7 @@ export const SiteNavbar = forwardRef<HTMLElement, SiteNavbarProps>(
 
             {/* Eyebrow "Menu" */}
             <p
-              className={`relative px-6 pb-3 text-[10px] font-extralight uppercase tracking-[0.42em] text-fc-white/80 transition-opacity duration-500 ${
+              className={`relative px-6 pb-3 text-[10px] font-semibold uppercase tracking-[0.42em] text-fc-white/80 transition-opacity duration-500 ${
                 open ? "opacity-100" : "opacity-0"
               }`}
               style={{ ...FONT_BODY, transitionDelay: open ? "120ms" : "0ms" }}

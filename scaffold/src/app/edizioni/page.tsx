@@ -7,7 +7,6 @@ import { PageShell } from "@/components/site/PageShell";
 import { Reveal } from "@/components/site/Reveal";
 import { getEdizioniOrdinate } from "@/content/edizioni";
 
-const FONT_BODY = { fontFamily: "var(--font-manrope), system-ui, sans-serif" };
 const FONT_DISPLAY = { fontFamily: "var(--font-montserrat), system-ui, sans-serif" };
 
 export const metadata: Metadata = {
@@ -98,14 +97,6 @@ export default function EdizioniIndexPage() {
                   >
                     {e.anno}
                   </p>
-                  {e.anno === 2026 && (
-                    <p
-                      className="mt-2 text-[9.5px] font-extralight uppercase tracking-[0.28em] text-fc-accent sm:mt-3 sm:text-[10px] sm:tracking-[0.32em] md:text-[11px]"
-                      style={FONT_BODY}
-                    >
-                      In arrivo
-                    </p>
-                  )}
                 </div>
               </Link>
             </Reveal>

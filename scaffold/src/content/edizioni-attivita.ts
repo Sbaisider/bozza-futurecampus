@@ -772,6 +772,23 @@ const ATTIVITA_2025_ADVANCED: Attivita[] = [
   },
 ];
 
+/* ──────────────────────────────────────────────────────────────────────────
+   2026 — Fabriano. Quinta edizione (in corso). Per ora solo la Giornata
+   inaugurale Insieme del 10 giugno; le altre attività verranno aggiunte
+   man mano. Foto in .JPG.
+   ─────────────────────────────────────────────────────────────────────── */
+
+const BASE_2026 = "/edizioni/2026";
+
+const ATTIVITA_2026_INSIEME: Attivita[] = [
+  {
+    id: "giornata-inaugurale",
+    data: "2026-06-10",
+    titolo: "Giornata Inaugurale",
+    foto: foto5(`${BASE_2026}/tutti/10_06_giornata_inaugurale`, "JPG"),
+  },
+];
+
 const ATTIVITA_2025_INSIEME: Attivita[] = [
   {
     id: "giornata-inaugurale",
@@ -900,6 +917,7 @@ export const edizioniAttivita: Record<string, ClasseAnnata[]> = {
     { classe: "Beginner", attivita: [] },
     { classe: "Master", attivita: [] },
     { classe: "Advanced", attivita: [] },
+    { classe: "Insieme", attivita: ATTIVITA_2026_INSIEME },
   ],
 };
 

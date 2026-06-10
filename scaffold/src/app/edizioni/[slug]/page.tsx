@@ -6,7 +6,7 @@ import { CalendarioEdizione } from "@/components/edizioni/CalendarioEdizione";
 import { PageShell } from "@/components/site/PageShell";
 import { Reveal, RevealWords } from "@/components/site/Reveal";
 import { edizioni, getEdizioneBySlug } from "@/content/edizioni";
-import { getAttivitaPerAnno } from "@/content/edizioni-attivita";
+import { getAttivitaPerAnno, type ClasseNome } from "@/content/edizioni-attivita";
 
 const FONT_DISPLAY = { fontFamily: "var(--font-montserrat), system-ui, sans-serif" };
 
@@ -160,41 +160,7 @@ export default async function EdizioneDettaglioPage({ params }: PageProps) {
     </>
   );
 
-  /* ─── EDIZIONE 2026 — pagina segnaposto: solo "IN ARRIVO" grande ────── */
-  if (ed.anno === 2026) {
-    return (
-      <PageShell>
-        {jsonLd}
-        <section className="relative isolate flex min-h-[100svh] items-center justify-center overflow-hidden bg-fc-primary px-5 text-white md:px-8">
-          {/* Texture a punti molto leggera (stessa della hero mobile) */}
-          <div
-            className="pointer-events-none absolute inset-0"
-            style={{
-              backgroundImage:
-                "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.06) 1px, transparent 0)",
-              backgroundSize: "22px 22px",
-            }}
-            aria-hidden
-          />
-          {/* Glow morbido in alto, scurimento in basso → profondità */}
-          <div
-            className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.06] via-transparent to-black/30"
-            aria-hidden
-          />
-
-          <RevealWords
-            as="h1"
-            text="IN ARRIVO"
-            wordDelay={150}
-            className="relative block text-balance text-center text-[2.25rem] font-black leading-none tracking-tight md:text-[4rem] lg:text-[5.5rem]"
-            style={FONT_DISPLAY}
-          />
-        </section>
-      </PageShell>
-    );
-  }
-
-  /* ─── EDIZIONI passate: hero solo anno + card classi (se presenti) ──── */
+  /* ─── EDIZIONI passate e in corso: hero solo anno + card classi (se presenti) ──── */
   // Logica card: nascoste se l'edizione ha un calendario attività popolato
   // (in quel caso le classi sono già visualizzate nel calendario via dot
   // colorati) oppure se è il 2022 (richiesta utente). Le edizioni 2024/2025
@@ -289,7 +255,13 @@ export default async function EdizioneDettaglioPage({ params }: PageProps) {
       {/* Calendario attività dell'edizione (mostrato quando ci sono attività
           popolate in edizioni-attivita.ts). Per il 2023 ha 23 attività su 2
           mesi; per 2024/2025 ancora vuoto. */}
-      {hasCalendario && <CalendarioEdizione attivita={attivitaAnno} anno={ed.anno} />}
+      {hasCalendario && (
+        <CalendarioEdizione
+          attivita={attivitaAnno}
+          anno={ed.anno}
+          classi={ed.classi as ClasseNome[]}
+        />
+      )}
 
       {/* Marquee orizzontale infinito delle foto della 1ª edizione (solo 2022).
           Lista duplicata per loop seamless con keyframe -50%. */}

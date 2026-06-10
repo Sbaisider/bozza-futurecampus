@@ -93,21 +93,33 @@ type Props = {
   attivita: AttivitaConClasse[];
   /** ID dell'edizione (usato in aria-label). */
   anno: number;
+  /** Elenco completo delle classi dell'edizione: usato per la legenda anche se
+   *  non tutte le classi hanno ancora attività popolate. Se omesso, la legenda
+   *  mostra solo le classi presenti nelle attività. */
+  classi?: ClasseNome[];
 };
 
-export function CalendarioEdizione({ attivita, anno }: Props) {
-  /* ── Classi effettivamente presenti nelle attività di quest'edizione.
-        Include sia la classe principale che eventuali extraClassi (attività
-        condivise). Esempio 2023: ["Beginner","Master","Insieme"] (no Advanced). */
+export function CalendarioEdizione({ attivita, anno, classi: classiProp }: Props) {
+  /* ── Classi da mostrare in legenda: se passate esplicitamente le usiamo
+        (ordine canonico), altrimenti deriviamo da quelle presenti nelle
+        attività (principale + extraClassi). */
   const classiPresenti = useMemo<ClasseNome[]>(() => {
     const set = new Set<ClasseNome>();
-    for (const a of attivita) for (const c of classiOf(a)) set.add(c);
+    if (classiProp && classiProp.length > 0) {
+      for (const c of classiProp) set.add(c);
+    } else {
+      for (const a of attivita) for (const c of classiOf(a)) set.add(c);
+    }
     return (["Beginner", "Master", "Advanced", "Insieme"] as ClasseNome[]).filter(
       (c) => set.has(c),
     );
-  }, [attivita]);
+  }, [attivita, classiProp]);
 
-  /* ── Raggruppa attività per mese (chiave "YYYY-MM") ───────────────── */
+  /* ── Raggruppa attività per mese (chiave "YYYY-MM") ─────────────────
+        Per coerenza visiva, vengono SEMPRE inclusi Giugno e Luglio dell'anno
+        dell'edizione (i mesi in cui si svolge il Campus), anche se non ci sono
+        ancora attività — utile soprattutto per l'edizione corrente in cui il
+        calendario si popola gradualmente. */
   const mesi = useMemo(() => {
     const byMonth = new Map<string, AttivitaConClasse[]>();
     for (const a of attivita) {
@@ -116,13 +128,17 @@ export function CalendarioEdizione({ attivita, anno }: Props) {
       arr.push(a);
       byMonth.set(key, arr);
     }
+    const giugno = `${anno}-06`;
+    const luglio = `${anno}-07`;
+    if (!byMonth.has(giugno)) byMonth.set(giugno, []);
+    if (!byMonth.has(luglio)) byMonth.set(luglio, []);
     return [...byMonth.entries()]
       .sort(([a], [b]) => a.localeCompare(b))
       .map(([key, list]) => {
         const { y, m } = parseISO(`${key}-01`);
         return { year: y, monthIdx: m, attivita: list };
       });
-  }, [attivita]);
+  }, [attivita, anno]);
 
   /* ── Stato modale: lista attività del giorno cliccato + indice attività
         attualmente visualizzata + indice foto. Lista null = chiusa. ────── */

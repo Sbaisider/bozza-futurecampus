@@ -247,14 +247,14 @@ export const edizioni: Edizione[] = [
     titolo: "L'edizione che parte il 10 giugno 2026",
     sintesi:
       "Tre classi, sei settimane, una comunità che cresce ogni anno. Iscrizioni aperte.",
-    copertina: "/foto/8505.JPG",
+    copertina: "/edizioni/2026/tutti/10_06_giornata_inaugurale/1.JPG",
     paragrafiRacconto: [
       "La quinta edizione del Future Campus parte il 10 giugno 2026 e si chiude il 23 luglio. Sei settimane di attività gratuite per i ragazzi delle scuole superiori del territorio di Fabriano.",
       "Tre classi parallele — Beginner, Master, Advanced — e tutto ciò che ha reso il Campus un punto di riferimento: laboratori, visite aziendali, incontri con imprenditori, coach motivazionali, seminari, viaggi.",
     ],
     periodo: "10 giugno – 23 luglio 2026",
     partecipanti: "Iscrizioni aperte",
-    classi: ["Beginner", "Master", "Advanced"],
+    classi: ["Beginner", "Master", "Advanced", "Insieme"],
     momentiChiave: [
       {
         titolo: "Avvio quinta edizione",
