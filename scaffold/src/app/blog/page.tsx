@@ -11,6 +11,14 @@ import { fetchArticoli } from "@/sanity/lib/fetch";
 const FONT_BODY = { fontFamily: "var(--font-manrope), system-ui, sans-serif" };
 const FONT_DISPLAY = { fontFamily: "var(--font-montserrat), system-ui, sans-serif" };
 
+/**
+ * ISR esplicito a livello di route: la pagina /blog viene rigenerata al massimo
+ * ogni 30s anche se il fetch interno è cached. Il webhook in /api/revalidate
+ * chiama `revalidatePath("/blog")` per renderlo istantaneo dopo Publish in
+ * Sanity Studio. Vedi commenti in /sanity/lib/fetch.ts e /api/revalidate/route.ts.
+ */
+export const revalidate = 30;
+
 export const metadata: Metadata = {
   title: "Blog",
   description:

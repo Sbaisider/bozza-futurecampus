@@ -780,6 +780,15 @@ const ATTIVITA_2025_ADVANCED: Attivita[] = [
 
 const BASE_2026 = "/edizioni/2026";
 
+const ATTIVITA_2026_MASTER: Attivita[] = [
+  {
+    id: "un-viaggio-senza-fine",
+    data: "2026-06-11",
+    titolo: "Un viaggio senza fine",
+    foto: foto5(`${BASE_2026}/master/11_06_2026_Un_viaggo_senza_fine`, "jpg"),
+  },
+];
+
 const ATTIVITA_2026_INSIEME: Attivita[] = [
   {
     id: "giornata-inaugurale",
@@ -915,7 +924,7 @@ export const edizioniAttivita: Record<string, ClasseAnnata[]> = {
 
   "2026": [
     { classe: "Beginner", attivita: [] },
-    { classe: "Master", attivita: [] },
+    { classe: "Master", attivita: ATTIVITA_2026_MASTER },
     { classe: "Advanced", attivita: [] },
     { classe: "Insieme", attivita: ATTIVITA_2026_INSIEME },
   ],

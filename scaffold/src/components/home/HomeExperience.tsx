@@ -13,7 +13,9 @@ import { SiteFooter } from "@/components/site/SiteFooter";
 import type { HomeMediaPicks } from "@/lib/home-media-picks";
 
 type HomeExperienceProps = {
-  heroImages: string[];
+  /** Mantenuto per backwards compat: la hero ora usa un video di sfondo
+   *  (`/video_hero_home/hero.mp4`) e non più il collage di foto. */
+  heroImages?: string[];
   media: HomeMediaPicks;
 };
 
@@ -29,7 +31,7 @@ type HomeExperienceProps = {
  *
  * Rimossi (su richiesta utente): Numeri, Edizione 2026, Partner/Sponsor.
  */
-export function HomeExperience({ heroImages, media: _media }: HomeExperienceProps) {
+export function HomeExperience({ heroImages: _heroImages, media: _media }: HomeExperienceProps) {
   const heroSectionRef = useRef<HTMLElement>(null);
   const esperienzaSectionRef = useRef<HTMLElement>(null);
   const navbarRef = useRef<HTMLElement>(null);
@@ -89,7 +91,7 @@ export function HomeExperience({ heroImages, media: _media }: HomeExperienceProp
         onEsperienzaClick={scrollToEsperienza}
       />
       <main id="main-content" className="flex min-h-full flex-1 flex-col">
-        <HeroSection images={heroImages} sectionRef={heroSectionRef} />
+        <HeroSection sectionRef={heroSectionRef} />
         <HomeManifestoSection />
         <HomeEsperienzaSection ref={esperienzaSectionRef} />
         <HomePadriFondatoriSection />

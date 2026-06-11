@@ -1,25 +1,30 @@
 import type { RefObject } from "react";
 
 import { HeroBackgroundGrid } from "./HeroBackgroundGrid";
-import { HeroColumnsStack } from "./HeroColumnsStack";
 import { HeroVignette } from "./HeroVignette";
 import { LetteringMark } from "./LetteringMark";
 
 export type HeroSectionProps = {
-  images: string[];
   sectionRef: RefObject<HTMLElement | null>;
 };
 
 /**
- * Hero "editorial": collage di foto a colonne + velatura blu + fascia bianca
- * orizzontale con il lettering "Future Campus Fabriano" appoggiato sopra.
- * Il lettering è renderizzato 3 volte (TOP/MID/BOTTOM) con clip-path in % della
- * hero: bianco fuori dalla fascia, blu primario dentro.
+ * Hero "editorial": video di sfondo + velatura blu + fascia bianca orizzontale
+ * con il lettering "Future Campus Fabriano" appoggiato sopra. Il lettering è
+ * renderizzato 3 volte (TOP/MID/BOTTOM) con clip-path in % della hero: bianco
+ * fuori dalla fascia, blu primario dentro.
+ *
+ * Video: H.264 MP4 ottimizzato (~10 MB, 1080p, faststart, no audio) in loop
+ * autoplay muted playsinline; poster come fallback prima del play e per la
+ * preview SSR. Su mobile resta il design pulito blu pieno (no video) per
+ * preservare dati e batteria.
  *
  * Scroll nativo: la hero è una sezione standard 100svh che scorre via verso
  * l'alto come qualunque altra. La navbar appare quando la hero esce dal
  * viewport (gestito da `HomeExperience` con IntersectionObserver).
  */
+const HERO_VIDEO_SRC = "/video_hero_home/hero.mp4";
+const HERO_VIDEO_POSTER = "/video_hero_home/hero_poster.jpg";
 const HERO_BAND_TOP_PCT = 41;
 const HERO_BAND_HEIGHT_PCT = 18;
 const HERO_BAND_BOTTOM_PCT = 100 - HERO_BAND_TOP_PCT - HERO_BAND_HEIGHT_PCT;
@@ -27,7 +32,7 @@ const HERO_BAND_BOTTOM_PCT = 100 - HERO_BAND_TOP_PCT - HERO_BAND_HEIGHT_PCT;
 const LETTERING_WIDTH_CLASS =
   "h-auto w-[min(86vw,32rem)] sm:w-[min(80vw,38rem)] md:w-[min(72vw,44rem)] lg:w-[min(64vw,52rem)]";
 
-export function HeroSection({ images, sectionRef }: HeroSectionProps) {
+export function HeroSection({ sectionRef }: HeroSectionProps) {
   return (
     <section
       ref={sectionRef}
@@ -76,11 +81,24 @@ export function HeroSection({ images, sectionRef }: HeroSectionProps) {
         </div>
       </div>
 
-      {/* ─── DESKTOP (md+): hero editorial originale con foto a colonne ─── */}
+      {/* ─── DESKTOP (md+): hero editorial con video di sfondo ─── */}
       <div className="absolute inset-0 z-0 hidden md:block">
-        {/* Foto a colonne + griglia + vignette */}
+        {/* Video di sfondo + griglia + vignette */}
         <div className="absolute inset-0 z-0">
-          {images.length > 0 ? <HeroColumnsStack images={images} /> : null}
+          <video
+            className="absolute inset-0 h-full w-full object-cover"
+            src={HERO_VIDEO_SRC}
+            poster={HERO_VIDEO_POSTER}
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            disablePictureInPicture
+            disableRemotePlayback
+            aria-hidden
+            tabIndex={-1}
+          />
           <HeroVignette />
           <HeroBackgroundGrid />
         </div>

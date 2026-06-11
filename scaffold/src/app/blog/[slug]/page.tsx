@@ -12,6 +12,22 @@ import { urlFor } from "@/sanity/lib/image";
 const FONT_BODY = { fontFamily: "var(--font-manrope), system-ui, sans-serif" };
 const FONT_DISPLAY = { fontFamily: "var(--font-montserrat), system-ui, sans-serif" };
 
+/**
+ * ISR esplicito: ogni pagina /blog/<slug> si rigenera al massimo ogni 30s.
+ * Il webhook in /api/revalidate chiama `revalidatePath("/blog/<slug>")` per
+ * renderlo istantaneo dopo Publish in Sanity Studio.
+ */
+export const revalidate = 30;
+
+/**
+ * Nuovi articoli pubblicati DOPO il build NON sono in `generateStaticParams`,
+ * quindi non sono prerenderizzati. Con `dynamicParams = true` (default) Next.js
+ * li genera al primo accesso e li caches → un nuovo articolo è raggiungibile
+ * subito via URL e poi finisce in /blog appena la lista si rigenera (webhook
+ * o ≤30s di ISR).
+ */
+export const dynamicParams = true;
+
 type PageProps = { params: Promise<{ slug: string }> };
 
 const dateFormatter = new Intl.DateTimeFormat("it-IT", {

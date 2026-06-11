@@ -7,13 +7,20 @@ import {
 } from "./queries";
 
 /**
- * Helper di fetch tipizzati. ISR di 60s: dopo "Publish" da Studio il sito
- * mostra il nuovo contenuto entro 1 minuto al massimo. I `tags` sono già qui:
- * per renderlo istantaneo basta aggiungere una route webhook che chiami
- * `revalidateTag('articoli')` (TODO, non ancora attiva). Nessuna variabile
- * interna usa Date.now() → safe per SSR.
+ * Helper di fetch tipizzati per il contenuto Sanity.
+ *
+ * STRATEGIA DI CACHE
+ * ------------------
+ * - `revalidate: 30` = safety net: se il webhook di revalidazione non scatta
+ *   (rete, errore Sanity, env mancante) il sito si aggiorna comunque entro 30s.
+ * - `tags: ["articoli"]` / `tags: ["articolo:<slug>"]` = invalidazione mirata:
+ *   il webhook in /api/revalidate chiama `revalidateTag(...)` ad ogni Publish
+ *   in Sanity Studio → la nuova versione compare immediatamente (senza
+ *   aspettare i 30s).
+ *
+ * Nessuna variabile interna usa Date.now() → safe per render statico/ISR.
  */
-const REVALIDATE_SEC = 60;
+const REVALIDATE_SEC = 30;
 
 export async function fetchArticoli(): Promise<ArticoloSanity[]> {
   return client.fetch<ArticoloSanity[]>(
