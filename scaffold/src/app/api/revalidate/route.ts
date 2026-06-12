@@ -73,11 +73,13 @@ export async function POST(req: Request) {
   // 3) Invalidazione: tag (Data Cache dei fetch) + path (Full Route Cache).
   //    Ridondante ma robusto: copre sia le pagine pre-renderizzate staticamente
   //    sia i fetch cached con tag.
-  revalidateTag("articoli");
+  //    `{ expire: 0 }` = scadenza immediata: e' il profilo raccomandato da
+  //    Next 16 per i webhook esterni che richiedono contenuto subito fresco.
+  revalidateTag("articoli", { expire: 0 });
   revalidatePath("/blog");
 
   if (body.slug && typeof body.slug === "string") {
-    revalidateTag(`articolo:${body.slug}`);
+    revalidateTag(`articolo:${body.slug}`, { expire: 0 });
     revalidatePath(`/blog/${body.slug}`);
   }
 
