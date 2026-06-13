@@ -780,6 +780,18 @@ const ATTIVITA_2025_ADVANCED: Attivita[] = [
 
 const BASE_2026 = "/edizioni/2026";
 
+const ATTIVITA_2026_BEGINNER: Attivita[] = [
+  {
+    id: "competenze-per-il-lavoro-e-per-la-vita",
+    data: "2026-06-12",
+    titolo: "Competenze per il lavoro e per la vita",
+    foto: foto5(
+      `${BASE_2026}/beginner/12_06_2026_Competenze_per_il_lavoro_e_per_la_vita`,
+      "jpg",
+    ),
+  },
+];
+
 const ATTIVITA_2026_MASTER: Attivita[] = [
   {
     id: "un-viaggio-senza-fine",
@@ -923,7 +935,7 @@ export const edizioniAttivita: Record<string, ClasseAnnata[]> = {
   ],
 
   "2026": [
-    { classe: "Beginner", attivita: [] },
+    { classe: "Beginner", attivita: ATTIVITA_2026_BEGINNER },
     { classe: "Master", attivita: ATTIVITA_2026_MASTER },
     { classe: "Advanced", attivita: [] },
     { classe: "Insieme", attivita: ATTIVITA_2026_INSIEME },
