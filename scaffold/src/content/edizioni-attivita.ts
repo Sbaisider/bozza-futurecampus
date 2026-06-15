@@ -799,6 +799,33 @@ const ATTIVITA_2026_MASTER: Attivita[] = [
     titolo: "Un viaggio senza fine",
     foto: foto5(`${BASE_2026}/master/11_06_2026_Un_viaggo_senza_fine`, "jpg"),
   },
+  {
+    id: "dai-numeri-alla-voce",
+    data: "2026-06-15",
+    titolo: "Dai numeri alla voce",
+    foto: fotoFiles(`${BASE_2026}/master/15_06_dai_numeri_alla_voce`, [
+      "2.jpeg",
+      "3.jpeg",
+      "4.jpg",
+      "5.jpg",
+      "6.jpeg",
+    ]),
+  },
+];
+
+const ATTIVITA_2026_ADVANCED: Attivita[] = [
+  {
+    id: "dai-numeri-al-futuro",
+    data: "2026-06-15",
+    titolo: "Dai numeri al futuro",
+    foto: fotoFiles(`${BASE_2026}/advanced/15_06_dai_numeri_al_futuro`, [
+      "2.jpg",
+      "3.jpg",
+      "12.jpeg",
+      "14.jpeg",
+      "15.jpeg",
+    ]),
+  },
 ];
 
 const ATTIVITA_2026_INSIEME: Attivita[] = [
@@ -937,7 +964,7 @@ export const edizioniAttivita: Record<string, ClasseAnnata[]> = {
   "2026": [
     { classe: "Beginner", attivita: ATTIVITA_2026_BEGINNER },
     { classe: "Master", attivita: ATTIVITA_2026_MASTER },
-    { classe: "Advanced", attivita: [] },
+    { classe: "Advanced", attivita: ATTIVITA_2026_ADVANCED },
     { classe: "Insieme", attivita: ATTIVITA_2026_INSIEME },
   ],
 };
