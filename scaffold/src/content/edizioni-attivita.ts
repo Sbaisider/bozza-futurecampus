@@ -790,6 +790,18 @@ const ATTIVITA_2026_BEGINNER: Attivita[] = [
       "jpg",
     ),
   },
+  {
+    id: "dendi-e-future-ai",
+    data: "2026-06-16",
+    titolo: "Dendi + FUTURE AI",
+    foto: fotoFiles(`${BASE_2026}/beginner/16_06_2026_dendi_e_future_ai`, [
+      "foto1.JPG",
+      "foto2.JPG",
+      "foto3.JPG",
+      "foto4.JPG",
+      "foto5.JPG",
+    ]),
+  },
 ];
 
 const ATTIVITA_2026_MASTER: Attivita[] = [
@@ -824,6 +836,18 @@ const ATTIVITA_2026_ADVANCED: Attivita[] = [
       "12.jpeg",
       "14.jpeg",
       "15.jpeg",
+    ]),
+  },
+  {
+    id: "consiglieri-comunali-per-un-giorno",
+    data: "2026-06-16",
+    titolo: "Consiglieri Comunali per un giorno",
+    foto: fotoFiles(`${BASE_2026}/advanced/16_06_2026_consiglieri_comunali`, [
+      "1.JPG",
+      "2.JPG",
+      "3.JPG",
+      "4.JPG",
+      "foto5.JPG",
     ]),
   },
 ];
