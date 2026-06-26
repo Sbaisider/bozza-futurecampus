@@ -802,6 +802,42 @@ const ATTIVITA_2026_BEGINNER: Attivita[] = [
       "foto5.JPG",
     ]),
   },
+  {
+    id: "dentro-elica",
+    data: "2026-06-18",
+    titolo: "Dentro Elica",
+    foto: foto5(`${BASE_2026}/beginner/18_06_2026_dentro_elica`, "JPG"),
+  },
+  {
+    id: "sicurezza-nei-luoghi-di-lavoro",
+    data: "2026-06-19",
+    titolo: "Sicurezza nei luoghi di lavoro",
+    foto: fotoFiles(
+      `${BASE_2026}/beginner/19_06_2026_sicurezza_nei_luoghi_di_lavoro`,
+      ["2.JPG", "3.JPG", "4.JPG", "5.JPG", "IMG_7405.JPG"],
+    ),
+  },
+  {
+    id: "musica-con-ai-e-problem-solving-interattivo",
+    data: "2026-06-22",
+    titolo: "Musica con AI e problem solving interattivo",
+    foto: foto5(`${BASE_2026}/beginner/22_06_2026_musica_e_solving`, "JPG"),
+  },
+  {
+    id: "il-teatro-come-palestra-di-crescita",
+    data: "2026-06-26",
+    titolo: "Il teatro come palestra di crescita",
+    foto: fotoFiles(
+      `${BASE_2026}/beginner/26_06_2026_il_teatro_come_palestra_di_crescita`,
+      [
+        "4.jpg",
+        "5.jpg",
+        "PHOTO-2026-06-26-14-19-22.jpg",
+        "PHOTO-2026-06-26-14-19-22(1).jpg",
+        "PHOTO-2026-06-26-14-19-23(1).jpg",
+      ],
+    ),
+  },
 ];
 
 const ATTIVITA_2026_MASTER: Attivita[] = [
@@ -821,6 +857,30 @@ const ATTIVITA_2026_MASTER: Attivita[] = [
       "4.jpg",
       "5.jpg",
       "6.jpeg",
+    ]),
+  },
+  {
+    id: "impossibile-non-comunicare",
+    data: "2026-06-17",
+    titolo: "Impossibile non comunicare",
+    foto: foto5(`${BASE_2026}/master/17_06_impossibile_non_comunicare`, "JPG"),
+  },
+  {
+    id: "dalla-farina-al-profitto",
+    data: "2026-06-22",
+    titolo: "Dalla farina al profitto",
+    foto: foto5(`${BASE_2026}/master/22_06_2026_da_farina_a_profitto`, "JPG"),
+  },
+  {
+    id: "officina-futuro",
+    data: "2026-06-25",
+    titolo: "Officina futuro",
+    foto: fotoFiles(`${BASE_2026}/master/25_06_2026_officina_futuro`, [
+      "2.jpg",
+      "3.jpg",
+      "4.jpg",
+      "5.jpg",
+      "PHOTO-2026-06-25-19-56-01.jpg",
     ]),
   },
 ];
@@ -850,6 +910,29 @@ const ATTIVITA_2026_ADVANCED: Attivita[] = [
       "foto5.JPG",
     ]),
   },
+  {
+    id: "dal-comune-alla-regione",
+    data: "2026-06-18",
+    titolo: "Dal comune alla regione",
+    foto: fotoFiles(`${BASE_2026}/advanced/18_06_2026_dal_comune_alla_regione`, [
+      "3.JPG",
+      "4.JPG",
+      "IMG_7376.JPG",
+      "IMG_7378.JPG",
+    ]),
+  },
+  {
+    id: "officina-futuro",
+    data: "2026-06-25",
+    titolo: "Officina futuro",
+    foto: fotoFiles(`${BASE_2026}/advanced/25_06_2026_officina_futuro`, [
+      "2.jpg",
+      "3.jpg",
+      "4.jpg",
+      "5.jpg",
+      "PHOTO-2026-06-25-19-56-01.jpg",
+    ]),
+  },
 ];
 
 const ATTIVITA_2026_INSIEME: Attivita[] = [
@@ -858,6 +941,15 @@ const ATTIVITA_2026_INSIEME: Attivita[] = [
     data: "2026-06-10",
     titolo: "Giornata Inaugurale",
     foto: foto5(`${BASE_2026}/tutti/10_06_giornata_inaugurale`, "JPG"),
+  },
+  {
+    id: "due-campus-un-solo-mistero",
+    data: "2026-06-23",
+    titolo: "Due campus un solo mistero",
+    foto: fotoFiles(
+      `${BASE_2026}/tutti/23_06_2026_due_campus_un_solo_mistero`,
+      ["2.JPG", "3.JPG", "4.JPG", "5.JPG", "IMG_7466.JPG"],
+    ),
   },
 ];
 
