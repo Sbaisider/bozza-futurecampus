@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Manrope, Montserrat } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 const manrope = Manrope({
@@ -60,6 +61,7 @@ export default function RootLayout({
           Salta al contenuto
         </a>
         {children}
+        <Analytics />
       </body>
     </html>
   );
