@@ -838,6 +838,15 @@ const ATTIVITA_2026_BEGINNER: Attivita[] = [
       ],
     ),
   },
+  {
+    id: "gestione-della-paghetta",
+    data: "2026-06-30",
+    titolo: "Gestione della paghetta",
+    foto: fotoFiles(
+      `${BASE_2026}/beginner/30_06_2026__gestione_paghetta`,
+      ["4.JPG", "5.JPG", "IMG_7549.JPG", "IMG_7550.JPG", "IMG_7551.JPG"],
+    ),
+  },
 ];
 
 const ATTIVITA_2026_MASTER: Attivita[] = [
@@ -882,6 +891,15 @@ const ATTIVITA_2026_MASTER: Attivita[] = [
       "5.jpg",
       "PHOTO-2026-06-25-19-56-01.jpg",
     ]),
+  },
+  {
+    id: "viaggio-univpm",
+    data: "2026-06-29",
+    titolo: "Viaggio nell'università Politecnica delle Marche",
+    foto: foto5(
+      `${BASE_2026}/master/29_06_2026_politecnica_delle_marche`,
+      "JPG",
+    ),
   },
 ];
 
@@ -932,6 +950,12 @@ const ATTIVITA_2026_ADVANCED: Attivita[] = [
       "5.jpg",
       "PHOTO-2026-06-25-19-56-01.jpg",
     ]),
+  },
+  {
+    id: "un-forno-cucito-su-misura-per-il-mondo",
+    data: "2026-06-29",
+    titolo: "Un forno cucito su misura per il mondo",
+    foto: foto5(`${BASE_2026}/advanced/29_06_2026_forno_clementi`, "JPG"),
   },
 ];
 
