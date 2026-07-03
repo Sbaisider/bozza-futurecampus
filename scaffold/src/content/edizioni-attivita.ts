@@ -847,6 +847,12 @@ const ATTIVITA_2026_BEGINNER: Attivita[] = [
       ["4.JPG", "5.JPG", "IMG_7549.JPG", "IMG_7550.JPG", "IMG_7551.JPG"],
     ),
   },
+  {
+    id: "una-palestra-per-domani",
+    data: "2026-07-01",
+    titolo: "Una palestra per domani",
+    foto: foto5(`${BASE_2026}/beginner/01_07_2026_una_palestra_per_domani`, "jpg"),
+  },
 ];
 
 const ATTIVITA_2026_MASTER: Attivita[] = [
@@ -900,6 +906,12 @@ const ATTIVITA_2026_MASTER: Attivita[] = [
       `${BASE_2026}/master/29_06_2026_politecnica_delle_marche`,
       "JPG",
     ),
+  },
+  {
+    id: "full-immersion-in-faber",
+    data: "2026-07-02",
+    titolo: "Full immersion in Faber",
+    foto: foto5(`${BASE_2026}/master/02_07_2026_faber`, "jpg"),
   },
 ];
 
