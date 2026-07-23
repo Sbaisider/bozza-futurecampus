@@ -853,6 +853,45 @@ const ATTIVITA_2026_BEGINNER: Attivita[] = [
     titolo: "Una palestra per domani",
     foto: foto5(`${BASE_2026}/beginner/01_07_2026_una_palestra_per_domani`, "jpg"),
   },
+  {
+    id: "da-spettatori-a-turisti",
+    data: "2026-07-07",
+    titolo: "Da spettatori a turisti",
+    foto: foto5(`${BASE_2026}/beginner/07_07_2026_da_spettatori_a_turisti`, "JPG"),
+  },
+  {
+    id: "non-si-puo-non-comunicare",
+    data: "2026-07-09",
+    titolo: "Non si può non comunicare",
+    foto: foto5(`${BASE_2026}/beginner/09_07_2026_non_si_puo_non_comunicare`, "JPG"),
+  },
+  {
+    id: "airforce-e-ariston",
+    data: "2026-07-16",
+    titolo: "AirForce e Ariston",
+    foto: foto5(`${BASE_2026}/beginner/16_07_2026_airforce_e_ariston`, "JPG"),
+  },
+  {
+    id: "mondo-del-lavoro",
+    data: "2026-07-17",
+    titolo: "Mondo del lavoro",
+    foto: foto5(`${BASE_2026}/beginner/17_07_2026_mondo_del_lavoro`, "JPG"),
+  },
+  {
+    id: "comunicazione-ed-emozioni",
+    data: "2026-07-20",
+    titolo: "Comunicazione ed emozioni",
+    foto: foto5(`${BASE_2026}/beginner/20_07_2026_comunicazione_ed_emozioni`, "JPG"),
+  },
+  {
+    id: "anche-un-mattoncino-puo-correre",
+    data: "2026-07-22",
+    titolo: "Anche un mattoncino può correre",
+    foto: foto5(
+      `${BASE_2026}/beginner/22_07_2026_anche_un_mattoncino_puo_correre`,
+      "JPG",
+    ),
+  },
 ];
 
 const ATTIVITA_2026_MASTER: Attivita[] = [
@@ -913,6 +952,39 @@ const ATTIVITA_2026_MASTER: Attivita[] = [
     titolo: "Full immersion in Faber",
     foto: foto5(`${BASE_2026}/master/02_07_2026_faber`, "jpg"),
   },
+  {
+    id: "intelligenza-artificiale-al-servizio-della-mente-umana",
+    data: "2026-07-07",
+    titolo: "Intelligenza artificiale al servizio della mente umana",
+    foto: foto5(
+      `${BASE_2026}/master/07_07_2026_intelligenza_artificiale_al_servizio_della_mente_umana`,
+      "JPG",
+    ),
+  },
+  {
+    id: "lean-game",
+    data: "2026-07-10",
+    titolo: "Lean Game",
+    foto: foto5(`${BASE_2026}/master/10_07_2026_lean_game`, "JPG"),
+  },
+  {
+    id: "business-model-canvas",
+    data: "2026-07-13",
+    titolo: "Business Model Canvas",
+    foto: foto5(`${BASE_2026}/master/13_07_2026_business_model_canvas`, "JPG"),
+  },
+  {
+    id: "fondazione-fedrigoni",
+    data: "2026-07-17",
+    titolo: "Fondazione Fedrigoni",
+    foto: foto5(`${BASE_2026}/master/17_07_2026_fondazione_fedrigoni`, "JPG"),
+  },
+  {
+    id: "il-futuro-si-gioca",
+    data: "2026-07-20",
+    titolo: "Il futuro si gioca",
+    foto: foto5(`${BASE_2026}/master/20_07_2026_il_futuro_si_gioca`, "JPG"),
+  },
 ];
 
 const ATTIVITA_2026_ADVANCED: Attivita[] = [
@@ -968,6 +1040,49 @@ const ATTIVITA_2026_ADVANCED: Attivita[] = [
     data: "2026-06-29",
     titolo: "Un forno cucito su misura per il mondo",
     foto: foto5(`${BASE_2026}/advanced/29_06_2026_forno_clementi`, "JPG"),
+  },
+  {
+    id: "il-punto-giusto",
+    data: "2026-07-03",
+    titolo: "Il punto giusto",
+    foto: foto5(`${BASE_2026}/advanced/03_07_2026_il_punto_giusto`, "JPG"),
+  },
+  {
+    id: "filtrare-le-idee-progettare-il-futuro",
+    data: "2026-07-06",
+    titolo: "Filtrare le idee, progettare il futuro",
+    foto: foto5(
+      `${BASE_2026}/advanced/06_07_2026_filtrare_le_idee_progettare_il_futuro`,
+      "JPG",
+    ),
+  },
+  {
+    id: "la-prima-impressione-non-si-dimentica",
+    data: "2026-07-08",
+    titolo: "La prima impressione non si dimentica",
+    foto: foto5(
+      `${BASE_2026}/advanced/08_07_2026_la_prima_impressione_non_si_dimentica`,
+      "JPG",
+    ),
+  },
+  {
+    id: "attraversare-le-emozioni",
+    data: "2026-07-10",
+    titolo: "Attraversare le emozioni",
+    foto: foto5(`${BASE_2026}/advanced/10_07_2026_attraversare_le_emozioni`, "JPG"),
+  },
+  {
+    id: "roma",
+    data: "2026-07-13",
+    dataFine: "2026-07-16",
+    titolo: "Roma",
+    foto: foto5(`${BASE_2026}/advanced/13_16_07_2026_roma`, "JPG"),
+  },
+  {
+    id: "assessment-day",
+    data: "2026-07-17",
+    titolo: "Assessment Day",
+    foto: foto5(`${BASE_2026}/advanced/17_07_2026_assessment_day`, "JPG"),
   },
 ];
 
