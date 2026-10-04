@@ -1,0 +1,53 @@
+{
+  "$schema": "https://octagency.it/schemas/octa-config.v1.json",
+  "version": 1,
+  "protocol_version": 1,
+  "project_id": null,
+  "octagency_endpoint": "https://octagency.it",
+  "project": {
+    "name": "Sito Future Campus Fabriano",
+    "kind": "website",
+    "stack": [
+      "nextjs",
+      "vercel"
+    ],
+    "primary_domain": "www.futurecampus.it",
+    "repo": "github.com/Sbaisider/bozza-futurecampus"
+  },
+  "allowed_actions": [
+    {
+      "name": "update_copy",
+      "description": "Modifica di un testo del sito (online in pochi minuti)",
+      "scope": [
+        "src/app/**",
+        "src/components/**",
+        "src/content/**"
+      ]
+    },
+    {
+      "name": "check_copy",
+      "description": "Verifica di un testo del sito (nessuna modifica)"
+    },
+    {
+      "name": "update_copy_everywhere",
+      "description": "Modifica di un testo in tutti i punti del sito",
+      "scope": [
+        "src/app/**",
+        "src/components/**",
+        "src/content/**"
+      ],
+      "requires_human": true
+    },
+    {
+      "name": "ping",
+      "description": "Verifica tecnica del collegamento",
+      "requires_human": true
+    }
+  ],
+  "denied_actions_default": [
+    "modify_payment_flow",
+    "modify_auth",
+    "access_env_secrets",
+    "modify_database_schema"
+  ]
+}

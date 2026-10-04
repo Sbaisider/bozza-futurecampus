@@ -1,0 +1,4 @@
+events.log
+*.local
+sessions/
+codepus.json

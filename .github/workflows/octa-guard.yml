@@ -1,0 +1,94 @@
+# Rete di sicurezza del connettore .octa (OCTAGENCY).
+#
+# Il connettore applica le piccole modifiche di testo con un commit sul branch
+# di produzione. Se la pubblicazione di QUEL commit fallisce, questo workflow
+# lo annulla: il sito resta sull'ultima versione buona (una pubblicazione
+# fallita non la sostituisce mai) e il branch torna pubblicabile.
+#
+# Tocca solo i commit che portano la riga "Octa-Command-Id:", solo se sono
+# ancora in testa al branch e solo se sono recenti: un commit vecchio la cui
+# ripubblicazione fallisce oggi non è stato rotto dal connettore.
+# Vale per il branch predefinito del repository, che è quello di produzione.
+# File generato da `octa kit install`: non modificare.
+name: octa-guard
+
+on:
+  deployment_status:
+
+permissions:
+  contents: write
+  issues: write
+
+# Una sola esecuzione per commit: due stati di errore dello stesso deploy non
+# devono tentare due annullamenti insieme.
+concurrency:
+  group: octa-guard-${{ github.event.deployment.sha }}
+  cancel-in-progress: false
+
+jobs:
+  revert:
+    if: >-
+      (github.event.deployment_status.state == 'failure' || github.event.deployment_status.state == 'error')
+      && contains(github.event.deployment.environment, 'Production')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          fetch-depth: 30
+
+      - name: Annulla il commit del connettore che ha rotto la pubblicazione
+        env:
+          SHA: ${{ github.event.deployment.sha }}
+          BRANCH: ${{ github.event.repository.default_branch }}
+          LOG_URL: ${{ github.event.deployment_status.target_url }}
+          GH_TOKEN: ${{ github.token }}
+          # Oltre questo tempo dal commit il fallimento ha un'altra causa.
+          MAX_AGE_SECONDS: "3600"
+        run: |
+          set -euo pipefail
+
+          if ! git cat-file -e "${SHA}^{commit}" 2>/dev/null; then
+            echo "Commit ${SHA} fuori dalla storia recente: nulla da fare."
+            exit 0
+          fi
+          if ! git log -1 --format=%B "${SHA}" | grep -q '^Octa-Command-Id: '; then
+            echo "Non è un commit del connettore: nulla da fare."
+            exit 0
+          fi
+
+          AGE=$(( $(date +%s) - $(git log -1 --format=%ct "${SHA}") ))
+          if [ "${AGE}" -gt "${MAX_AGE_SECONDS}" ]; then
+            echo "Commit di ${AGE} secondi fa: il fallimento di oggi non dipende da lui."
+            exit 0
+          fi
+
+          SUBJECT="$(git log -1 --format=%s "${SHA}")"
+          if [ "$(git rev-parse HEAD)" != "${SHA}" ]; then
+            echo "Il branch è già andato avanti: serve una persona."
+            gh issue create \
+              --title "octa-guard: pubblicazione fallita per una modifica del connettore" \
+              --body "La pubblicazione del commit ${SHA} (\"${SUBJECT}\") è fallita, ma nel frattempo il branch ${BRANCH} è andato avanti: non l'ho annullato in automatico. Log: ${LOG_URL}" \
+              || true
+            exit 0
+          fi
+
+          # Stesso autore del commit annullato: l'hosting pubblica solo i commit
+          # di chi ha accesso al progetto.
+          git config user.name "$(git log -1 --format=%an "${SHA}")"
+          git config user.email "$(git log -1 --format=%ae "${SHA}")"
+          git revert --no-edit "${SHA}"
+          if ! git push origin "HEAD:${BRANCH}"; then
+            # Branch protetto o andato avanti in questo istante: lo deve sapere una persona.
+            gh issue create \
+              --title "octa-guard: non sono riuscito ad annullare una modifica del connettore" \
+              --body "La pubblicazione del commit ${SHA} (\"${SUBJECT}\") è fallita e il push dell'annullamento su ${BRANCH} è stato rifiutato: il branch contiene ancora la modifica. Log: ${LOG_URL}" \
+              || true
+            exit 1
+          fi
+
+          gh issue create \
+            --title "octa-guard: annullata una modifica del connettore" \
+            --body "La pubblicazione del commit ${SHA} (\"${SUBJECT}\") è fallita: l'ho annullato, il sito è rimasto sull'ultima versione buona. In OCTAGENCY la modifica risulta ancora come fatta: va avvisato il cliente e rifatta a mano. Log: ${LOG_URL}" \
+            || true
