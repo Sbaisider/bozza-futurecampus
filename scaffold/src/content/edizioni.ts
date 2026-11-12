@@ -13,6 +13,20 @@ export type EdizionePartner = {
   nome: string;
 };
 
+/**
+ * Film dell'edizione (cartella /public/film/).
+ * - `src`: film completo con audio, 720p H.264 faststart (aperto nel player al clic).
+ * - `anteprima`: loop corto e muto, 720p senza audio (gira in pagina).
+ * - `poster`: fotogramma JPG mostrato prima che parta l'anteprima.
+ */
+export type EdizioneFilm = {
+  src: string;
+  anteprima: string;
+  poster: string;
+  durata: string; // es. "4:25"
+  titolo: string; // titolo della sezione in home
+};
+
 export type Edizione = {
   anno: number;
   slug: string; // usato in /edizioni/[slug]
@@ -28,6 +42,7 @@ export type Edizione = {
   momentiChiave: EdizioneAttivita[];
   partner: EdizionePartner[];
   gallery: string[]; // path /foto/...
+  film?: EdizioneFilm;
   isCorrente?: boolean;
 };
 
@@ -275,6 +290,13 @@ export const edizioni: Edizione[] = [
       { nome: "BPER Banca" },
     ],
     gallery: [],
+    film: {
+      src: "/film/fcf26.mp4",
+      anteprima: "/film/fcf26_preview.mp4",
+      poster: "/film/fcf26_poster.jpg",
+      durata: "4:25",
+      titolo: "Sei settimane in quattro minuti.",
+    },
     isCorrente: true,
   },
 ];
@@ -291,4 +313,10 @@ export function getEdizioniOrdinate(direction: "asc" | "desc" = "desc"): Edizion
 
 export function getEdizioneCorrente(): Edizione {
   return edizioni.find((e) => e.isCorrente) ?? edizioni[edizioni.length - 1];
+}
+
+/** Edizione più recente che ha un film (usata dalla sezione film in home). */
+export function getUltimoFilm(): { anno: number; film: EdizioneFilm } | undefined {
+  const ed = getEdizioniOrdinate("desc").find((e) => e.film);
+  return ed?.film ? { anno: ed.anno, film: ed.film } : undefined;
 }

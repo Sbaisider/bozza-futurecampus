@@ -3,6 +3,7 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 
 import { CalendarioEdizione } from "@/components/edizioni/CalendarioEdizione";
+import { FilmEdizione } from "@/components/site/FilmEdizione";
 import { PageShell } from "@/components/site/PageShell";
 import { Reveal, RevealWords } from "@/components/site/Reveal";
 import { edizioni, getEdizioneBySlug } from "@/content/edizioni";
@@ -205,6 +206,19 @@ export default async function EdizioneDettaglioPage({ params }: PageProps) {
           style={FONT_DISPLAY}
         />
       </section>
+
+      {/* Film dell'edizione (se presente in edizioni.ts): loop muto in pagina,
+          al clic si apre il player con il film completo e l'audio. */}
+      {ed.film && (
+        <section
+          className="bg-fc-dark px-4 py-12 sm:px-5 sm:py-14 md:px-8 md:py-20"
+          aria-label={`Il film dell'edizione ${ed.anno}`}
+        >
+          <div className="mx-auto max-w-6xl">
+            <FilmEdizione film={ed.film} anno={ed.anno} className="rounded-md" />
+          </div>
+        </section>
+      )}
 
       {/* Card delle classi: blur+zoom-leggero di default, sharp+zoom-più-deciso su hover.
           Stesso pattern visuale delle card della pagina /edizioni. */}

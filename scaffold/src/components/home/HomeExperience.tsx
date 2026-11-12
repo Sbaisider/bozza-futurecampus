@@ -6,6 +6,7 @@ import { HeroSection } from "@/components/hero/HeroSection";
 import { HomeCtaFinaleSection } from "@/components/home/sections/HomeCtaFinaleSection";
 import { HomeEdizioniPassateSection } from "@/components/home/sections/HomeEdizioniPassateSection";
 import { HomeEsperienzaSection } from "@/components/home/sections/HomeEsperienzaSection";
+import { HomeFilmSection } from "@/components/home/sections/HomeFilmSection";
 import { HomeManifestoSection } from "@/components/home/sections/HomeManifestoSection";
 import { HomePadriFondatoriSection } from "@/components/home/sections/HomePadriFondatoriSection";
 import { SiteNavbar } from "@/components/home/SiteNavbar";
@@ -24,10 +25,12 @@ type HomeExperienceProps = {
  *
  *  1. Hero
  *  2. Manifesto
- *  3. Esperienza (timeline verticale)
- *  4. Edizioni passate (card grandi, attaccate, hover scale)
- *  5. CTA finale (Contattaci)
- *  6. Footer
+ *  3. Film dell'ultima edizione (loop muto, al clic player con audio)
+ *  4. Esperienza (timeline verticale)
+ *  5. Padri fondatori
+ *  6. Edizioni passate (card grandi, attaccate, hover scale)
+ *  7. CTA finale (Contattaci)
+ *  8. Footer
  *
  * Rimossi (su richiesta utente): Numeri, Edizione 2026, Partner/Sponsor.
  */
@@ -93,6 +96,7 @@ export function HomeExperience({ heroImages: _heroImages, media: _media }: HomeE
       <main id="main-content" className="flex min-h-full flex-1 flex-col">
         <HeroSection sectionRef={heroSectionRef} />
         <HomeManifestoSection />
+        <HomeFilmSection />
         <HomeEsperienzaSection ref={esperienzaSectionRef} />
         <HomePadriFondatoriSection />
         <HomeEdizioniPassateSection />
